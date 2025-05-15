@@ -1,0 +1,101 @@
+.bacc {
+    position: relative;
+    /* 确保背景组件相对于此定位 */
+    min-height: 100vh;
+    width: 100%;
+    box-sizing: content-box;
+}
+
+.container {
+    margin-top: 200px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    /* 确保内容在背景之上 */
+    flex-direction: column;
+    z-index: 1;
+    /* 高于背景的 z-index(-1) */
+    box-sizing: content-box;
+}
+
+@font-face {
+    font-family: 'ZiHun';
+    src: url("/fonts/ZiHun.woff2") format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+    /* 优化加载时的显示 */
+}
+
+.typewriter1 {
+    font-family: ZiHun, serif;
+    font-size: 40px !important;
+    caret-color: transparent;
+    box-sizing: content-box;
+    line-height: 1.2;
+    margin: 0;
+    padding: 0;
+}
+
+.typewriter2 {
+    font-family: 幼圆, serif;
+    font-size: 50px !important;
+    caret-color: transparent;
+    box-sizing: content-box;
+    line-height: 1.2;
+    margin: 0;
+    padding: 0;
+}
+
+.showTop {
+    min-height: 400px;
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-sizing: content-box;
+}
+
+.box1 {
+    margin-top: 50px;
+    width: 500px;
+    height: 350px;
+    box-sizing: content-box;
+}
+
+.box2 {
+    width: 500px;
+    height: 400px;
+    box-sizing: content-box;
+}
+
+.mainContentArea {
+    margin-top: 50px;
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    box-sizing: content-box;
+}
+
+.mainContentLeft {
+    width: 100%;
+    max-width: 800px;
+    box-sizing: content-box;
+}
+
+.title {
+    color: var(--text);
+    box-sizing: content-box;
+    font-size: 24px !important;
+    margin: 0;
+    padding: 0;
+}
+
+.content {
+    color: var(--text);
+    box-sizing: content-box;
+    font-size: 16px !important;
+    margin: 0;
+    padding: 0;
+}

@@ -1,0 +1,171 @@
+/* 导航列表样式 */
+.navList {
+    display: flex;
+    gap: 2.5rem;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* 单个导航项的样式 */
+.navItem {
+    position: relative;
+}
+
+/* 导航链接的基本样式 */
+.navLink {
+    color: var(--nav-text-color, #333);
+    text-decoration: none;
+    font-family: '幼圆', serif;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 5px 0;
+    position: relative;
+    display: inline-block;
+    caret-color: transparent;
+    transition: color 0.3s ease;
+    animation: slideDown 0.5s ease-out forwards;
+}
+
+.navLink:hover {
+    color: var(--nav-text-color, #333);
+    text-decoration: none;
+}
+
+/* 当前路由的高亮效果 */
+.activeLink {
+    color: var(--nav-active-color, #333);
+    text-decoration: none;
+}
+
+/* 当前选中路由的下划线样式 */
+.activeLink::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 100%;
+    height: 3px;
+    background: var(--nav-underline-active-color, #333);
+    transform: translateX(-50%);
+    transition: none;
+}
+
+/* 鼠标悬停时的下划线动画效果 */
+.navLink:not(.activeLink)::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 3px;
+    background: var(--nav-underline-color, #333);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.navLink:not(.activeLink):hover::after {
+    width: 100%;
+}
+
+/* 文章信息样式 */
+.articleInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    animation: slideDown 0.5s ease-out forwards;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideLeft {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+}
+
+.articleTitle {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--nav-text-color, #333);
+    text-align: center;
+    max-width: 600px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+.articleDate {
+    font-size: 0.9rem;
+    color: var(--nav-text-color, #333);
+    opacity: 0.8;
+    transition: all 0.3s ease;
+}
+
+.articleExcerpt {
+    font-size: 0.9rem;
+    color: var(--nav-text-color, #333);
+    opacity: 0.8;
+    transition: all 0.3s ease;
+    width: 400px;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 1rem;
+}
+
+/* 暗色模式适配 */
+.dark .navLink {
+    color: #ecf0f1;
+}
+
+.dark .navLink:hover {
+    color: #3498db;
+}
+
+.dark .articleTitle,
+.dark .articleDate {
+    color: #ecf0f1;
+}
+
+@media (max-width: 768px) {
+    .navList {
+        gap: 1.5rem;
+    }
+
+    .navLink {
+        font-size: 0.9rem;
+    }
+
+    .articleTitle {
+        font-size: 1rem;
+        max-width: 300px;
+    }
+
+    .articleDate {
+        font-size: 0.8rem;
+        width: 280px;
+        /* 移动端更窄的宽度 */
+    }
+}

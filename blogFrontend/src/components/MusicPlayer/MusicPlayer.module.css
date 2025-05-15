@@ -1,0 +1,23 @@
+.button {
+    padding: 10px 20px;
+    background-color: #4CAF50; /* 绿色背景 */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    margin: 10px 0;
+}
+
+.button:hover {
+    background-color: #45a049; /* 悬停时深绿色 */
+}
+
+.buttonPlaying {
+    background-color: #f44336; /* 播放状态时红色 */
+}
+
+.buttonPlaying:hover {
+    background-color: #d32f2f; /* 播放状态悬停时深红色 */
+}

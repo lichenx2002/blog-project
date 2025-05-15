@@ -1,0 +1,155 @@
+.paginationContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.pageSizeSelector {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-color);
+  font-size: 0.9rem;
+}
+
+.selectTrigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-color);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 100px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.selectTrigger:hover {
+  border-color: var(--nav-underline-color);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.selectTrigger:focus {
+  outline: none;
+  border-color: var(--nav-underline-active-color);
+  box-shadow: 0 0 0 2px rgba(162, 89, 255, 0.1);
+}
+
+.selectIcon {
+  color: var(--text-color);
+  opacity: 0.7;
+}
+
+.selectContent {
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border);
+  z-index: 1000;
+  min-width: 120px;
+}
+
+.selectItem {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.selectItem:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.selectItem[data-highlighted] {
+  background: rgba(0, 0, 0, 0.1);
+  outline: none;
+}
+
+.selectItem[data-state="checked"] {
+  background: rgba(162, 89, 255, 0.1);
+  color: var(--primary-color);
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pageButton {
+  padding: 0.4rem 0.8rem;
+  border: none;
+  background: transparent;
+  color: var(--text-color);
+  font-size: 0.9rem;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.pageButton:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.pageButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.active {
+  background: rgba(0, 0, 0, 0.1);
+  font-weight: 500;
+}
+
+/* 暗色模式样式 */
+[data-theme="dark"] .pageButton:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .active {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .selectTrigger {
+  background: rgba(0, 0, 0, 0.2);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .selectTrigger:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .selectTrigger:focus {
+  border-color: var(--nav-underline-active-color);
+}
+
+[data-theme="dark"] .selectContent {
+  background: rgba(0, 0, 0, 0.95);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .selectItem:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .selectItem[data-highlighted] {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="dark"] .selectItem[data-state="checked"] {
+  background: rgba(162, 89, 255, 0.2);
+  color: var(--primary-color);
+}
