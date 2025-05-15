@@ -53,8 +53,8 @@ const AIChat: React.FC = () => {
   const isInitialMount = useRef(true); // 初始加载标志，防止首次加载时滚动
 
   // API配置
-  const apiEndpoint = 'https://api.deepseek.com/v1/chat/completions';
-  const apiKey = 'sk-784a6a2e132a4fa58f3c050888516fcf';
+  const apiEndpoint = '你的地址';
+  const apiKey = '你的API密钥';
 
   /**
    * 滚动到底部函数
