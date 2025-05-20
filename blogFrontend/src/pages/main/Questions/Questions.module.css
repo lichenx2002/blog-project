@@ -1,0 +1,448 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  min-height: calc(100vh - 64px);
+}
+
+.headerWrapper {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.header {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+  position: relative;
+  display: inline-block;
+}
+
+.introText {
+  max-width: 800px;
+  margin: 0 auto;
+  color: var(--text);
+  opacity: 0.7;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  font-style: italic;
+  font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+.searchSortContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  padding: 0.25rem;
+  border-radius: 8px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.searchIcon {
+  color: var(--text);
+  font-size: 1rem;
+  opacity: 0.7;
+}
+
+.searchInput {
+  width: 100%;
+  height: 28px;
+  padding: 0 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  line-height: 28px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 12px rgba(162, 89, 255, 0.15);
+}
+
+.searchInput::placeholder {
+  color: var(--text);
+  opacity: 0.5;
+}
+
+.filterButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 28px;
+  min-width: 28px;
+  padding: 0 0.75rem;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0.7;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.filterButton svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  margin-right: 2px;
+}
+
+.filterButton:hover {
+  color: var(--text);
+  opacity: 1;
+}
+
+.filters {
+  background: transparent;
+  border-radius: 8px;
+  padding: 0.5rem;
+  margin: 0.5rem 0;
+  border: none;
+}
+
+.filterSection {
+  margin-bottom: 0.75rem;
+}
+
+.filterSection:last-child {
+  margin-bottom: 0;
+}
+
+.filterSection h3 {
+  font-size: 0.9rem;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  opacity: 0.7;
+}
+
+.filterOptions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.filterOption {
+  padding: 0.25rem 0.75rem;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--text);
+  opacity: 0.7;
+}
+
+.filterOption:hover {
+  color: var(--text);
+  background: rgba(24, 144, 255, 0.05);
+  opacity: 1;
+}
+
+.filterOption.active {
+  background: transparent;
+  color: var(--text);
+  font-weight: 500;
+  opacity: 1;
+}
+
+.clearFilters {
+  display: block;
+  margin-top: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.85rem;
+  font-weight: 400;
+  opacity: 0.7;
+}
+
+.clearFilters:hover {
+  color: var(--text);
+  background: rgba(24, 144, 255, 0.05);
+  opacity: 1;
+}
+
+/* 统一所有按钮的高亮样式 */
+.filterOption.active,
+.sortOption.active,
+.filterButton:hover,
+.sortOption:hover,
+.clearFilters:hover {
+  color: var(--text);
+  background: rgba(24, 144, 255, 0.05);
+  opacity: 1;
+}
+
+.questionsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 1rem;
+}
+
+.questionCard {
+  background: var(--background-color);
+  border-radius: 12px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid var(--border-color);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* 阴影效果 */
+  background: rgba(255, 255, 255, 0.2);
+  /* 半透明背景 */
+}
+
+.questionCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.questionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.difficulty {
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  background: var(--bg-secondary);
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.tags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.tag {
+  font-size: 0.8rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+}
+
+.tag:hover {
+  transform: translateY(-1px);
+  background: var(--bg-tertiary);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.questionTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 1rem;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.questionContent {
+  font-size: 0.95rem;
+  color: var(--text);
+  margin-bottom: 1.25rem;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.questionMeta {
+  display: flex;
+  gap: 1.25rem;
+  color: var(--text);
+  font-size: 0.9rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.metaIcon {
+  font-size: 1.1rem;
+}
+
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+}
+
+.noResults {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem 2rem;
+  background: var(--card-bg);
+  border-radius: 12px;
+  color: var(--text);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.noResults p {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.noResultsTip {
+  margin-top: 0.75rem;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+
+.sortOptions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding: 0.25rem;
+  background: transparent;
+}
+
+.sortOption {
+  padding: 0.25rem 0.75rem;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.85rem;
+  font-weight: 400;
+  white-space: nowrap;
+  border-radius: 4px;
+  opacity: 0.7;
+}
+
+.sortOption:hover {
+  color: var(--text);
+  background: rgba(24, 144, 255, 0.05);
+  opacity: 1;
+}
+
+.sortOption.active {
+  background: transparent;
+  color: var(--text);
+  font-weight: 500;
+  opacity: 1;
+}
+
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .headerWrapper {
+    margin-bottom: 1.5rem;
+  }
+
+  .header {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .introText {
+    font-size: 0.9rem;
+    padding: 0 1rem;
+  }
+
+  .searchSortContainer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .searchBox {
+    padding: 0.2rem;
+  }
+
+  .searchInput {
+    height: 26px;
+    font-size: 0.85rem;
+  }
+
+  .filterButton {
+    height: 26px;
+    font-size: 0.85rem;
+  }
+
+  .sortOptions {
+    gap: 0.4rem;
+  }
+
+  .sortOption {
+    padding: 0.2rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .filters {
+    padding: 0.4rem;
+  }
+
+  .filterSection {
+    margin-bottom: 0.5rem;
+  }
+
+  .filterSection h3 {
+    font-size: 0.85rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .filterOption {
+    padding: 0.2rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .clearFilters {
+    margin-top: 0.4rem;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.8rem;
+  }
+}

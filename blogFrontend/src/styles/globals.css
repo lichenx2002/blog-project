@@ -1,0 +1,181 @@
+/* 自定义滚动条样式 */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+  display: block !important;
+}
+
+/* 滚动条轨道 */
+::-webkit-scrollbar-track {
+  background: transparent;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2));
+  border-radius: 6px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  transition: all 0.3s ease;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 滚动条滑块悬停效果 */
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.3));
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
+}
+
+/* 滚动条滑块激活效果 */
+::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(45deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4));
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+/* 滚动条角落 */
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Firefox 滚动条样式 */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+/* 暗色模式滚动条样式 */
+[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: transparent;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2));
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.3));
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(45deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.4));
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.3);
+}
+
+[data-theme="dark"] * {
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+/* 登录和注册组件的局部重置样式 */
+
+/* 白天模式 */
+:root {
+  --nav-text-color: #333;
+  --nav-active-color: #000;
+  --nav-underline-color: #333;
+  --nav-underline-active-color: #000;
+  --text-color: #333;
+  --cursor-color: transparent;
+  /* 设置为透明 */
+  --icon-color: invert(1) saturate(0) brightness(200%);
+  --user-name: #333;
+  --user-bio: #666;
+  --text: #333;
+  --text-reverse: white;
+  --icon-invert: black;
+  --border: rgba(143, 143, 143, 0.27);
+  --AI-background-color: rgba(255, 238, 191, 0.34);
+  --AI-background-color-reverse: #3d3d3d;
+  --input-background: rgba(199, 199, 199, 0.2);
+  --background: rgba(255, 255, 255);
+  --code-header-bg: #f1f1f1;
+  --code-block-bg: #ffffff;
+  --code-border: #e0e0e0;
+  --code-text: #333333;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --background-color: #ffffff;
+  --border-color: #e8e8e8;
+  --hover-color: rgba(162, 89, 255, 0.1);
+  --navbar-background: rgba(255, 255, 255);
+  --navbar-font-color: #333;
+  /* 贡献日历颜色 */
+  --calendar-empty: #ebedf0;
+}
+
+/* 夜间模式 */
+[data-theme="dark"] {
+  --nav-text-color: #ffffff;
+  --nav-active-color: #fff;
+  --nav-underline-color: rgb(255, 255, 255);
+  --nav-underline-active-color: #ffffff;
+  --text-color: #f0f0f0;
+  --cursor-color: transparent;
+  /* 设置为透明 */
+  --icon-color: brightness(1000%) contrast(0%);
+  --user-name: #e5e5e5;
+  --user-bio: #dedede;
+  --text: white;
+  --text-reverse: #333;
+  --icon-invert: white;
+  --border: rgba(161, 161, 161, 0.63);
+  --AI-background-color: black;
+  --AI-background-color-reverse: rgb(255, 238, 191);
+  --input-background: rgba(255, 255, 255, 0.2);
+  --background: rgb(58, 58, 58);
+  --code-header-bg: #212121;
+  --code-block-bg: #262626;
+  --code-border: #333333;
+  --code-text: #d4d4d4;
+  --shadow: rgba(255, 255, 255, 0.03);
+  --background-color: #1a1a1a;
+  --border-color: #333333;
+  --hover-color: rgba(162, 89, 255, 0.2);
+  --navbar-background: rgb(58, 58, 58);
+  --navbar-font-color: #f0f0f0;
+  /* 贡献日历颜色 - 暗色主题 */
+  --calendar-empty: #161b22;
+}
+
+/* 其他样式保持不变 */
+/*input,*/
+/*textarea {*/
+/*  caret-color: transparent;*/
+/*}*/
+
+/* 搜索高亮效果 */
+.search-highlight {
+  background-color: var(--primary-light);
+  transition: background-color 0.3s ease;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin: 0.75rem 0;
+  box-shadow: 0 0 0 2px var(--primary);
+  animation: highlightPulse 2s ease-out;
+}
+
+@keyframes highlightPulse {
+  0% {
+    background-color: var(--primary-light);
+    box-shadow: 0 0 0 4px var(--primary);
+  }
+
+  100% {
+    background-color: transparent;
+    box-shadow: 0 0 0 0 var(--primary);
+  }
+}

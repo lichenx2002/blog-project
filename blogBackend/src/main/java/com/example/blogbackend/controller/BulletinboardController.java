@@ -1,0 +1,147 @@
+package com.example.blogbackend.controller;
+
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.blogbackend.entity.Bulletinboard;
+import com.example.blogbackend.service.IBulletinboardService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * <p>
+ * 留言板 前端控制器
+ * </p>
+ *
+ * @author author
+ * @since 2025-05-16
+ */
+@RestController
+@RequestMapping("/bulletinboard")
+public class BulletinboardController {
+
+  @Autowired
+  private IBulletinboardService bulletinboardService;
+
+  /**
+   * 创建留言
+   */
+  @PostMapping
+  public ResponseEntity<?> createMessage(@RequestBody Bulletinboard message) {
+    message.setCreatedAt(LocalDateTime.now());
+    message.setUpdatedAt(LocalDateTime.now());
+    message.setStatus("approved"); // 默认待审核状态
+    bulletinboardService.save(message);
+    return ResponseEntity.ok(message);
+  }
+
+  /**
+   * 获取留言列表（分页）
+   */
+  @GetMapping
+  public ResponseEntity<?> getMessages(
+      @RequestParam(defaultValue = "1") Integer current,
+      @RequestParam(defaultValue = "10") Integer size,
+      @RequestParam(required = false) String status) {
+
+    Page<Bulletinboard> page = new Page<>(current, size);
+    QueryWrapper<Bulletinboard> queryWrapper = new QueryWrapper<>();
+
+    if (status != null && !status.isEmpty()) {
+      queryWrapper.eq("status", status);
+    }
+
+    queryWrapper.orderByDesc("created_at");
+    Page<Bulletinboard> result = bulletinboardService.page(page, queryWrapper);
+
+    Map<String, Object> response = new HashMap<>();
+    response.put("records", result.getRecords());
+    response.put("total", result.getTotal());
+    response.put("size", result.getSize());
+    response.put("current", result.getCurrent());
+
+    return ResponseEntity.ok(response);
+  }
+
+  /**
+   * 获取单个留言详情
+   */
+  @GetMapping("/{id}")
+  public ResponseEntity<?> getMessage(@PathVariable Integer id) {
+    Bulletinboard message = bulletinboardService.getById(id);
+    if (message == null) {
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.ok(message);
+  }
+
+  /**
+   * 更新留言
+   */
+  @PutMapping("/{id}")
+  public ResponseEntity<?> updateMessage(@PathVariable Integer id, @RequestBody Bulletinboard message) {
+    Bulletinboard existingMessage = bulletinboardService.getById(id);
+    if (existingMessage == null) {
+      return ResponseEntity.notFound().build();
+    }
+
+    message.setId(id);
+    message.setUpdatedAt(LocalDateTime.now());
+    bulletinboardService.updateById(message);
+    return ResponseEntity.ok(message);
+  }
+
+  /**
+   * 删除留言
+   */
+  @DeleteMapping("/{id}")
+  public ResponseEntity<?> deleteMessage(@PathVariable Integer id) {
+    Bulletinboard message = bulletinboardService.getById(id);
+    if (message == null) {
+      return ResponseEntity.notFound().build();
+    }
+
+    bulletinboardService.removeById(id);
+    return ResponseEntity.ok().build();
+  }
+
+  /**
+   * 回复留言
+   */
+  @PostMapping("/{id}/reply")
+  public ResponseEntity<?> replyMessage(@PathVariable Integer id, @RequestBody Map<String, String> replyData) {
+    Bulletinboard message = bulletinboardService.getById(id);
+    if (message == null) {
+      return ResponseEntity.notFound().build();
+    }
+
+    message.setReply(replyData.get("reply"));
+    message.setReplyTime(LocalDateTime.now());
+    message.setStatus("approved"); // 回复后自动设置为已通过状态
+    message.setUpdatedAt(LocalDateTime.now());
+
+    bulletinboardService.updateById(message);
+    return ResponseEntity.ok(message);
+  }
+
+  /**
+   * 更新留言状态
+   */
+  @PutMapping("/{id}/status")
+  public ResponseEntity<?> updateStatus(@PathVariable Integer id, @RequestBody Map<String, String> statusData) {
+    Bulletinboard message = bulletinboardService.getById(id);
+    if (message == null) {
+      return ResponseEntity.notFound().build();
+    }
+
+    message.setStatus(statusData.get("status"));
+    message.setUpdatedAt(LocalDateTime.now());
+
+    bulletinboardService.updateById(message);
+    return ResponseEntity.ok(message);
+  }
+}

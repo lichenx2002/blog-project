@@ -1,0 +1,43 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+dist/
+.next/
+out/
+build/
+*.tgz
+*.tar.gz
+
+# 前端打包产物
+blogFrontend/.next/
+blogFrontend/out/
+blogFrontend/node_modules/
+blogFrontend/dist/
+blogFrontend/build/
+blogFrontend/*.tar.gz
+
+# 后端打包产物
+blogBackend/target/
+blogBackend/.env
+blogBackend/.env.local
+
+# IDE 配置
+.vscode/
+.idea/
+*.iml
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 日志文件
+*.log
+
+# 其他
+.env
+.env.local
+*.bak
+*.swp

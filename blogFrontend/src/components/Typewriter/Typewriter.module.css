@@ -1,0 +1,23 @@
+/* Typewriter.module.css */
+
+
+.typewriter {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    color: var(--text-color, #333); /* 使用 CSS 变量 */
+    display: inline-block;
+    position: relative;
+    transition: color 0.3s ease; /* 添加颜色过渡 */
+}
+
+.cursor {
+    animation: blink 1s infinite;
+    margin-left: 2px;
+    font-family: inherit;
+    color: var(--cursor-color, currentColor); /* 独立光标颜色控制 */
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}

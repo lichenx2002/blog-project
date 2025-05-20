@@ -1,0 +1,116 @@
+/* 卡片容器基础样式 */
+.profileCard {
+    width: 400px;               /* 固定宽度 */
+    margin: 2rem auto;          /* 上下2rem，左右自动居中 */
+    padding: 1.5rem;            /* 内边距 */
+    border-radius: 12px;        /* 圆角半径 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+    background: rgba(255, 255, 255, 0.2); /* 半透明背景 */
+    backdrop-filter: blur(20px); /* 关键：背景模糊 */
+    animation: float 10s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-5px); /* 向上浮动5像素 */
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+/* ========== 上层布局 ========== */
+.profileCard__upper {
+    margin-top: 20px;
+    display: flex;              /* 启用Flex布局 */
+    align-items: center;        /* 垂直居中对齐 */
+}
+
+/* 头像样式 */
+.avatar {
+    width: 50px;                /* 宽度 */
+    height: 50px;               /* 高度（保持与宽度相同形成圆形） */
+    border-radius: 30%;         /* 圆形效果 */
+    object-fit: cover;          /* 图片填充模式 */
+    margin-right: 1.0rem;       /* 右侧外边距（与文字内容间距） */
+    border: 3px solid #ffffff; /* 可选：白色边框 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 轻微阴影 */
+    transition: transform 0.3s ease;
+}
+.avatar:hover {
+    transform: scale(1.03);
+}
+
+/* 个人信息容器 */
+.profileInfo {
+    flex: 1;                    /* 占据剩余空间 */
+}
+
+/* 用户名样式 */
+.userName {
+    font-size: 1.0rem;          /* 字体大小 */
+    margin: 0 0 0.4rem 0;       /* 外边距（上 右 下 左） */
+    color: var(--user-name,#333)  ;         /* 深灰色文字 */
+    caret-color: transparent; /* 使光标透明 */
+}
+
+/* 个人简介样式 */
+.userBio {
+    font-size: 0.8rem;          /* 比用户名稍小的字号 */
+    color: var(--user-bio,#666)  ;                  /* 中灰色文字 */
+    margin: 0;                  /* 清除默认外边距 */
+    line-height: 1.4;           /* 行高（增强可读性） */
+    caret-color: transparent; /* 使光标透明 */
+}
+
+/* ========== 中层布局 ========== */
+.profileCard__middle {
+    padding: 0.5rem 0;            /* 上下内边距 */
+    margin: 0.5rem 0;             /* 上下外边距 */
+}
+
+/* 中层段落样式 */
+.profileCard__middle p {
+    font-family: ZiHun, sans-serif;
+    font-size: 1rem;         /* 字体大小 */
+    font-weight: bold;
+    color: var(--text);                /* 文字颜色 */
+    margin: 0.5rem 0;           /* 上下外边距 */
+    caret-color: transparent; /* 使光标透明 */
+}
+
+/* ========== 下层按钮 ========== */
+.profileCard__lower {
+    display: flex;              /* 启用Flex布局 */
+    gap: 1rem;                 /* 按钮间距 */
+    justify-content: flex-start;  /* 右对齐 */
+}
+
+/* 链接按钮基础样式 */
+.profileLink {
+    display: flex;              /* 启用Flex布局（用于图标对齐） */
+    align-items: center;        /* 垂直居中 */
+    padding: 0.6rem 1rem;      /* 内边距 */
+    border-radius: 6px;         /* 圆角 */
+    color: var(--text);                /* 文字颜色 */
+    text-decoration: none;      /* 去除下划线 */
+    transition: all 0.2s ease;  /* 过渡动画效果 */
+}
+/* 链接按钮悬停状态 */
+.profileLink:hover {
+    font-weight: bold;
+    transform: translateY(-1px); /* 轻微上浮效果 */
+}
+.gitHubImg{
+    width: 16px;
+    height: 16px;
+}
+
+/* 链接图标样式 */
+.linkIcon {
+    margin-left: 0.5rem;        /* 左侧外边距（与文字间距） */
+    font-size: 0.9rem;          /* 图标大小 */
+}

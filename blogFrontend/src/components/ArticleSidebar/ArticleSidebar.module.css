@@ -1,0 +1,39 @@
+.sidebar {
+  position: fixed;
+  top: 110px;
+  /* 导航栏下方 */
+  right: 2rem;
+  width: 320px;
+  overflow-y: auto;
+  z-index: 100;
+  scrollbar-width: thin;
+
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: var(--primary-light);
+  border-radius: 3px;
+}
+
+/* 响应式布局 */
+@media (max-width: 1400px) {
+  .sidebar {
+    width: 280px;
+    right: 1rem;
+  }
+}
+
+@media (max-width: 1200px) {
+  .sidebar {
+    display: none;
+    /* 在小屏幕上隐藏侧边栏 */
+  }
+}

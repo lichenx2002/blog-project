@@ -1,0 +1,121 @@
+.container {
+    align-content: center;
+}
+
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(52, 14px);
+    grid-template-rows: repeat(7, 14px);
+    gap: 4px;
+}
+
+.calendarDay {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    transition: background 0.2s;
+    cursor: pointer;
+    opacity: 0;
+    animation: fadeIn 0.3s ease forwards;
+}
+
+/* 为每个格子设置不同的动画延迟 */
+.calendarDay:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.calendarDay:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.calendarDay:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.calendarDay:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.calendarDay:nth-child(5) {
+    animation-delay: 0.5s;
+}
+
+.calendarDay:nth-child(6) {
+    animation-delay: 0.6s;
+}
+
+.calendarDay:nth-child(7) {
+    animation-delay: 0.7s;
+}
+
+.calendarDay:nth-child(8) {
+    animation-delay: 0.8s;
+}
+
+.calendarDay:nth-child(9) {
+    animation-delay: 0.9s;
+}
+
+.calendarDay:nth-child(10) {
+    animation-delay: 1s;
+}
+
+/* ... 继续为其他格子设置延迟 ... */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.calendarWrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+.weekLabels {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-right: 6px;
+    font-size: 13px;
+    color: #888;
+    height: 108px;
+    padding-top: 2px;
+    opacity: 0;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.monthLabels {
+    display: grid;
+    grid-template-columns: repeat(52, 14px);
+    margin-left: 44px;
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 6px;
+    position: relative;
+    opacity: 0;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.monthLabels>div {
+    position: relative;
+    white-space: nowrap;
+}
+
+/* 只调整重叠的月份 */
+.monthLabels>div:nth-child(5) {
+    /* May */
+    transform: translateX(-2px);
+}
+
+.monthLabels>div:nth-child(6) {
+    /* Jun */
+    transform: translateX(-4px);
+}

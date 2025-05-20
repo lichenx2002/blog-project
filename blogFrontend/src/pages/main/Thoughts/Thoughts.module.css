@@ -1,0 +1,10 @@
+.wall {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 64px 64px;
+    /* 行间距、列间距，数值加大 */
+    justify-content: center;
+    align-items: flex-start;
+    padding: 48px 0;
+    /* 上下间距也可以适当加大 */
+}

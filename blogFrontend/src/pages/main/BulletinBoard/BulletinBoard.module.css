@@ -1,0 +1,600 @@
+/* blogFrontend/src/pages/main/BulletinBoard/BulletinBoard.module.css */
+
+.container {
+  max-width: 1200px;
+  padding: 2rem;
+  margin: 70px auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 留言列表容器 */
+.messageList {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.messageList h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2rem;
+  text-align: center;
+  width: 100%;
+  display: block;
+  position: relative;
+}
+.messageList h2 {
+  color: var(--text);
+  text-align: center;
+  width: 100%;
+  font-family: 'ZiHun', serif;
+}
+
+.messageList h1::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--text);
+  opacity: 0.2;
+}
+
+/* 留言网格容器 */
+.messagesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 3rem;
+  column-gap: 1rem;
+  margin-bottom: 4rem;
+  position: relative;
+  padding: 1rem 1.5rem;
+}
+
+/* 留言卡片样式 */
+.messageItem {
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  padding: 1.2rem;
+  transition: all 0.3s ease;
+  border: 1px solid var(--border-color);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: 100%;
+}
+
+.messageItem:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.messageItem.male {
+  background: rgba(24, 144, 255, 0.05);
+  border-left: 3px solid #1890ff;
+}
+
+.messageItem.female {
+  background: rgba(235, 47, 150, 0.05);
+  border-left: 3px solid #eb2f96;
+}
+
+/* 留言头部样式 */
+.messageHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  position: relative;
+  flex-wrap: wrap;
+}
+
+.messageName {
+  font-weight: 600;
+  color: var(--text);
+  font-size: 0.95rem;
+  position: relative;
+  padding-left: 1.2rem;
+}
+
+.messageName::before {
+  content: '👤';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9rem;
+}
+
+.messageGender {
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.messageGender.male {
+  background: rgba(24, 144, 255, 0.1);
+  color: #1890ff;
+}
+
+.messageGender.female {
+  background: rgba(235, 47, 150, 0.1);
+  color: #eb2f96;
+}
+
+.messageTime {
+  color: var(--text);
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-left: auto;
+}
+
+.messageTime::before {
+  content: '🕒';
+  font-size: 0.8rem;
+}
+
+/* 留言内容样式 */
+.messageContent {
+  color: var(--text);
+  line-height: 1.6;
+  font-size: 0.95rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+  position: relative;
+  padding: 1rem;
+  background: var(--bg-tertiary);
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  margin-top: 0.5rem;
+  flex: 1;
+}
+
+.messageItem.male .messageContent {
+  background: rgba(24, 144, 255, 0.05);
+}
+
+.messageItem.female .messageContent {
+  background: rgba(235, 47, 150, 0.05);
+}
+
+.messageContent:hover {
+  background: var(--bg-hover);
+}
+
+/* 添加留言按钮 */
+.addMessageButton {
+  position: fixed;
+  bottom: 30rem;
+  right: 2rem;
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  background: var(--primary-color);
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+
+/* 模态框样式 */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.13);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.modalOverlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modalContent {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  padding: 24px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(180, 120, 255, 0.1);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.modalContent::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, #fbeaff 0%, #e0f7fa 80%);
+  opacity: 0.2;
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.modalContent::after {
+  content: '';
+  position: absolute;
+  bottom: -60px;
+  left: -60px;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, #a7e9ff 0%, #fbeaff 80%);
+  opacity: 0.15;
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.modalOverlay.active .modalContent {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.closeButton {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  border: none;
+  background: var(--bg-tertiary);
+  color: var(--text);
+  font-size: 2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 2;
+}
+
+.closeButton:hover {
+  background: var(--bg-hover);
+  transform: rotate(90deg);
+}
+
+/* 表单样式 */
+.form {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+  position: relative;
+  width: 100%;
+}
+
+.formGroup {
+  margin-bottom: 24px;
+  position: relative;
+  width: 100%;
+}
+
+.formLabel {
+  display: inline-block;
+  padding-bottom: 0;
+  font-weight: 600;
+  color: #a259ff;
+  font-size: 14px;
+  font-family: 'Comic Sans MS', 'PingFang SC', 'Arial', sans-serif;
+  line-height: 24px;
+  margin-bottom: 8px;
+}
+
+.formInput,
+.formTextarea {
+  width: 100%;
+  padding: 8px 12px;
+  border: 2px solid #fbeaff;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #6c3ec1;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  font-family: 'Comic Sans MS', 'PingFang SC', 'Arial', sans-serif;
+  box-sizing: border-box;
+}
+
+.formTextarea {
+  min-height: 120px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.formInput:hover,
+.formTextarea:hover {
+  border-color: #a259ff;
+}
+
+.formInput:focus,
+.formTextarea:focus {
+  outline: none;
+  border-color: #a259ff;
+  box-shadow: 0 0 0 3px rgba(162, 89, 255, 0.2);
+}
+
+.radioGroup {
+  display: flex;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.radioLabel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 2px solid #fbeaff;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #6c3ec1;
+  font-size: 14px;
+  font-family: 'Comic Sans MS', 'PingFang SC', 'Arial', sans-serif;
+}
+
+.radioLabel:hover {
+  border-color: #a259ff;
+  background: rgba(162, 89, 255, 0.1);
+}
+
+.radioLabel input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #a259ff;
+}
+
+.submitButton {
+  width: 100%;
+  padding: 8px 24px;
+  background: linear-gradient(90deg, #a7e9ff 0%, #fbeaff 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-family: 'Comic Sans MS', 'PingFang SC', 'Arial', sans-serif;
+  box-shadow: 0 2px 8px rgba(162, 89, 255, 0.2);
+  margin-top: 16px;
+}
+
+.submitButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(162, 89, 255, 0.3);
+  background: linear-gradient(90deg, #fbeaff 0%, #a7e9ff 100%);
+  color: #a259ff;
+}
+
+/* 表情选择器样式 */
+.emojiButton {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  color: #6c3ec1;
+  z-index: 2;
+}
+
+.emojiButton:hover {
+  background: rgba(162, 89, 255, 0.1);
+  color: #a259ff;
+}
+
+.emojiPickerContainer {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  z-index: 1000;
+  margin-top: 4px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(180, 120, 255, 0.15);
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid #fbeaff;
+}
+
+/* 空消息提示 */
+.emptyMessage {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  border: 1px dashed var(--border-color);
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .messageList h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .messageItem {
+    padding: 1rem;
+  }
+
+  .messageHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .messageTime {
+    margin-left: 0;
+  }
+
+  .messageContent {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .formRow {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .formGroup {
+    margin-bottom: 1rem;
+  }
+
+  .formInput,
+  .formTextarea {
+    padding: 0.7rem 0.9rem;
+  }
+
+  .radioGroup {
+    flex-direction: row;
+  }
+
+  .modalContent {
+    padding: 16px;
+    max-width: 400px;
+  }
+
+  .formRow {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .formGroup {
+    margin-bottom: 16px;
+  }
+
+  .formInput,
+  .formTextarea {
+    padding: 6px 10px;
+  }
+
+  .radioGroup {
+    gap: 8px;
+  }
+
+  .radioLabel {
+    padding: 6px 10px;
+  }
+}
+
+/* 暗色模式适配 */
+.dark .messageItem {
+  background: rgba(33, 33, 33, 0.8);
+}
+
+.dark .form {
+  background: rgba(33, 33, 33, 0.8);
+}
+
+.dark .formInput,
+.dark .formTextarea {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+}
+
+/* 响应式布局 */
+@media (max-width: 1200px) {
+  .messagesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+    gap: 2rem;
+  }
+
+  .messagesGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .messageList h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .messageItem {
+    padding: 1rem;
+  }
+
+  .form {
+    padding: 1.5rem;
+  }
+
+  .formRow {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+
+  .radioGroup {
+    gap: 1rem;
+  }
+
+  .radioLabel {
+    padding: 0.4rem 0.8rem;
+  }
+}

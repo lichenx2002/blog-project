@@ -1,0 +1,456 @@
+.bacc {
+    position: relative;
+    /* 确保背景组件相对于此定位 */
+    min-height: 100vh;
+    width: 100%;
+    box-sizing: content-box;
+}
+
+.container {
+    margin-top: 200px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    /* 确保内容在背景之上 */
+    flex-direction: column;
+    z-index: 1;
+    /* 高于背景的 z-index(-1) */
+    box-sizing: content-box;
+}
+
+@font-face {
+    font-family: 'ZiHun';
+    src: url("/fonts/ZiHun.woff2") format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+    /* 优化加载时的显示 */
+}
+
+.typewriter1 {
+    font-family: ZiHun, serif;
+    font-size: 40px !important;
+    caret-color: transparent;
+    box-sizing: content-box;
+    line-height: 1.2;
+    margin: 0;
+    padding: 0;
+}
+
+.typewriter2 {
+    font-family: 幼圆, serif;
+    font-size: 50px !important;
+    caret-color: transparent;
+    box-sizing: content-box;
+    line-height: 1.2;
+    margin: 0;
+    padding: 0;
+}
+
+.flipClock {
+    position: absolute;
+    top: 45vh;
+    /* 距离定位祖先顶部 50px */
+    right: 38.75vw;
+    /* 距离定位祖先右侧 30px */
+}
+
+.showTop {
+    position: relative;
+    top: -2em;
+    min-height: 400px;
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-sizing: content-box;
+}
+
+.box1 {
+    margin-top: 50px;
+    width: 500px;
+    height: 350px;
+    box-sizing: content-box;
+}
+
+.box2 {
+    width: 500px;
+    height: 400px;
+    box-sizing: content-box;
+}
+
+.mainContentArea {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 2rem auto 0;
+}
+
+.mainContentLeft {
+    flex: 1;
+    max-width: calc(66.666% - 1rem);
+}
+
+.mainContentRight {
+    flex: 1;
+    max-width: calc(66.666% - 1rem);
+}
+
+.latestArticlesTitle {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 1.5rem 0 1rem;
+    text-align: left;
+    padding-left: 0.5rem;
+}
+
+.latestArticlesTitle::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 3px;
+    background: var(--primary-color);
+}
+
+.articlesGrid {
+    list-style: none;
+    margin: 0;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.articleCard {
+    border-radius: 0;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0);
+    backdrop-filter: blur(20px);
+    padding: 1rem;
+}
+
+.articleCard:hover {
+    box-shadow: 0 4px 10px var(--shadow);
+    background: rgba(255, 255, 255, 0.09);
+}
+
+.articleTitle {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+    position: relative;
+    display: inline-block;
+
+}
+
+.articleDescription {
+    color: var(--text);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-family: 幼圆, sans-serif;
+    margin: 0.5rem 0;
+    text-decoration: none;
+}
+
+.articleMeta {
+    display: flex;
+    gap: 1.5rem;
+    color: var(--text);
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+}
+
+.stats {
+    background: rgba(255, 255, 255, 0);
+    backdrop-filter: blur(20px);
+    border-radius: 0;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+    margin-top: 50px;
+}
+
+.stats:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.09);
+}
+
+.stats h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.statsGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    text-align: center;
+}
+
+.statItem span {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--text);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.statItem p {
+    color: var(--text);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tag {
+    padding: 0.3rem 0.8rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 0;
+    font-size: 0.85rem;
+    color: var(--text);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.tag:hover {
+    background: var(--primary-color);
+    color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+    color: var(--text);
+    box-sizing: content-box;
+    font-size: 24px !important;
+    margin: 0;
+    padding: 0;
+}
+
+.content {
+    color: var(--text);
+    box-sizing: content-box;
+    font-size: 16px !important;
+    margin: 0;
+    padding: 0;
+}
+
+.recentPhotos {
+    margin-bottom: 1.5rem;
+}
+
+.recentPhotos h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 1.5rem 0 1rem;
+    text-align: left;
+    padding-left: 0.5rem;
+}
+
+.photosGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    padding: 0.5rem;
+}
+
+.photoCard {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16/9;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(20px);
+    height: 160px;
+}
+
+.photoCard:hover {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.photoCard:hover .photoInfo {
+    opacity: 1;
+}
+
+.photoImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.photoInfo {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0.75rem;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+    color: #fff;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.photoInfo h3 {
+    font-size: 0.9rem;
+    margin: 0;
+    margin-bottom: 0.25rem;
+}
+
+.photoInfo span {
+    font-size: 0.75rem;
+    opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    .mainContentArea {
+        flex-direction: column;
+        padding: 1rem;
+    }
+
+    .mainContentLeft,
+    .mainContentRight {
+        max-width: 100%;
+    }
+
+    .articlesGrid {
+        padding: 1rem;
+    }
+
+    .articleCard {
+        padding: 1rem;
+    }
+
+    .latestArticlesTitle {
+        font-size: 2rem;
+        margin: 2rem 0 1.5rem;
+    }
+
+    .photosGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .photoCard {
+        height: 180px;
+    }
+}
+
+/* 在现有的 .showTop, .box1, .box2 样式后添加以下媒体查询 */
+
+/* 大屏幕适配 (1200px以下) */
+@media (max-width: 1200px) {
+    .showTop {
+        padding: 0 2rem;
+    }
+
+    .box1 {
+        width: 450px;
+    }
+
+    .box2 {
+        width: 450px;
+    }
+
+    .typewriter1 {
+        font-size: 36px !important;
+    }
+
+    .typewriter2 {
+        font-size: 44px !important;
+    }
+}
+
+/* 平板适配 (992px以下) */
+@media (max-width: 992px) {
+    .showTop {
+        flex-direction: column;
+        gap: 2rem;
+        padding: 0 1.5rem;
+    }
+
+    .box1 {
+        width: 100%;
+        max-width: 600px;
+        height: auto;
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .box2 {
+        width: 100%;
+        max-width: 600px;
+        height: auto;
+    }
+
+    .typewriter1 {
+        font-size: 32px !important;
+    }
+
+    .typewriter2 {
+        font-size: 40px !important;
+    }
+}
+
+/* 大手机适配 (768px以下) */
+@media (max-width: 768px) {
+    .showTop {
+        padding: 0 1rem;
+        min-height: auto;
+    }
+
+    .box1 {
+        max-width: 100%;
+    }
+
+    .box2 {
+        max-width: 100%;
+    }
+
+    .typewriter1 {
+        font-size: 28px !important;
+    }
+
+    .typewriter2 {
+        font-size: 36px !important;
+    }
+}
+
+/* 小手机适配 (480px以下) */
+@media (max-width: 480px) {
+    .showTop {
+        padding: 0 0.5rem;
+    }
+
+    .typewriter1 {
+        font-size: 24px !important;
+    }
+
+    .typewriter2 {
+        font-size: 32px !important;
+    }
+}

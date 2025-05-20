@@ -1,0 +1,5 @@
+.cardHeader,
+.cardContent,
+.cardFooter{
+    color: var(--text);
+}

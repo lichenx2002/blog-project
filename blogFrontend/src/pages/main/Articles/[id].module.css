@@ -1,0 +1,395 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.articleTitle {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 2rem;
+    text-align: center;
+    position: relative;
+    display: inline-block;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.articleDetail {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+    position: relative;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.articleMeta {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    color: var(--text);
+    font-size: 0.9rem;
+}
+
+.articleContent {
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 1.1rem;
+}
+
+.articleContent h1,
+.articleContent h2,
+.articleContent h3,
+.articleContent h4,
+.articleContent h5,
+.articleContent h6 {
+    color: var(--text);
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.articleContent p {
+    color: var(--text);
+    margin-bottom: 0.75rem;
+}
+
+.articleContent code {
+    background: rgba(175, 184, 193, 0.2);
+    padding: 0.2em 0.4em;
+    border-radius: 6px;
+    font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+    font-size: 0.9em;
+}
+
+.articleContent pre {
+    margin: 1rem 0;
+    overflow: hidden;
+}
+
+.articleContent pre code {
+    background: none;
+    padding: 0;
+    border-radius: 0;
+}
+
+.articleContent blockquote {
+    color: var(--text);
+    border-left: 4px solid;
+    padding-left: 1rem;
+    margin: 0.75rem 0;
+    font-style: italic;
+}
+
+.articleContent img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 0.75rem 0;
+}
+
+.articleContent a {
+    text-decoration: none;
+}
+
+.articleContent a:hover {
+    text-decoration: underline;
+}
+
+.articleContent ul,
+.articleContent ol {
+    color: var(--text);
+    margin: 0.75rem 0;
+    padding-left: 2rem;
+}
+
+.articleContent li {
+    color: var(--text);
+    margin-bottom: 0.25rem;
+}
+
+.loading,
+.error,
+.empty {
+    text-align: center;
+    padding: 2rem;
+    border-radius: 8px;
+    margin: 2rem 0;
+}
+
+.backLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text);
+    text-decoration: none;
+    margin-bottom: 1rem;
+    transition: color 0.3s ease;
+}
+
+.backLink:hover {
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+
+    .articleTitle {
+        font-size: 2rem;
+        margin: 1.5rem 0;
+    }
+
+    .articleDetail {
+        padding: 1rem;
+    }
+
+    .articleMeta {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
+
+.tableContainer {
+    width: 100%;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    -webkit-overflow-scrolling: touch;
+    /* 平滑滚动(iOS) */
+}
+
+/* 基础表格样式 */
+.table {
+    width: auto;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    min-width: 600px;
+    /* 确保表格有最小宽度 */
+}
+
+/* 表头区域 */
+.tableHead {
+    background-color: rgba(206, 225, 252, 0.24);
+    border-top: 1px solid rgba(112, 112, 112, 0.28);
+    border-left: 1px solid rgba(112, 112, 112, 0.28);
+    border-right: 1px solid rgba(112, 112, 112, 0.28);
+}
+
+/* 表头单元格 */
+.tableHeader {
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    color: #495057;
+    border-bottom: 2px solid rgba(112, 112, 112, 0.11);
+    white-space: nowrap;
+    /* 防止表头换行 */
+}
+
+/* 表格行 */
+.tableRow {
+    transition: background-color 0.2s;
+}
+
+/* 交替行颜色 */
+.tableRow:nth-child(even) {
+    background-color: rgba(248, 249, 250, 0.24);
+}
+
+/* 鼠标悬停效果 */
+.tableRow:hover {
+    background-color: #e9ecef;
+}
+
+/* 表格单元格 */
+.tableCell {
+    padding: 12px 15px;
+    border-bottom: 1px solid rgba(112, 112, 112, 0.11);
+    border-left: 1px solid rgba(112, 112, 112, 0.11);
+    border-right: 1px solid rgba(112, 112, 112, 0.11);
+    vertical-align: top;
+}
+
+.likeButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background-color: rgba(255, 77, 79, 0.1);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    user-select: none;
+    /* 防止文字被选中 */
+    -webkit-tap-highlight-color: transparent;
+    /* 移除移动端点击高亮 */
+}
+
+.heartWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    /* 防止内部元素干扰点击事件 */
+}
+
+.heartIcon {
+    font-size: 20px;
+    color: #ff4d4f;
+    filter: drop-shadow(0 0 2px rgba(255, 77, 79, 0.3));
+    transition: all 0.3s ease;
+    pointer-events: none;
+    /* 防止图标干扰点击事件 */
+}
+
+.heartWrapper::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 77, 79, 0.2) 0%, transparent 70%);
+    transform: scale(0);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.heartWrapper:active::before {
+    transform: scale(2);
+    opacity: 1;
+}
+
+.likeCount {
+    font-size: 14px;
+    font-weight: 600;
+    color: #ff4d4f;
+    text-shadow: 0 0 2px rgba(255, 77, 79, 0.2);
+    pointer-events: none;
+    /* 防止数字干扰点击事件 */
+}
+
+/* 添加点击波纹效果 */
+.likeButton::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 77, 79, 0.2) 0%, transparent 70%);
+    transform: scale(0);
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    /* 防止波纹效果干扰点击事件 */
+}
+
+.likeButton:active::after {
+    transform: scale(2);
+    opacity: 1;
+}
+
+/* 添加悬浮效果 */
+.likeButton:hover .heartIcon {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 4px rgba(255, 77, 79, 0.5));
+}
+
+.imageWrapper {
+    position: relative;
+    width: 100%;
+    margin: 1.5rem 0;
+    text-align: center;
+}
+
+.markdownImage {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.markdownImage:hover {
+    transform: scale(1.01);
+}
+
+.imageCaption {
+    margin-top: 0.5rem;
+    color: #666;
+    font-size: 0.9rem;
+    font-style: italic;
+    text-align: center;
+}
+
+.backLinkButton {
+    cursor: pointer;
+    display: flex !important;
+    justify-content: center !important;
+    /* 水平居中 */
+    align-items: center !important;
+    /* 垂直居中 */
+    position: fixed !important;
+    top: 100px !important;
+    left: 100px !important;
+    height: 50px !important;
+    width: 50px !important;
+    border-radius: 20px !important;
+    box-shadow: 0 2px 8px var(--shadow) !important;
+}
+
+.date,
+.readingTime,
+.status {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    opacity: 0.8;
+    transition: all 0.3s ease;
+    margin-right: 12px;
+}
+
+.date {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.readingTime {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.status {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.date:hover,
+.readingTime:hover,
+.status:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+.mermaidContainer {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background-color: rgba(26, 26, 26, 0);
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: '幼圆', sans-serif;
+}
+
+.mermaidContainer svg {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+}

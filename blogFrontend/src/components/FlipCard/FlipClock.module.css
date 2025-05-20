@@ -1,0 +1,17 @@
+.clock {
+  text-align: center;
+}
+
+.clock :global(.M-FlipCard) {
+  margin: 0 3px;
+}
+
+.clock em {
+  display: inline-block;
+  line-height: 102px;
+  font-size: 66px;
+  font-style: normal;
+  vertical-align: top;
+  font-weight: lighter;
+  color:var(--text);
+}

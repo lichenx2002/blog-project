@@ -1,0 +1,22 @@
+.iconButton {
+    margin: auto;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: none;
+    border: none;
+}
+
+.iconImage {
+    width: 15px;
+    height: 15px;
+    object-fit: contain;
+    color: var(--icon-invert);
+    /*filter: brightness(0) invert();*/
+}
+
