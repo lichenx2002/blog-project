@@ -148,13 +148,20 @@
 }
 
 .calendarSection {
-  border-radius: 12px;
-  transition: transform 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(20px);
-  padding: 1.5rem;
-  margin-bottom: 2rem;
+  width: 100%;
+  padding: 2rem 0;
+  margin: 2rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.calendarSection>div {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 1rem;
 }
 
 .calendarSection:hover {
@@ -207,26 +214,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 16px;
-  color: var(--text);
-  font-size: 14px;
+  margin-top: 1rem;
+  gap: 1rem;
   flex-wrap: wrap;
-  gap: 8px;
 }
 
 .legendItems {
   display: flex;
-  gap: 16px;
-  margin-left: 8px;
+  gap: 1rem;
   flex-wrap: wrap;
-  justify-content: center;
 }
 
 .legendItem {
   display: flex;
   align-items: center;
-  gap: 4px;
-  white-space: nowrap;
+  gap: 0.5rem;
 }
 
 .legendColor {
@@ -273,16 +275,18 @@
     height: 250px;
   }
 
+  .calendarSection>div {
+    padding: 0 0.5rem;
+  }
+
   .legend {
-    font-size: 12px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
   }
 
   .legendItems {
-    gap: 12px;
-  }
-
-  .legendColor {
-    width: 10px;
-    height: 10px;
+    width: 100%;
+    justify-content: flex-start;
   }
 }

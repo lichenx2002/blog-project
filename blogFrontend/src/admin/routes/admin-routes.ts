@@ -38,7 +38,15 @@ export const adminRoutes: AdminRoute[] = [
     name: '思考管理'
   },{
     id: 8,
+    path: '/admin/bulletinboard',
+    name: '留言板管理'
+  },{
+    id: 9,
+    path: '/admin/questions',
+    name: '面试题管理'
+  },{
+    id: 10,
     path: '/admin/settings',
     name: '系统设置'
-  },
+  }
 ]; 

@@ -5,8 +5,9 @@ import { Article } from "@/types/Article";
 import styles from "./WritingStats/WritingStats.module.css";
 import { motion } from "framer-motion";
 import { FaBook, FaCalendarAlt, FaFire, FaChartLine, FaPalette } from "react-icons/fa";
-import {  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, AreaChart, Area } from 'recharts';
+import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, AreaChart, Area } from 'recharts';
 import Head from "next/head";
+import PageHeader from '../../components/PageHeader/PageHeader';
 
 interface Stats {
     totalArticles: number;
@@ -206,6 +207,11 @@ const WritingStats: React.FC = () => {
             <Head>
                 <title>写作足迹</title>
             </Head>
+            <PageHeader
+                headerText="写作统计"
+                introText="时光流转，文字沉淀。在这里，我们用数据记录写作的足迹，用图表展现创作的轨迹。每一篇文章都是一次思想的绽放，每一次记录都是一次成长的见证。"
+                englishTitle="Writing Stats"
+            />
             <div className={styles.header}>
                 <h1 className={styles.title}>写作统计</h1>
                 <div className={styles.colorPicker}>

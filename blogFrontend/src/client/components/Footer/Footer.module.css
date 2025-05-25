@@ -184,6 +184,10 @@
 }
 
 @media (max-width: 768px) {
+  .contactInfo {
+    align-items: center;
+  }
+
   .footerContent {
     grid-template-columns: 1fr;
     text-align: center;
@@ -196,5 +200,185 @@
 
   .stats {
     justify-content: center;
+  }
+}
+
+/* 添加响应式样式 */
+@media (max-width: 1440px) {
+  .footer {
+    padding: 0.4rem 0;
+    margin-top: 0.5rem;
+  }
+
+  .footerContent {
+    gap: 0.4rem;
+  }
+
+  .footerSection h3 {
+    font-size: 0.85rem;
+    margin-bottom: 0.1rem;
+  }
+
+  .footerSection p {
+    font-size: 0.7rem;
+  }
+
+  .statNumber {
+    font-size: 0.9rem;
+  }
+
+  .statLabel {
+    font-size: 0.65rem;
+  }
+
+  .contactInfo a,
+  .contactInfo p {
+    font-size: 0.7rem;
+  }
+
+  .contactItem {
+    font-size: 0.85rem;
+  }
+
+  .socialLink {
+    padding: 0.4rem;
+  }
+
+  .socialIcon {
+    font-size: 1.2rem;
+  }
+
+  .quickLinks a {
+    font-size: 0.7rem;
+  }
+
+  .footerBottom {
+    margin-top: 0.5rem;
+    padding: 0.4rem;
+    font-size: 0.7rem;
+  }
+
+  .beian {
+    font-size: 0.65rem;
+  }
+}
+
+/* 平板设备断点 */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .footer {
+    padding: 0.45rem 0;
+    margin-top: 0.6rem;
+  }
+
+  .footerContent {
+    gap: 0.45rem;
+  }
+
+  .footerSection h3 {
+    font-size: 0.875rem;
+    margin-bottom: 0.125rem;
+  }
+
+  .footerSection p {
+    font-size: 0.725rem;
+  }
+
+  .statNumber {
+    font-size: 0.95rem;
+  }
+
+  .statLabel {
+    font-size: 0.675rem;
+  }
+
+  .contactInfo a,
+  .contactInfo p {
+    font-size: 0.725rem;
+  }
+
+  .contactItem {
+    font-size: 0.875rem;
+  }
+
+  .socialLink {
+    padding: 0.45rem;
+  }
+
+  .socialIcon {
+    font-size: 1.25rem;
+  }
+
+  .quickLinks a {
+    font-size: 0.725rem;
+  }
+
+  .footerBottom {
+    margin-top: 0.6rem;
+    padding: 0.45rem;
+    font-size: 0.725rem;
+  }
+
+  .beian {
+    font-size: 0.675rem;
+  }
+}
+
+/* 大屏断点 */
+@media (min-width: 1920px) {
+  .footer {
+    padding: 0.6rem 0;
+    margin-top: 1rem;
+  }
+
+  .footerContent {
+    gap: 0.6rem;
+  }
+
+  .footerSection h3 {
+    font-size: 1rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .footerSection p {
+    font-size: 0.85rem;
+  }
+
+  .statNumber {
+    font-size: 1.1rem;
+  }
+
+  .statLabel {
+    font-size: 0.8rem;
+  }
+
+  .contactInfo a,
+  .contactInfo p {
+    font-size: 0.85rem;
+  }
+
+  .contactItem {
+    font-size: 1rem;
+  }
+
+  .socialLink {
+    padding: 0.6rem;
+  }
+
+  .socialIcon {
+    font-size: 1.4rem;
+  }
+
+  .quickLinks a {
+    font-size: 0.85rem;
+  }
+
+  .footerBottom {
+    margin-top: 1rem;
+    padding: 0.6rem;
+    font-size: 0.85rem;
+  }
+
+  .beian {
+    font-size: 0.8rem;
   }
 }

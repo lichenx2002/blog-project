@@ -288,7 +288,7 @@ const GalleryManagement: React.FC = () => {
                 确认删除
               </button>
               <button
-                className={styles.secondaryButton}
+                className={styles.button}
                 onClick={() => {
                   setDeleteModalVisible(false);
                   setDeletingGallery(null);

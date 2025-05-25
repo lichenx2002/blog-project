@@ -1,27 +1,19 @@
 import { Tag } from './Tags';
+import { Identifiable, Timestamped, PaginatedResponse, ApiResponse } from './common';
 
-export interface Question {
-  id: number;
+export interface Question extends Identifiable, Timestamped {
   title: string;
   content: string;
   difficulty: 'easy' | 'medium' | 'hard';
   category: string;
   status: 'draft' | 'published';
-  createdAt: string;
-  updatedAt: string;
   views: number;
   likes: number;
   tags: Tag[];
 }
 
-export interface QuestionListResponse {
-  records: Question[];
-  total: number;
-  size: number;
-  current: number;
+export interface QuestionListResponse extends PaginatedResponse<Question> {
   pages: number;
 }
 
-export interface QuestionTagsResponse {
-  tags: Tag[];
-} 
+export interface QuestionTagsResponse extends ApiResponse<{ tags: Tag[] }> { } 

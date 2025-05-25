@@ -8,6 +8,7 @@ import { useLoading } from '@/hooks/useLoading';
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner';
 import Head from "next/head";
 import RecentArticles from "@/components/RecentArticles/RecentArticles";
+import PageHeader from '../../components/PageHeader/PageHeader';
 
 interface GroupedArticles {
     [year: string]: {
@@ -115,7 +116,7 @@ const Archive: React.FC = () => {
         };
 
         fetchArticles();
-    }, [withLoading]);
+    }, );
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -168,10 +169,6 @@ const Archive: React.FC = () => {
         }
     };
 
-    if (isLoading) {
-        return <LoadingSpinner />;
-    }
-
     if (error) {
         return (
             <div className={styles.error}>
@@ -195,20 +192,11 @@ const Archive: React.FC = () => {
                 <meta name="description" />
             </Head>
             <div className={styles.archiveContent}>
-                <motion.h1
-                    className={styles.header}
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                >
-                    归档记录
-                    <div className={styles.introText}>
-                        时光流转，岁月沉淀。在这里，每一篇文章都被精心收藏，每一段文字都被妥善保存。让我们以时间为序，以记忆为笔，共同翻阅这些珍贵的篇章，重温那些值得铭记的瞬间。
-                    </div>
-                </motion.h1>
-
-
-
+                <PageHeader
+                    headerText="归档记录"
+                    introText="时光流转，岁月沉淀。在这里，每一篇文章都被精心收藏，每一段文字都被妥善保存。让我们以时间为序，以记忆为笔，共同翻阅这些珍贵的篇章，重温那些值得铭记的瞬间。"
+                    englishTitle="Archive"
+                />
                 <motion.div
                     className={styles.timeline}
                     variants={containerVariants}

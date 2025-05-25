@@ -5,7 +5,8 @@ import Head from "next/head";
 import { useAuth } from '@/hooks/useAuth';
 import { useContext } from 'react';
 import { LoginModalContext } from '@/context/LoginModalContext';
-import {motion} from "framer-motion";
+import { motion } from "framer-motion";
+import PageHeader from '../../components/PageHeader/PageHeader';
 
 const XiaoXiAI: React.FC = () => {
     const { isAuthenticated } = useAuth();
@@ -45,24 +46,11 @@ const XiaoXiAI: React.FC = () => {
             </Head>
             <div className={styles.content}>
                 <div className={styles.chatSection}>
-                    <motion.div
-                        className={styles.chatHeader}
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8 }}
-                    >
-                        <motion.h1
-                            className={styles.header}
-                            initial={{ opacity: 0, y: -20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6 }}
-                        >
-                            小熙的空间
-                        </motion.h1>
-                        <div className={styles.introText}>
-                            在这里，每一次对话都是一次思想的碰撞，每一次交流都是一次智慧的分享。让我成为你的知心伙伴，一起探索知识的海洋，共同成长。
-                        </div>
-                    </motion.div>
+                    <PageHeader
+                        headerText="小熙的空间"
+                        introText="在这里，每一次对话都是一次思想的碰撞，每一次交流都是一次智慧的分享。让我成为你的知心伙伴，一起探索知识的海洋，共同成长。"
+                        englishTitle="XiaoXi AI"
+                    />
                     <AIChat />
                 </div>
             </div>

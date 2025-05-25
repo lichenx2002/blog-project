@@ -17,7 +17,7 @@ const NavbarLeft: React.FC = () => {
             title="管理员入口"
         >
             <img
-                src="/images/avatar.png"
+                src="/images/avatar_20250520_215057.png"
                 alt="管理员入口"
                 className={styles.avatar}
             />

@@ -73,6 +73,24 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <path d="M22 12c0 2-1 4-2 5" />
           </svg>
         );
+        case '/admin/questions':
+            return (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                    <line x1="12" y1="17" x2="12.01" y2="17" />
+                </svg>
+            );
+        case '/admin/bulletinboard':
+            return (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                    <line x1="3" y1="9" x2="21" y2="9" />
+                    <line x1="9" y1="21" x2="9" y2="9" />
+                    <path d="M12 12h4" />
+                    <path d="M12 16h4" />
+                </svg>
+            );
       case '/admin/settings':
         return (
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -92,7 +110,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         <div className={styles.logo}>
           <h1>{collapsed ? 'B' : 'Blog Admin'}</h1>
           <img
-            src="/images/avatar.png"
+            src="/images/avatar_20250520_215057.png"
             alt="管理员头像"
             className={styles.sidebarAvatar}
           />
@@ -139,13 +157,13 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <div className={styles.headerRight}>
             <span>
               <img
-                src="/images/avatar.png"
+                src="/images/avatar_20250520_215057.png"
                 alt="管理员头像"
                 className={styles.avatar}
               />
               管理员
             </span>
-            <button className={styles.logoutBtn} onClick={() => window.location.href = 'http://localhost:3000/main/Home'}>
+            <button className={styles.logoutBtn} onClick={() => window.location.href = '/main/Home'}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
                 <polyline points="16 17 21 12 16 7"></polyline>

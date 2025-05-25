@@ -277,22 +277,29 @@ const AIChat: React.FC = () => {
           ),
           ul: ({ children }) => (
             <ul style={{
-              margin: '0.5em 0',
-              paddingLeft: '1.5em'
+              margin: '0.2em 0',
+              padding: '0 0 0 1.5em',
+              listStyleType: 'disc'
             }}>
               {children}
             </ul>
           ),
           ol: ({ children }) => (
             <ol style={{
-              margin: '0.5em 0',
-              paddingLeft: '1.5em'
+              margin: '0.2em 0',
+              padding: '0 0 0 1.5em',
+              listStyleType: 'decimal'
             }}>
               {children}
             </ol>
           ),
           li: ({ children }) => (
-            <li style={{ margin: '0.25em 0' }}>
+            <li style={{
+              margin: '0.1em 0',
+              padding: '0',
+              lineHeight: '1.4',
+              fontSize: '1rem'
+            }}>
               {children}
             </li>
           ),

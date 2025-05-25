@@ -1,41 +1,73 @@
+@import './fonts.css';
+
+/* 根元素字体大小设置 */
+:root {
+  font-size: 16px;
+  /* 基准字体大小 */
+}
+
+/* 添加媒体查询，针对不同屏幕尺寸调整基准字体大小 */
+@media (max-width: 1440px) {
+  :root {
+    font-size: 14px;
+    /* 笔记本屏幕基准字体大小 */
+  }
+}
+
+/* 平板设备断点 */
+@media (min-width: 768px) and (max-width: 1024px) {
+  :root {
+    font-size: 15px;
+    /* 平板设备基准字体大小 */
+  }
+}
+
+/* 大屏断点 */
+@media (min-width: 1920px) {
+  :root {
+    font-size: 18px;
+    /* 大屏基准字体大小 */
+  }
+}
+
 /* 自定义滚动条样式 */
 ::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
+  width: 0.75rem;
+  height: 0.75rem;
   display: block !important;
 }
 
 /* 滚动条轨道 */
 ::-webkit-scrollbar-track {
   background: transparent;
-  border-left: 1px solid rgba(0, 0, 0, 0.1);
-  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  border-left: 0.0625rem solid rgba(0, 0, 0, 0.1);
+  border-right: 0.0625rem solid rgba(0, 0, 0, 0.1);
 }
 
 /* 滚动条滑块 */
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(45deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2));
-  border-radius: 6px;
-  border: 2px solid transparent;
+  border-radius: 0.375rem;
+  border: 0.125rem solid transparent;
   background-clip: padding-box;
   transition: all 0.3s ease;
-  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 0 0.375rem rgba(0, 0, 0, 0.1);
 }
 
 /* 滚动条滑块悬停效果 */
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(45deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.3));
-  border: 2px solid transparent;
+  border: 0.125rem solid transparent;
   background-clip: padding-box;
-  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 0 0.375rem rgba(0, 0, 0, 0.2);
 }
 
 /* 滚动条滑块激活效果 */
 ::-webkit-scrollbar-thumb:active {
   background: linear-gradient(45deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4));
-  border: 2px solid transparent;
+  border: 0.125rem solid transparent;
   background-clip: padding-box;
-  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 0.375rem rgba(0, 0, 0, 0.3);
 }
 
 /* 滚动条角落 */
@@ -91,7 +123,6 @@
   --nav-underline-active-color: #000;
   --text-color: #333;
   --cursor-color: transparent;
-  /* 设置为透明 */
   --icon-color: invert(1) saturate(0) brightness(200%);
   --user-name: #333;
   --user-bio: #666;
@@ -113,19 +144,33 @@
   --hover-color: rgba(162, 89, 255, 0.1);
   --navbar-background: rgba(255, 255, 255);
   --navbar-font-color: #333;
-  /* 贡献日历颜色 */
   --calendar-empty: #ebedf0;
+  --tag-background: #f3f4f6;
+  --tag-background-color: #f3f4f6;
+  --tag-color: #9ca3af;
+  --like: #ff4d4f;
+  /*--text-primary: #333;*/
+  /*--text-secondary: #666;*/
+  /*--primary-color: #333;*/
+  /*--primary-hover: #333;*/
+  /*--bg-secondary: #f5f5f5;*/
+  /*--card-bg: #ffffff;*/
+  /*--bg-tertiary: #f0f0f0;*/
+  /*--error-color: #ff4d4f;*/
+  /*--calendar-level-1: #9be9a8;*/
+  /*--calendar-level-2: #40c463;*/
+  /*--calendar-level-3: #30a14e;*/
 }
 
 /* 夜间模式 */
 [data-theme="dark"] {
+  /* 已有的变量 */
   --nav-text-color: #ffffff;
   --nav-active-color: #fff;
   --nav-underline-color: rgb(255, 255, 255);
   --nav-underline-active-color: #ffffff;
   --text-color: #f0f0f0;
   --cursor-color: transparent;
-  /* 设置为透明 */
   --icon-color: brightness(1000%) contrast(0%);
   --user-name: #e5e5e5;
   --user-bio: #dedede;
@@ -147,8 +192,22 @@
   --hover-color: rgba(162, 89, 255, 0.2);
   --navbar-background: rgb(58, 58, 58);
   --navbar-font-color: #f0f0f0;
-  /* 贡献日历颜色 - 暗色主题 */
   --calendar-empty: #161b22;
+  --tag-background: rgba(31, 41, 55, 0.22);
+  --tag-background-color: #1f2937;
+  --tag-color: #9ca3af;
+  --like: #de1b22;
+  /*--text-primary: #f0f0f0;*/
+  /*--text-secondary: #bdc3c7;*/
+  /*--primary-color: white;*/
+  /*--primary-hover: white;*/
+  /*--bg-secondary: #2d2d2d;*/
+  /*--card-bg: #262626;*/
+  /*--bg-tertiary: #333333;*/
+  /*--error-color: #ff4d4f;*/
+  /*--calendar-level-1: #0e4429;*/
+  /*--calendar-level-2: #006d32;*/
+  /*--calendar-level-3: #26a641;*/
 }
 
 /* 其他样式保持不变 */
@@ -159,19 +218,17 @@
 
 /* 搜索高亮效果 */
 .search-highlight {
-  background-color: var(--primary-light);
   transition: background-color 0.3s ease;
   padding: 0.75rem;
-  border-radius: 4px;
+  border-radius: 0.25rem;
   margin: 0.75rem 0;
-  box-shadow: 0 0 0 2px var(--primary);
   animation: highlightPulse 2s ease-out;
 }
 
 @keyframes highlightPulse {
   0% {
     background-color: var(--primary-light);
-    box-shadow: 0 0 0 4px var(--primary);
+    box-shadow: 0 0 0 0.25rem var(--primary);
   }
 
   100% {

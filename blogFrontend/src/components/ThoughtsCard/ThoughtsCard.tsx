@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { ThoughtsProps } from '@/types/Thoughts';
 import styles from './ThoughtsCard.module.css';
-import { FaGithub, FaInstagram, FaTwitch, FaWeixin,Fa,FaMapMarkerAlt} from 'react-icons/fa';
+import { FaMapMarkerAlt } from 'react-icons/fa';
 
 const moodMap: Record<string, string> = {
     happy: '😄',
@@ -32,10 +32,10 @@ const getThemeByThoughtId = (id: number) => {
 interface ThoughtsCardProps {
     data: ThoughtsProps;
     style?: React.CSSProperties;
+    className?: string;
 }
 
-
-const ThoughtsCard: React.FC<ThoughtsCardProps> = ({ data, style }) => {
+const ThoughtsCard: React.FC<ThoughtsCardProps> = ({ data, style, className }) => {
 
     const theme = useMemo(() => {
         return getThemeByThoughtId(data.id);
@@ -43,7 +43,7 @@ const ThoughtsCard: React.FC<ThoughtsCardProps> = ({ data, style }) => {
 
     return (
         <div
-            className={`${styles.card} ${styles[`${theme}-bg`]}`}
+            className={`${styles.card} ${styles[`${theme}-bg`]} ${className || ''}`}
             style={style}
         >
             <div className={`${styles.headerBar} ${styles[`${theme}-header`]}`}>
@@ -76,7 +76,7 @@ const ThoughtsCard: React.FC<ThoughtsCardProps> = ({ data, style }) => {
                         ))}
                 </div>
                 <div className={styles.info}>
-                    <span title="地点"><FaMapMarkerAlt/></span>{data.location}
+                    <span title="地点"><FaMapMarkerAlt /></span>{data.location}
                     <span title="天气">⛅</span>{data.weather}
                     <span title="设备">💻</span>{data.device}
                 </div>

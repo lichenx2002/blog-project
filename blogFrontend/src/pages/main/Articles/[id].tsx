@@ -3,24 +3,23 @@ import { useRouter } from 'next/router';          // Next.js路由库，用于�
 import React, { useEffect, useState, useRef } from 'react'; // React核心钩子
 import { Article } from '@/types/Article';    // 文章类型定义
 import styles from './[id].module.css';       // CSS模块样式
-import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';   // FontAwesome图标库
 import ReactMarkdown from 'react-markdown';       // Markdown渲染组件
-import remarkGfm from 'remark-gfm'
+import remarkGfm from 'remark-gfm'                // 支持GitHub Flavored Markdown的插件
 import rehypeRaw from 'rehype-raw';              // 支持HTML标签的插件
 import Link from 'next/link';                     // Next.js客户端导航组件
 import ArticleToc from '@/components/ArticleToc/ArticleToc'; // 文章目录组件
-import { motion } from 'framer-motion';
-import { ArticlesAPI } from '@/api/ArticlesAPI';
-import CodeBlock from '@/components/Code/CodeBlock';
-import Comments from '@/components/Comments/Comments';
-import { FaArrowLeft } from "react-icons/fa";
-import Image from 'next/image';
-import Head from "next/head";
-import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner';
-import RecentArticles from "@/components/RecentArticles/RecentArticles";
-import SequenceDiagram from '@/components/SequenceDiagram/SequenceDiagram';
-import ArticleSidebar from '@/components/ArticleSidebar/ArticleSidebar';
-import {useLoading} from "@/hooks/useLoading";
+import { motion } from 'framer-motion';              // 动画库
+import { ArticlesAPI } from '@/api/ArticlesAPI';    // 文章API
+import CodeBlock from '@/components/Code/CodeBlock';   // 代码高亮组件
+import Comments from '@/components/Comments/Comments'; // 评论组件
+import { FaArrowLeft } from "react-icons/fa";  // FontAwesome图标库
+import Head from "next/head";               // Next.js头部组件
+import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner'; // 加载动画组件
+import RecentArticles from "@/components/RecentArticles/RecentArticles"; // 最近文章组件
+import SequenceDiagram from '@/components/SequenceDiagram/SequenceDiagram'; // 渲染序列图组件
+import ArticleSidebar from '@/components/ArticleSidebar/ArticleSidebar';   // 文章侧边栏组件
+import { useLoading } from "@/hooks/useLoading"; // 自定义加载状态钩子
 
 
 // 定义标题对象的类型
@@ -32,7 +31,7 @@ interface Heading {
 
 const ArticleDetail: React.FC = () => {
     // 使用路由钩子获取路由参数
-    const router = useRouter();
+    const router = useRouter(); // Next.js路由对象
     const { id } = router.query; // 从URL中获取文章ID
 
     // 状态管理
@@ -42,31 +41,30 @@ const ArticleDetail: React.FC = () => {
     const [contentHeight, setContentHeight] = useState(0); // 文章内容高度
     const [contentTop, setContentTop] = useState(0);       // 文章内容顶部位置
     const [likeCount, setLikeCount] = useState<number>();// 点赞数
-    const [isMobile, setIsMobile] = useState(false);
-    const { isLoading } = useLoading();
+    const [isLiked, setIsLiked] = useState(false); // 添加点赞状态
+    const [isMobile, setIsMobile] = useState(false); //  添加移动设备状态
+    const { isLoading } = useLoading(); //  加载状态钩子
 
-    // 使用ref获取文章内容DOM元素的引用
-    const contentRef = useRef<HTMLDivElement>(null);
 
+    const contentRef = useRef<HTMLDivElement>(null);    // 使用ref获取文章内容DOM元素的引用
+
+    //监听窗口大小变化
     useEffect(() => {
-        const checkMobile = () => {
-            setIsMobile(window.innerWidth <= 768);
+        const checkMobile = () => { // 添加移动设备状态
+            setIsMobile(window.innerWidth <= 768); //小于768px为移动设备
         };
-        checkMobile();
-        window.addEventListener('resize', checkMobile);
-        return () => window.removeEventListener('resize', checkMobile);
+        checkMobile(); // 检查当前设备
+        window.addEventListener('resize', checkMobile);  //监听窗口大小变化
+        return () => window.removeEventListener('resize', checkMobile);  //移除监听
     }, []);
 
     // 点赞操作
     const handleLike = async () => {
-        if (!id) return;
+        if (!id) return; // 如果没有id，则不执行操作
         try {
-            console.log('Sending like request for article:', id); // 添加日志
-            const response = await ArticlesAPI.likeArticle(Number(id));
-            console.log('Like response:', response); // 添加日志
-
+            const response = await ArticlesAPI.likeArticle(Number(id));  //  调用点赞接口
             if (!response) {
-                throw new Error('点赞失败');
+                throw new Error('操作失败');
             }
 
             // 更新文章状态
@@ -74,16 +72,16 @@ const ArticleDetail: React.FC = () => {
                 if (!prevArticle) return null;
                 return {
                     ...prevArticle,
-                    likeCount: response.likeCount
+                    likeCount: isLiked ? prevArticle.likeCount - 1 : prevArticle.likeCount + 1
                 };
             });
 
             // 更新点赞数
-            setLikeCount(response.likeCount);
+            setLikeCount(prev => isLiked ? (prev || 0) - 1 : (prev || 0) + 1);
+            setIsLiked(!isLiked);
         } catch (err) {
-            console.error('点赞失败:', err);
-            // 添加错误提示
-            alert('点赞失败，请稍后重试');
+            console.error('操作失败:', err);
+            alert('操作失败，请稍后重试');
         }
     }
 
@@ -93,22 +91,15 @@ const ArticleDetail: React.FC = () => {
             try {
                 if (!id) return;
                 setError(null);
-
                 // 使用 ArticlesAPI 获取特定文章
                 const response = await ArticlesAPI.getArticleById(Number(id));
-                console.log('Article API Response:', response);
-
-                if (!response) {
-                    console.error('Invalid response:', response);
-                    throw new Error('文章数据不存在');
-                }
-
                 // 更新文章状态
                 setArticle(response);
                 setLikeCount(response.likeCount || 0);
+                setIsLiked(false); // 每次进入页面重置点赞状态
 
                 // 提取标题
-                const headingRegex = /^(#{1,6})\s+(.+)$/gm;
+                const headingRegex = /^(#{1,6})\s+(.+)$/gm; // 作用：识别以 # 开头、后跟空格和标题文字的行，并分别捕获标签级别和标题内容。
                 const matches = Array.from(response.content.matchAll(headingRegex));
                 const extractedHeadings = matches.map(match => ({
                     id: match[2].toLowerCase().replace(/\s+/g, '-'),
@@ -148,8 +139,9 @@ const ArticleDetail: React.FC = () => {
     }, [article]); // 当文章内容更新时重新测量
 
     const handleFontSizeChange = (size: number) => {
-        // 不再设置全局字体大小
-        // document.documentElement.style.fontSize = `${size}px`;
+        if (contentRef.current) {
+            contentRef.current.style.fontSize = `${size}px`;
+        }
     };
 
     const handleThemeChange = (theme: 'light' | 'dark') => {
@@ -172,7 +164,7 @@ const ArticleDetail: React.FC = () => {
 
     // 加载状态UI
     if (isLoading) return (
-        <LoadingSpinner/>
+        <LoadingSpinner />
     );
 
     // 错误状态UI
@@ -283,7 +275,11 @@ const ArticleDetail: React.FC = () => {
                                 times: [0, 0.2, 0.4, 1]
                             }}
                         >
-                            <FaHeart className={styles.heartIcon} />
+                            {isLiked ? (
+                                <FaHeart className={styles.heartIcon} style={{ color: 'var(--like)' }} />
+                            ) : (
+                                <FaRegHeart className={styles.heartIcon} />
+                            )}
                         </motion.div>
                         <motion.span
                             className={styles.likeCount}
@@ -315,7 +311,7 @@ const ArticleDetail: React.FC = () => {
                                 <h1
                                     id={props.children?.toString().toLowerCase().replace(/\s+/g, '-')}
                                     className={styles.heading}
-                                    style={{ fontFamily: "'等线', sans-serif" }}
+                                    style={{ fontFamily: "'ZiHun', sans-serif" }}
                                     {...props}
                                 />
                             ),
@@ -363,8 +359,8 @@ const ArticleDetail: React.FC = () => {
                             p: ({ node, ...props }) => <p className="article-content-text-size" {...props} />,
 
                             //列表样式
-                            ul: ({ node, ...props }) => <ul className={styles.list} style={{ fontFamily: "'幼圆', sans-serif" }} {...props} />,
-                            ol: ({ node, ...props }) => <ol className={styles.list} style={{ fontFamily: "'幼圆', sans-serif" }} {...props} />,
+                            ul: ({ node, ...props }) => <ul className={styles.list} style={{ fontFamily: "'ZiHun', sans-serif" }} {...props} />,
+                            ol: ({ node, ...props }) => <ol className={styles.list} style={{ fontFamily: "'ZiHun', sans-serif" }} {...props} />,
                             li: ({ node, ...props }) => <li className="article-content-text-size" {...props} />,
 
                             // 引用样式

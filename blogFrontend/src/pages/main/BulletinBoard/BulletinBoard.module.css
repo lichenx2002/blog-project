@@ -1,9 +1,9 @@
 /* blogFrontend/src/pages/main/BulletinBoard/BulletinBoard.module.css */
 
 .container {
-  max-width: 1200px;
+  max-width: 75rem;
   padding: 2rem;
-  margin: 70px auto 0;
+  margin: 4.375rem auto 0;
   display: flex;
   flex-direction: column;
   gap: 3rem;
@@ -13,7 +13,7 @@
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(1.25rem);
   }
 
   to {
@@ -25,7 +25,7 @@
 /* 留言列表容器 */
 .messageList {
   width: 100%;
-  max-width: 1200px;
+  max-width: 75rem;
   margin: 0 auto;
 }
 
@@ -39,6 +39,7 @@
   display: block;
   position: relative;
 }
+
 .messageList h2 {
   color: var(--text);
   text-align: center;
@@ -49,10 +50,10 @@
 .messageList h1::after {
   content: '';
   position: absolute;
-  bottom: -8px;
+  bottom: -0.5rem;
   left: 0;
   width: 100%;
-  height: 2px;
+  height: 0.125rem;
   background: var(--text);
   opacity: 0.2;
 }
@@ -71,31 +72,31 @@
 /* 留言卡片样式 */
 .messageItem {
   background: var(--bg-secondary);
-  border-radius: 8px;
+  border-radius: 0.5rem;
   padding: 1.2rem;
   transition: all 0.3s ease;
-  border: 1px solid var(--border-color);
+  border: 0.0625rem solid var(--border-color);
   position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  height: 100%;
+  min-height: 10rem;
 }
 
 .messageItem:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-0.25rem);
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
 }
 
 .messageItem.male {
   background: rgba(24, 144, 255, 0.05);
-  border-left: 3px solid #1890ff;
+  border-left: 0.1875rem solid #1890ff;
 }
 
 .messageItem.female {
   background: rgba(235, 47, 150, 0.05);
-  border-left: 3px solid #eb2f96;
+  border-left: 0.1875rem solid #eb2f96;
 }
 
 /* 留言头部样式 */
@@ -126,7 +127,7 @@
 
 .messageGender {
   padding: 0.2rem 0.6rem;
-  border-radius: 4px;
+  border-radius: 0.25rem;
   font-size: 0.8rem;
   font-weight: 500;
   transition: all 0.3s ease;
@@ -166,10 +167,27 @@
   position: relative;
   padding: 1rem;
   background: var(--bg-tertiary);
-  border-radius: 6px;
+  border-radius: 0.375rem;
   transition: all 0.3s ease;
   margin-top: 0.5rem;
   flex: 1;
+  max-height: 12.5rem;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) transparent;
+}
+
+.messageContent::-webkit-scrollbar {
+  width: 0.375rem;
+}
+
+.messageContent::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.messageContent::-webkit-scrollbar-thumb {
+  background-color: var(--border-color);
+  border-radius: 0.1875rem;
 }
 
 .messageItem.male .messageContent {
@@ -189,304 +207,172 @@
   position: fixed;
   bottom: 30rem;
   right: 2rem;
-  width: 50px;
-  height: 50px;
-  border-radius: 25px;
+  width: 3.125rem;
+  height: 3.125rem;
+  border-radius: 1.5625rem;
   background: var(--primary-color);
   border: none;
   color: white;
   font-size: 1.5rem;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
 }
 
-
-/* 模态框样式 */
+/* 替换留言表单弹窗样式 */
 .modalOverlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.13);
-  backdrop-filter: blur(5px);
+  background: transparent;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   z-index: 1000;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
-}
-
-.modalOverlay.active {
-  opacity: 1;
-  visibility: visible;
+  animation: fadeIn 0.2s ease;
 }
 
 .modalContent {
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 16px;
-  padding: 24px;
-  width: 90%;
-  max-width: 500px;
   position: relative;
-  transform: translateY(20px);
-  opacity: 0;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 20px rgba(180, 120, 255, 0.1);
-  border: 1px solid var(--border-color);
-  overflow: hidden;
-}
-
-.modalContent::before {
-  content: '';
-  position: absolute;
-  top: -80px;
-  right: -80px;
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, #fbeaff 0%, #e0f7fa 80%);
-  opacity: 0.2;
-  border-radius: 50%;
-  z-index: 0;
-}
-
-.modalContent::after {
-  content: '';
-  position: absolute;
-  bottom: -60px;
-  left: -60px;
-  width: 150px;
-  height: 150px;
-  background: radial-gradient(circle, #a7e9ff 0%, #fbeaff 80%);
-  opacity: 0.15;
-  border-radius: 50%;
-  z-index: 0;
-}
-
-.modalOverlay.active .modalContent {
-  transform: translateY(0);
-  opacity: 1;
+  width: 20rem;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(1.25rem);
+  box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.08);
+  z-index: 10000;
+  animation: slideUp 0.3s ease;
 }
 
 .closeButton {
   position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 40px;
-  height: 40px;
-  border-radius: 14px;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: none;
   border: none;
-  background: var(--bg-tertiary);
+  font-size: 1.25rem;
   color: var(--text);
-  font-size: 2rem;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  z-index: 2;
+  padding: 0.25rem;
+  line-height: 1;
+  border-radius: 50%;
+  transition: all 0.1s ease;
+  caret-color: transparent;
 }
 
 .closeButton:hover {
-  background: var(--bg-hover);
   transform: rotate(90deg);
 }
 
-/* 表单样式 */
 .form {
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  position: relative;
-  z-index: 2;
-}
-
-.formRow {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 12px;
-  margin-bottom: 16px;
-  position: relative;
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0 1rem;
 }
 
 .formGroup {
-  margin-bottom: 24px;
-  position: relative;
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .formLabel {
-  display: inline-block;
-  padding-bottom: 0;
-  font-weight: 600;
-  color: #a259ff;
-  font-size: 14px;
-  font-family: 'Comic Sans MS', 'PingFang SC', 'Arial', sans-serif;
-  line-height: 24px;
-  margin-bottom: 8px;
+  font-size: 0.875rem;
+  color: var(--text);
+  font-weight: 500;
 }
 
 .formInput,
 .formTextarea {
+  padding: 0.625rem 0.75rem;
+  border: 0.0625rem solid var(--border-color);
+  border-radius: 0.375rem;
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--text);
+  font-size: 0.875rem;
   width: 100%;
-  padding: 8px 12px;
-  border: 2px solid #fbeaff;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.9);
-  color: #6c3ec1;
-  font-size: 14px;
-  transition: all 0.3s ease;
-  font-family: 'Comic Sans MS', 'PingFang SC', 'Arial', sans-serif;
-  box-sizing: border-box;
+  transition: all 0.2s ease;
+  caret-color: var(--text);
 }
 
 .formTextarea {
-  min-height: 120px;
+  min-height: 7.5rem;
   resize: vertical;
-  line-height: 1.6;
-}
-
-.formInput:hover,
-.formTextarea:hover {
-  border-color: #a259ff;
 }
 
 .formInput:focus,
 .formTextarea:focus {
   outline: none;
-  border-color: #a259ff;
-  box-shadow: 0 0 0 3px rgba(162, 89, 255, 0.2);
-}
-
-.radioGroup {
-  display: flex;
-  gap: 12px;
-  padding: 8px 0;
-}
-
-.radioLabel {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border: 2px solid #fbeaff;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.9);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  color: #6c3ec1;
-  font-size: 14px;
-  font-family: 'Comic Sans MS', 'PingFang SC', 'Arial', sans-serif;
-}
-
-.radioLabel:hover {
-  border-color: #a259ff;
-  background: rgba(162, 89, 255, 0.1);
-}
-
-.radioLabel input[type="radio"] {
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-  accent-color: #a259ff;
+  border-color: var(--primary-color);
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .submitButton {
   width: 100%;
-  padding: 8px 24px;
-  background: linear-gradient(90deg, #a7e9ff 0%, #fbeaff 100%);
-  color: #fff;
+  padding: 0.625rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 0.375rem;
+  background: var(--primary-color);
+  color: var(--text);
+  font-size: 0.875rem;
+  font-weight: 500;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  font-family: 'Comic Sans MS', 'PingFang SC', 'Arial', sans-serif;
-  box-shadow: 0 2px 8px rgba(162, 89, 255, 0.2);
-  margin-top: 16px;
+  transition: all 0.2s ease;
+  margin: 0.5rem 0;
 }
 
 .submitButton:hover {
+  background: rgba(255, 255, 255, 0.1);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(162, 89, 255, 0.3);
-  background: linear-gradient(90deg, #fbeaff 0%, #a7e9ff 100%);
-  color: #a259ff;
 }
 
-/* 表情选择器样式 */
-.emojiButton {
-  position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  font-size: 1.2rem;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
-  transition: all 0.3s ease;
-  color: #6c3ec1;
-  z-index: 2;
+.submitButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
 }
 
-.emojiButton:hover {
-  background: rgba(162, 89, 255, 0.1);
-  color: #a259ff;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
-.emojiPickerContainer {
-  position: absolute;
-  right: 0;
-  top: 100%;
-  z-index: 1000;
-  margin-top: 4px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(180, 120, 255, 0.15);
-  background: rgba(255, 255, 255, 0.95);
-  border: 2px solid #fbeaff;
-}
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(0.625rem);
+  }
 
-/* 空消息提示 */
-.emptyMessage {
-  text-align: center;
-  padding: 2rem;
-  color: var(--text-secondary);
-  background: var(--bg-secondary);
-  border-radius: 8px;
-  font-size: 0.95rem;
-  border: 1px dashed var(--border-color);
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* 响应式调整 */
-@media (max-width: 768px) {
-  .messageList h1 {
-    font-size: 1.5rem;
-    margin-bottom: 1.2rem;
+@media (max-width: 48rem) {
+  .container {
+    padding: 1rem;
+    gap: 2rem;
+  }
+
+  .messagesGrid {
+    grid-template-columns: 1fr;
   }
 
   .messageItem {
     padding: 1rem;
-  }
-
-  .messageHeader {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
-
-  .messageTime {
-    margin-left: 0;
   }
 
   .messageContent {
@@ -494,69 +380,19 @@
     font-size: 0.9rem;
   }
 
-  .formRow {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  .formGroup {
-    margin-bottom: 1rem;
-  }
-
-  .formInput,
-  .formTextarea {
-    padding: 0.7rem 0.9rem;
-  }
-
-  .radioGroup {
-    flex-direction: row;
-  }
-
   .modalContent {
-    padding: 16px;
-    max-width: 400px;
-  }
-
-  .formRow {
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
-
-  .formGroup {
-    margin-bottom: 16px;
+    padding: 1rem;
+    max-width: 25rem;
   }
 
   .formInput,
   .formTextarea {
-    padding: 6px 10px;
+    padding: 0.4375rem 0.625rem;
   }
-
-  .radioGroup {
-    gap: 8px;
-  }
-
-  .radioLabel {
-    padding: 6px 10px;
-  }
-}
-
-/* 暗色模式适配 */
-.dark .messageItem {
-  background: rgba(33, 33, 33, 0.8);
-}
-
-.dark .form {
-  background: rgba(33, 33, 33, 0.8);
-}
-
-.dark .formInput,
-.dark .formTextarea {
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--text);
 }
 
 /* 响应式布局 */
-@media (max-width: 1200px) {
+@media (max-width: 75rem) {
   .messagesGrid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -597,4 +433,19 @@
   .radioLabel {
     padding: 0.4rem 0.8rem;
   }
+}
+
+/* 暗色模式适配 */
+.dark .messageItem {
+  background: rgba(33, 33, 33, 0.8);
+}
+
+.dark .form {
+  background: rgba(33, 33, 33, 0.8);
+}
+
+.dark .formInput,
+.dark .formTextarea {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
 }

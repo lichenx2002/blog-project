@@ -6,6 +6,7 @@ import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner";
 import { useLoading } from '@/hooks/useLoading';
 import { GalleryAPI } from '@/api/GalleryAPI';
 import { Gallery as GalleryItem } from '@/types/Gallery';
+import PageHeader from '../../components/PageHeader/PageHeader';
 
 // 添加类型定义
 interface GroupedGalleries {
@@ -34,7 +35,7 @@ const Gallery: React.FC = () => {
     // 添加空状态显示
     const renderEmptyState = () => (
         <div className={styles.emptyState}>
-            <p>暂无相册内容</p>
+            <LoadingSpinner/>
         </div>
     );
 
@@ -129,7 +130,9 @@ const Gallery: React.FC = () => {
             try {
                 const data = await GalleryAPI.getGalleries();
                 const galleryData = Array.isArray(data) ? data : [];
-                const transformedData = galleryData.map((item: any) => ({
+                const transformedData = galleryData
+                    .filter((item :any) => item.category !== '证书')
+                    .map((item: any) => ({
                     ...item,
                     date: item.date,
                     coverImage: item.coverImage ? item.coverImage.replace(/\/uploads\/\/uploads\//g, '/uploads/') : '/default-image.jpg'
@@ -151,17 +154,11 @@ const Gallery: React.FC = () => {
                 <title>时光印记 | 记录生活的美好瞬间</title>
                 <meta name="description" content="用照片记录生活，用影像珍藏回忆，这里是属于我们的时光印记" />
             </Head>
-            <motion.div
-                className={styles.header}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-            >
-                <h1 className={styles.title}>记录时光</h1>
-                <div className={styles.introText}>
-                    每一张照片，都是时光的碎片。在这里，我们用镜头捕捉生活的瞬间，用影像定格记忆的温度。愿这些画面能唤起你心底的共鸣，让美好的回忆永远鲜活。
-                </div>
-            </motion.div>
+            <PageHeader
+                headerText="记录时光"
+                introText="每一张照片，都是时光的碎片。在这里，我们用镜头捕捉生活的瞬间，用影像定格记忆的温度。愿这些画面能唤起你心底的共鸣，让美好的回忆永远鲜活。"
+                englishTitle="Gallery"
+            />
             <motion.div
                 className={styles.header}
                 initial={{ opacity: 0, y: -20 }}

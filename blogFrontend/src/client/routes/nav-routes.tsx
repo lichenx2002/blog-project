@@ -33,7 +33,7 @@ const WritingStats = dynamic(() => import('@/pages/main/WritingStats'), {
 const BulletinBoard = dynamic(() => import('@/pages/main/BulletinBoard'), {
     loading: () => <LoadingSpinner />
 })
-const FriendshipLink = dynamic(() => import('@/pages/main/FriendshipLink'), {
+const FriendLinks = dynamic(() => import('@/pages/main/FriendLinks'), {
     loading: () => <LoadingSpinner />
 })
 const Questions = dynamic(() => import('@/pages/main/Questions'), {
@@ -128,9 +128,9 @@ export const navRoutesItem: Route[] = [
                 showInNav: false
             }, {
                 id: 802,
-                path: '/main/FriendshipLink',
+                path: '/main/FriendLinks',
                 name: '友链',
-                component: FriendshipLink,
+                component: FriendLinks,
                 ssr: true,
                 showInNav: false
             }, {

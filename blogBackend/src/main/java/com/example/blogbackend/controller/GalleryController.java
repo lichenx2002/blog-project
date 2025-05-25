@@ -45,16 +45,17 @@ public class GalleryController {
 
   @PostMapping
   public ResponseEntity<?> addGallery(
-      @RequestParam("title") String title,
-      @RequestParam("description") String description,
-      @RequestParam("category") String category,
-      @RequestParam(value = "coverImage", required = false) MultipartFile coverImage) {
+          @RequestParam("title") String title,
+          @RequestParam("description") String description,
+          @RequestParam("category") String category,
+          @RequestParam("date") String date,
+          @RequestParam(value = "coverImage", required = false) MultipartFile coverImage) {
     try {
       Gallery gallery = new Gallery();
       gallery.setTitle(title);
       gallery.setDescription(description);
       gallery.setCategory(category);
-      gallery.setDate(LocalDate.now());
+      gallery.setDate(LocalDate.parse(date.split("T")[0]));
       gallery.setCreatedAt(LocalDateTime.now());
       gallery.setUpdatedAt(LocalDateTime.now());
 
@@ -77,11 +78,12 @@ public class GalleryController {
 
   @PutMapping("/{id}")
   public ResponseEntity<?> updateGallery(
-      @PathVariable Integer id,
-      @RequestParam("title") String title,
-      @RequestParam("description") String description,
-      @RequestParam("category") String category,
-      @RequestParam(value = "coverImage", required = false) MultipartFile coverImage) {
+          @PathVariable Integer id,
+          @RequestParam("title") String title,
+          @RequestParam("description") String description,
+          @RequestParam("category") String category,
+          @RequestParam("date") String date,
+          @RequestParam(value = "coverImage", required = false) MultipartFile coverImage) {
     try {
       Gallery gallery = galleryService.getById(id);
       if (gallery == null) {
@@ -91,7 +93,7 @@ public class GalleryController {
       gallery.setTitle(title);
       gallery.setDescription(description);
       gallery.setCategory(category);
-      gallery.setDate(LocalDate.now()); // 更新日期
+      gallery.setDate(LocalDate.parse(date.split("T")[0]));
       gallery.setUpdatedAt(LocalDateTime.now());
 
       if (coverImage != null && !coverImage.isEmpty()) {

@@ -1,6 +1,5 @@
 import { http } from '@/utils/request';
 import { Question, QuestionListResponse, QuestionTagsResponse } from '@/types/Question';
-import { Tag } from '@/types/Tags';
 
 interface GetQuestionsParams {
   page?: number;

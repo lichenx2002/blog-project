@@ -1,9 +1,9 @@
 .sidebar {
   position: fixed;
-  top: 110px;
+  top: 6.875rem;
   /* 导航栏下方 */
-  right: 2rem;
-  width: 320px;
+  right: 3rem;
+  width: 15rem;
   overflow-y: auto;
   z-index: 100;
   scrollbar-width: thin;
@@ -11,7 +11,7 @@
 }
 
 .sidebar::-webkit-scrollbar {
-  width: 6px;
+  width: 0.25rem;
 }
 
 .sidebar::-webkit-scrollbar-track {
@@ -20,20 +20,13 @@
 
 .sidebar::-webkit-scrollbar-thumb {
   background-color: var(--primary-light);
-  border-radius: 3px;
+  border-radius: 0.125rem;
 }
 
 /* 响应式布局 */
-@media (max-width: 1400px) {
+@media (max-width: 87.5rem) {
   .sidebar {
-    width: 280px;
-    right: 1rem;
-  }
-}
-
-@media (max-width: 1200px) {
-  .sidebar {
-    display: none;
-    /* 在小屏幕上隐藏侧边栏 */
+    width: 14rem;
+    right: 0.75rem;
   }
 }

@@ -1,4 +1,5 @@
 import { http } from '@/utils/request';
+import { ApiResponse } from '@/types/common';
 
 // 基础接口定义
 export interface LoginCredentials {
@@ -32,12 +33,6 @@ export interface User {
     phoneBindTime?: string;
     createdAt?: string;
     updatedAt?: string;
-}
-
-export interface ApiResponse<T> {
-    code: number;
-    data: T;
-    message: string;
 }
 
 // API 实现

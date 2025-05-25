@@ -5,6 +5,7 @@ import Footer from "@/client/components/Footer/Footer";
 import React from "react";
 import { useTheme } from '@/hooks/useTheme';
 import AppLayoutProps from './types';
+import ClickSpark from "@/components/ClickSpark/ClickSpark";
 
 const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     const { isDarkMode } = useTheme();
@@ -15,16 +16,39 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
             </Head>
             <Background />
 
-            <Navbar />
-            <main
-                className={`container mx-auto ${isDarkMode ? 'dark-theme' : 'light-theme'}`}
-                style={{
-                    marginTop: '60px',       // 确保内容在导航栏下方
-                    minHeight: 'calc(100vh - 60px - 300px)' // 内容至少占满剩余视口，减去导航栏和底部高度
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                minHeight: '100vh',
+                position: 'relative'
+            }}>
+                <Navbar />
+                <main
+                    className={`container mx-auto relative ${isDarkMode ? 'dark-theme' : 'light-theme'}`}
+                    style={{
+                        marginTop: '60px',
+                        paddingBottom: '60px',
+                        flex: '1 0 auto',
+                        position: 'relative',
+                        zIndex: 1
+                    }}>
+                    <div style={{ position: 'relative', zIndex: 2 }}>
+                        {children}
+                    </div>
+                </main>
+                <div style={{ flexShrink: 0 }}>
+                    <Footer />
+                </div>
+                <div style={{
+                    position: 'fixed',
+                    inset: 0,
+                    zIndex: 3,
+                    pointerEvents: 'none',
+                    height: '100vh'
                 }}>
-                {children}
-            </main>
-            <Footer />
+                    <ClickSpark />
+                </div>
+            </div>
         </>
     );
 }

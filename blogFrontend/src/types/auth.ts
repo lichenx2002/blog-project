@@ -1,5 +1,6 @@
-export interface User {
-  id: number;
+import { Identifiable, ApiResponse } from './common';
+
+export interface User extends Identifiable {
   username: string;
   phone?: string;
   phoneVerified?: boolean;
@@ -24,19 +25,11 @@ export interface AuthState {
   isAuthenticated: boolean;
 }
 
-export interface LoginResponse {
-  code: number;
-  message: string;
-  data: {
-    token: string;
-    user: User;
-  };
-}
+export interface LoginResponse extends ApiResponse<{
+  token: string;
+  user: User;
+}> { }
 
-export interface SmsCodeResponse {
-  code: number;
-  message: string;
-  data: {
-    success: boolean;
-  };
-} 
+export interface SmsCodeResponse extends ApiResponse<{
+  success: boolean;
+}> { } 

@@ -41,6 +41,7 @@
 
 .formGroup input[type="text"],
 .formGroup input[type="password"],
+.formGroup input[type="tel"],
 .formGroup select {
     width: 100%;
     padding: 8px 12px;

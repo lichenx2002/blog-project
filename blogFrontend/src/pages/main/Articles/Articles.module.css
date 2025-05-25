@@ -293,8 +293,7 @@
 
 .articleDetail {
     max-width: 1000px;
-    margin: 0 auto;
-    margin-top: 70px;
+    margin: 70px auto 0;
     padding: 2rem;
     position: relative;
     background: rgba(255, 255, 255, 0.2);

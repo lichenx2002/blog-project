@@ -1,19 +1,13 @@
-export interface BulletinBoardProps {
-  id?: number;
+import { Identifiable, Timestamped, PaginatedResponse } from './common';
+
+export interface BulletinBoardProps extends Identifiable, Timestamped {
   name: string;
   email: string;
   gender: '小哥哥' | '小姐姐';
   content: string;
-  createdAt?: string;
-  updatedAt?: string;
   status?: 'pending' | 'approved' | 'rejected';
   reply?: string;
   replyTime?: string;
 }
 
-export interface BulletinBoardResponse {
-  total: number;
-  current: number;
-  size: number;
-  records: BulletinBoardProps[];
-}
+export interface BulletinBoardResponse extends PaginatedResponse<BulletinBoardProps> { }

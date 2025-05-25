@@ -23,7 +23,7 @@ public class ArticlesController {
         this.iarticlesService = iarticlesService;
     }
 
-        @GetMapping("/list")
+    @GetMapping("/list")
     public ResponseEntity<Map<String, Object>> getArticles(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int pageSize) {
@@ -96,6 +96,24 @@ public class ArticlesController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         } catch (RuntimeException e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @PostMapping("/{id}/view")
+    public ResponseEntity<Articles> incrementViewCount(@PathVariable Integer id) {
+        try {
+            Articles article = iarticlesService.getById(id);
+            if (article == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            article.setViewCount(article.getViewCount() + 1);
+            iarticlesService.updateById(article);
+
+            return ResponseEntity.ok(article);
+        } catch (Exception e) {
+            logger.error("Error incrementing view count for article {}: {}", id, e.getMessage());
             return ResponseEntity.internalServerError().build();
         }
     }

@@ -2,17 +2,10 @@ import { FiArrowRight } from 'react-icons/fi';
 import styles from './ProfileCard.module.css';
 import Image from "next/image";
 import React from "react";
-import { useTheme } from "@/hooks/useTheme";
 import { motion } from 'framer-motion';
+import {FaGithub} from "react-icons/fa";
 
 const ProfileCard:React.FC = () => {
-    const { isDarkMode } = useTheme();
-    const icons = {
-        github: {
-            Black: '/images/githubBlack.png',
-            White: '/images/githubWhite.png'
-        }
-    }
 
     // 定义动画变体
     const cardVariants = {
@@ -53,7 +46,7 @@ const ProfileCard:React.FC = () => {
                 transition={{ delay: 0.2, duration: 0.5 }}
             >
                 <img
-                    src="/images/avatar.png"
+                    src="/images/avatar_20250520_215057.png"
                     alt="用户头像"
                     className={styles.avatar}
                 />
@@ -120,14 +113,7 @@ const ProfileCard:React.FC = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                 >
-                    <Image
-                        src={isDarkMode ? icons.github.White : icons.github.Black}
-                        alt="用户头像"
-                        width={10}
-                        height={10}
-                        className={styles.gitHubImg}
-                        priority
-                    />
+                    <FaGithub style={{color:'var(--text)'}}/>
                     <div className={styles.aLink}>My GitHub</div>
                 </motion.a>
                 <motion.a

@@ -4,6 +4,9 @@ export const BASE_URL = '/api';
 
 const nextConfig: NextConfig = {
     reactStrictMode: true,
+    images: {
+        domains: ['images-1359353257.cos.ap-beijing.myqcloud.com'],
+    },
     webpack: (config, { isServer }) => {
         if (!isServer) {
             config.resolve.fallback = {

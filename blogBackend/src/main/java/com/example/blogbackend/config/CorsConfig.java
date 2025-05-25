@@ -16,6 +16,10 @@ public class CorsConfig {
         // 允许的域名
         config.addAllowedOriginPattern("http://localhost:3000");
         config.addAllowedOriginPattern("http://localhost:5173");
+        config.addAllowedOriginPattern("http://124.222.96.94:3000");
+        config.addAllowedOriginPattern("http://124.222.96.94");
+        config.addAllowedOriginPattern("https://gfbzsblog.site:3000");
+        config.addAllowedOriginPattern("https://gfbzsblog.site");
 
         // 允许的请求方法
         config.addAllowedMethod("*");

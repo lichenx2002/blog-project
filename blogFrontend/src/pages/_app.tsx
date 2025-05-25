@@ -39,7 +39,7 @@ function AppContent({ Component, pageProps }: AppProps) {
       <ThemeWrapper>
         {isAdminPage ? (
           <AdminRouteGuard>
-          <Component {...pageProps} />
+            <Component {...pageProps} />
           // </AdminRouteGuard>
         ) : (
           <AppLayout>

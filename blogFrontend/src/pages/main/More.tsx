@@ -120,24 +120,6 @@ const More: React.FC = () => {
                 ))}
             </motion.div>
 
-            <motion.div
-                className={styles.contactSection}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5, duration: 0.5 }}
-            >
-                <h2 className={styles.contactTitle}>联系我</h2>
-                <div className={styles.contactInfo}>
-                    <div className={styles.contactItem}>
-                        <FaUser className={styles.contactIcon} />
-                        <span>作者：小熙</span>
-                    </div>
-                    <div className={styles.contactItem}>
-                        <FaEnvelope className={styles.contactIcon} />
-                        <span>邮箱：your-email@example.com</span>
-                    </div>
-                </div>
-            </motion.div>
         </div>
     );
 };

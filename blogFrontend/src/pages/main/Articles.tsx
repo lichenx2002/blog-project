@@ -9,6 +9,7 @@ import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner';
 import LoadingMore from '@/components/LoadingMore/LoadingMore';
 import { Article } from '@/types/Article';
 import { ArticlesAPI } from '@/api/ArticlesAPI';
+import PageHeader from '../../components/PageHeader/PageHeader';
 
 type ErrorType = {
     message: string;
@@ -216,6 +217,31 @@ const Articles: React.FC = () => {
         }
     };
 
+    // 添加处理文章点击的函数
+    const handleArticleClick = async (articleId: number) => {
+        try {
+            await ArticlesAPI.incrementViewCount(articleId);
+            // 更新本地文章列表中的浏览量
+            setArticles(prevArticles =>
+                prevArticles.map(article =>
+                    article.id === articleId
+                        ? { ...article, viewCount: article.viewCount + 1 }
+                        : article
+                )
+            );
+            // 同时更新可见文章列表
+            setVisibleArticles(prevArticles =>
+                prevArticles.map(article =>
+                    article.id === articleId
+                        ? { ...article, viewCount: article.viewCount + 1 }
+                        : article
+                )
+            );
+        } catch (error) {
+            console.error('更新浏览量失败:', error);
+        }
+    };
+
     if (error) return <div className={styles.error}>{error.message}</div>;
 
     return (
@@ -224,19 +250,11 @@ const Articles: React.FC = () => {
                 <title>文章集锦 | 分享技术思考与生活感悟</title>
                 <meta name="description" content="记录技术探索的足迹，分享生活中的点滴感悟，这里是思想的碰撞与交流" />
             </Head>
-            <motion.h1
-                className={styles.header}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-            >
-                文章列表
-                <div className={styles.introText}>
-                    每一篇文章，都是一次思想的沉淀。在这里，技术不再是冰冷的代码，而是流淌的文字；生活不再是琐碎的日常，而是诗意的记录。愿这些文字能成为你探索路上的灯塔，照亮前行的方向。
-                </div>
-            </motion.h1>
-
-
+            <PageHeader
+                headerText="文章列表"
+                introText="每一篇文章，都是一次思想的沉淀。在这里，技术不再是冰冷的代码，而是流淌的文字；生活不再是琐碎的日常，而是诗意的记录。愿这些文字能成为你探索路上的灯塔，照亮前行的方向。"
+                englishTitle="Articles"
+            />
 
             {/* 添加搜索和排序区域 */}
             <motion.div
@@ -293,7 +311,11 @@ const Articles: React.FC = () => {
                             transition: { duration: 0.2 }
                         }}
                     >
-                        <Link href={`/main/Articles/${article.id}`} className={styles.articleLink}>
+                        <Link
+                            href={`/main/Articles/${article.id}`}
+                            className={styles.articleLink}
+                            onClick={() => handleArticleClick(article.id)}
+                        >
                             <div>
                                 <h1 className={styles.articleTitle}>{article.title}</h1>
                                 <div className={styles.articleMeta}>

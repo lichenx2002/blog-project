@@ -127,16 +127,19 @@ const Home: React.FC = () => {
                         <ProfileCard />
                     </div>
                 </div>
-                <div>
-                    <Arrow
-                        text1={"钥在锁先，行胜于言"}
-                        text2={"Prepare the solution beforethe problem; action speaks louder."}
-                        onClick={handleArrowClick}
-                    />
-                </div>
 
-                <div className={styles.flipClock}>
-                    <FlipClock />
+                <div className={styles.clockArrowContainer}>
+                    <div className={styles.flipClock}>
+                        <FlipClock />
+                    </div>
+
+                    <div className={styles.arrowWrapper}>
+                        <Arrow
+                            text1={"钥在锁先，行胜于言"}
+                            text2={"Prepare the solution beforethe problem; action speaks louder."}
+                            onClick={handleArrowClick}
+                        />
+                    </div>
                 </div>
 
                 <div id="mainContent" className={styles.mainContentArea}>

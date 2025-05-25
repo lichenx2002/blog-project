@@ -7,7 +7,7 @@
     height: 100%;
     pointer-events: none;
     /* 防止遮挡点击 */
-    z-index: -1;
+    z-index: -2;
 }
 
 /* 公共样式 */
@@ -15,7 +15,7 @@
     position: absolute;
     opacity: 0.1;
     /* 10%透明度 */
-    filter: blur(15px);
+    filter: blur(0.9375rem);
     /* 柔化边缘 */
     mix-blend-mode: multiply;
     /* 混合模式 */
@@ -23,8 +23,8 @@
 
 /* 圆形色块 */
 .circle {
-    width: 200px;
-    height: 200px;
+    width: 12.5rem;
+    height: 12.5rem;
     border-radius: 50%;
     background: #ffcccc;
     /* 莫兰迪浅粉 */
@@ -32,8 +32,8 @@
 }
 
 .circle2 {
-    width: 200px;
-    height: 200px;
+    width: 12.5rem;
+    height: 12.5rem;
     border-radius: 50%;
     background: #00f603;
     animation: float 25s infinite linear;
@@ -41,8 +41,8 @@
 
 /* 三角形色块 */
 .triangle {
-    width: 150px;
-    height: 150px;
+    width: 9.375rem;
+    height: 9.375rem;
     background: #15c0fa;
     /* 莫兰迪浅蓝 */
     clip-path: polygon(50% 0, 100% 100%, 0 100%);
@@ -51,8 +51,8 @@
 
 /*五边形色块 */
 .pentagram {
-    width: 150px;
-    height: 150px;
+    width: 9.375rem;
+    height: 9.375rem;
     background: #f3daff;
     /* 莫兰迪浅蓝 */
     clip-path: polygon(50% 0%,
@@ -100,7 +100,7 @@
     }
 
     50% {
-        transform: translateY(-30px);
+        transform: translateY(-1.875rem);
     }
 }
 
@@ -126,9 +126,9 @@
     width: 100%;
     height: 100%;
     background-image:
-        linear-gradient(rgba(200, 200, 200, 0.1) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(200, 200, 200, 0.1) 1px, transparent 1px);
-    background-size: 30px 30px;
+        linear-gradient(rgba(200, 200, 200, 0.1) 0.0625rem, transparent 0.0625rem),
+        linear-gradient(90deg, rgba(200, 200, 200, 0.1) 0.0625rem, transparent 0.0625rem);
+    background-size: 1.875rem 1.875rem;
     animation: gridMove 60s linear infinite;
 }
 
@@ -152,11 +152,8 @@
     width: 100%;
     height: 100%;
     background-image:
-        linear-gradient(rgba(100, 100, 100, 0.15) 1px,
-            transparent 1px),
-        linear-gradient(90deg,
-            rgba(100, 100, 100, 0.15) 1px,
-            transparent 1px);
+        linear-gradient(rgba(100, 100, 100, 0.15) 0.0625rem, transparent 0.0625rem),
+        linear-gradient(90deg, rgba(100, 100, 100, 0.15) 0.0625rem, transparent 0.0625rem);
 }
 
 @keyframes gridMove {
@@ -165,7 +162,7 @@
     }
 
     to {
-        background-position: 100px 100px;
+        background-position: 6.25rem 6.25rem;
     }
 }
 
@@ -208,17 +205,17 @@
     width: 100%;
     height: 100%;
     background-image:
-        radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-        radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-    background-size: 50px 50px;
+        radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 0.0625rem, transparent 0.0625rem),
+        radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.1) 0.0625rem, transparent 0.0625rem);
+    background-size: 3.125rem 3.125rem;
     animation: particleFloat 20s linear infinite;
 }
 
 /* 移动光斑效果 */
 .lightSpot {
     position: absolute;
-    width: 300px;
-    height: 300px;
+    width: 18.75rem;
+    height: 18.75rem;
     background: radial-gradient(circle at center,
             rgba(255, 255, 255, 0.1) 0%,
             transparent 70%);
@@ -255,15 +252,15 @@
     }
 
     25% {
-        transform: translate(100px, 50px);
+        transform: translate(6.25rem, 3.125rem);
     }
 
     50% {
-        transform: translate(50px, 100px);
+        transform: translate(3.125rem, 6.25rem);
     }
 
     75% {
-        transform: translate(-50px, 50px);
+        transform: translate(-3.125rem, 3.125rem);
     }
 
     100% {

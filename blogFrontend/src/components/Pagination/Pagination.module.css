@@ -84,34 +84,157 @@
 
 .pagination {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  gap: 0.5rem;
+  margin-top: 1.25rem;
+  padding: 1.25rem 1.5rem;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(1.25rem);
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.08);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
 }
 
-.pageButton {
-  padding: 0.4rem 0.8rem;
+.pagination:hover {
+  box-shadow: 0 0.75rem 2.5rem rgba(0, 0, 0, 0.12);
+  transform: translateY(-0.125rem);
+}
+
+.paginationInfo {
+  color: #666;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.5);
+  padding: 0.375rem 0.75rem;
+  border-radius: 1.25rem;
+  backdrop-filter: blur(0.25rem);
+}
+
+.paginationControls {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.paginationButton {
+  padding: 0.5rem 1.25rem;
   border: none;
-  background: transparent;
-  color: var(--text-color);
-  font-size: 0.9rem;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.2);
+  color: #333;
   cursor: pointer;
-  border-radius: 6px;
-  transition: all 0.2s ease;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  min-width: 5.625rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(0.25rem);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.05);
 }
 
-.pageButton:hover:not(:disabled) {
-  background: rgba(0, 0, 0, 0.05);
+.paginationButton:hover:not(.disabled) {
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--text);
+  transform: translateY(-0.125rem);
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
 }
 
-.pageButton:disabled {
+.paginationButton:active:not(.disabled) {
+  transform: translateY(0);
+}
+
+.paginationButton.disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  background: rgba(240, 240, 240, 0.8);
+  box-shadow: none;
 }
 
-.active {
-  background: rgba(0, 0, 0, 0.1);
+.paginationCurrent {
+  color: #333;
+  font-size: 0.875rem;
   font-weight: 500;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 0.75rem;
+  min-width: 7.5rem;
+  text-align: center;
+  backdrop-filter: blur(0.25rem);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.05);
+}
+
+.pageSizeSelect {
+  padding: 0.5rem 1rem;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.8);
+  color: #333;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 6.875rem;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 8.825L1.175 4 2.05 3.125 6 7.075 9.95 3.125 10.825 4z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+  backdrop-filter: blur(0.25rem);
+  box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.05);
+}
+
+.pageSizeSelect:hover {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-color: rgba(162, 89, 255, 0.3);
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
+}
+
+.pageSizeSelect:focus {
+  outline: none;
+  border-color: #a259ff;
+  box-shadow: 0 0 0 0.1875rem rgba(162, 89, 255, 0.15);
+  background-color: rgba(255, 255, 255, 0.95);
+}
+
+/* 添加响应式样式 */
+@media (max-width: 48rem) {
+  .pagination {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    margin: 1rem 0.75rem;
+  }
+
+  .paginationControls {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .paginationButton {
+    min-width: 5rem;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8125rem;
+  }
+
+  .pageSizeSelect {
+    min-width: 6.25rem;
+    font-size: 0.8125rem;
+  }
+
+  .paginationCurrent {
+    min-width: 6.25rem;
+    font-size: 0.8125rem;
+  }
+
+  .paginationInfo {
+    font-size: 0.8125rem;
+  }
 }
 
 /* 暗色模式样式 */

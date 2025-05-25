@@ -14,6 +14,9 @@ const GalleryForm: React.FC<GalleryFormProps> = ({
   onCancel,
 }) => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [selectedDate, setSelectedDate] = useState<string>(
+    initialData?.date ? new Date(initialData.date).toISOString().slice(0, 16) : ''
+  );
 
   useEffect(() => {
     // 如果是编辑模式且有初始图片，设置预览URL
@@ -60,6 +63,10 @@ const GalleryForm: React.FC<GalleryFormProps> = ({
     }
   };
 
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedDate(e.target.value);
+  };
+
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
       <div className={styles.formGroup}>
@@ -78,6 +85,17 @@ const GalleryForm: React.FC<GalleryFormProps> = ({
           id="description"
           name="description"
           defaultValue={initialData?.description}
+          required
+        />
+      </div>
+      <div className={styles.formGroup}>
+        <label htmlFor="date">时间</label>
+        <input
+          type="datetime-local"
+          id="date"
+          name="date"
+          value={selectedDate}
+          onChange={handleDateChange}
           required
         />
       </div>

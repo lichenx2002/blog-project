@@ -1,13 +1,12 @@
+import { Identifiable, Timestamped, ApiResponse } from './common';
+
 // 评论接口定义
-export interface Comment {
-  id: number;
+export interface Comment extends Identifiable, Timestamped {
   articleId: number;
   userId: number;
   username: string;
   content: string;
   parentId: number | null;
-  createdAt: string;
-  updatedAt?: string;
   avatar?: string;
   likes?: number;
   isLiked?: boolean;
@@ -18,7 +17,4 @@ export interface Comment {
 // 评论列表响应
 
 // 评论操作响应
-export interface CommentOperationResponse {
-  message: string;
-  error?: string;
-} 
+export interface CommentOperationResponse extends ApiResponse<void> { } 

@@ -1,0 +1,15 @@
+.photoList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  width: 100%;
+}
+
+/* 响应式布局 */
+@media (max-width: 48rem) {
+  .photoList {
+    gap: 1rem;
+    padding: 1rem;
+  }
+}

@@ -1,34 +1,21 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Image from 'next/image';
 import styles from './NavbarRight.module.css';
 import ThemeToggleButton from '@/components/ThemeToggleButton/ThemeToggleButton';
 import { useTheme } from '@/hooks/useTheme';
 import { LoginModalContext } from '@/context/LoginModalContext';
+import {RiGithubFill, RiUser3Line, RiSunLine, RiMoonLine } from "react-icons/ri";
+import {FaChevronUp} from "react-icons/fa";
 
 const NavbarRight: React.FC = () => {
     const { isDarkMode } = useTheme();
     // 获取登录模态框的控制函数
     const { setShowLogin } = useContext(LoginModalContext);
-
-    const icons = {
-        search: {
-            src: isDarkMode ? '/images/searchWhite.png' : '/images/searchBlack.png',
-            alt: '搜索'
-        },
-        github: {
-            src: isDarkMode ? '/images/githubWhite.png' : '/images/githubBlack.png',
-            alt: 'GitHub',
-            href: 'https://github.com/lichenx2002?tab=projects'
-        },
-        user: {
-            src: isDarkMode ? '/images/userWhite.png' : '/images/userBlack.png',
-            alt: '登录'
-        }
-    };
+    const [showScrollTop, setShowScrollTop] = useState(false);
 
     const themeIcons = {
-        themeDay: '/images/themeDay.svg',
-        themeNight: '/images/themeNight.svg'
+        themeDay: (<RiSunLine style={{ color: 'var(--text)', fontSize: '1rem' }} />),
+        themeNight: (<RiMoonLine style={{ color: 'var(--text)', fontSize: '1rem' }} />)
     }
 
     // 处理登录按钮点击
@@ -36,27 +23,41 @@ const NavbarRight: React.FC = () => {
         setShowLogin(true);
     };
 
+    // 处理回到顶部
+    const handleScrollTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
+
+    // 监听滚动事件
+    useEffect(() => {
+        const handleScroll = () => {
+            setShowScrollTop(window.scrollY > 300);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
     return (
         <div className={styles.navRight}>
-            {/* 1. 搜索按钮 */}
-            <button className={styles.iconButton}>
-                <img
-                    src={icons.search.src}
-                    alt={icons.search.alt}
-                    className={styles.iconImage}
-                    loading="lazy"
-                />
-            </button>
+            {/* 1. 回到顶部按钮 */}
+            {showScrollTop && (
+                <button
+                    className={styles.iconButton}
+                    onClick={handleScrollTop}
+                    title="回到顶部"
+                >
+                    <FaChevronUp style={{ color: 'var(--text)', fontSize: '1rem' }} />
+                </button>
+            )}
 
             {/* 2. GitHub按钮 */}
             <button className={styles.iconButton}>
-                <a href={icons.github.href}>
-                    <img
-                        src={icons.github.src}
-                        alt={icons.github.alt}
-                        className={styles.iconImage}
-                        loading="lazy"
-                    />
+                <a href='https://github.com/lichenx2002/demo'>
+                    <RiGithubFill style={{ color: 'var(--text)', fontSize: '1rem' }} />
                 </a>
             </button>
 
@@ -68,12 +69,7 @@ const NavbarRight: React.FC = () => {
                 className={styles.iconButton}
                 onClick={handleUserClick}
             >
-                <img
-                    src={icons.user.src}
-                    alt={icons.user.alt}
-                    className={`${styles.iconImage} ${styles.iconUserImage}`}
-                    loading="lazy"
-                />
+                <RiUser3Line style={{ color: 'var(--text)', fontSize: '1rem' }} />
             </button>
         </div>
     );

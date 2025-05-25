@@ -1,116 +1,256 @@
 /* 卡片容器基础样式 */
 .profileCard {
-    width: 400px;               /* 固定宽度 */
-    margin: 2rem auto;          /* 上下2rem，左右自动居中 */
-    padding: 1.5rem;            /* 内边距 */
-    border-radius: 12px;        /* 圆角半径 */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 阴影效果 */
-    background: rgba(255, 255, 255, 0.2); /* 半透明背景 */
-    backdrop-filter: blur(20px); /* 关键：背景模糊 */
+    width: min(25rem, 90%);
+    /* 响应式宽度，最大25rem，最小90% */
+    margin: 2rem auto;
+    /* 上下2rem，左右自动居中 */
+    padding: 1.5rem;
+    /* 内边距 */
+    border-radius: 0.75rem;
+    /* 圆角半径 */
+    box-shadow: 0 0.25rem 0.375rem rgba(0, 0, 0, 0.1);
+    /* 阴影效果 */
+    background: rgba(255, 255, 255, 0.2);
+    /* 半透明背景 */
+    backdrop-filter: blur(1.25rem);
+    /* 背景模糊 */
     animation: float 10s ease-in-out infinite;
 }
 
 @keyframes float {
     0% {
-        transform: translateY(0px);
+        transform: translateY(0);
     }
+
     50% {
-        transform: translateY(-5px); /* 向上浮动5像素 */
+        transform: translateY(-0.3125rem);
+        /* 向上浮动0.3125rem */
     }
+
     100% {
-        transform: translateY(0px);
+        transform: translateY(0);
     }
 }
 
 /* ========== 上层布局 ========== */
 .profileCard__upper {
-    margin-top: 20px;
-    display: flex;              /* 启用Flex布局 */
-    align-items: center;        /* 垂直居中对齐 */
+    margin-top: 1.25rem;
+    display: flex;
+    /* 启用Flex布局 */
+    align-items: center;
+    /* 垂直居中对齐 */
 }
 
 /* 头像样式 */
 .avatar {
-    width: 50px;                /* 宽度 */
-    height: 50px;               /* 高度（保持与宽度相同形成圆形） */
-    border-radius: 30%;         /* 圆形效果 */
-    object-fit: cover;          /* 图片填充模式 */
-    margin-right: 1.0rem;       /* 右侧外边距（与文字内容间距） */
-    border: 3px solid #ffffff; /* 可选：白色边框 */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 轻微阴影 */
+    width: 3.125rem;
+    /* 宽度 */
+    height: 3.125rem;
+    /* 高度 */
+    border-radius: 30%;
+    /* 圆形效果 */
+    object-fit: cover;
+    /* 图片填充模式 */
+    margin-right: 1rem;
+    /* 右侧外边距 */
+    border: 0.1875rem solid #ffffff;
+    /* 白色边框 */
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+    /* 轻微阴影 */
     transition: transform 0.3s ease;
 }
+
 .avatar:hover {
     transform: scale(1.03);
 }
 
 /* 个人信息容器 */
 .profileInfo {
-    flex: 1;                    /* 占据剩余空间 */
+    flex: 1;
+    /* 占据剩余空间 */
 }
 
 /* 用户名样式 */
 .userName {
-    font-size: 1.0rem;          /* 字体大小 */
-    margin: 0 0 0.4rem 0;       /* 外边距（上 右 下 左） */
-    color: var(--user-name,#333)  ;         /* 深灰色文字 */
-    caret-color: transparent; /* 使光标透明 */
+    font-size: 1.25rem;
+    /* 字体大小 */
+    margin: 0 0 0.4rem 0;
+    /* 外边距 */
+    color: var(--user-name, #333);
+    /* 深灰色文字 */
+    caret-color: transparent;
+    /* 使光标透明 */
 }
 
 /* 个人简介样式 */
 .userBio {
-    font-size: 0.8rem;          /* 比用户名稍小的字号 */
-    color: var(--user-bio,#666)  ;                  /* 中灰色文字 */
-    margin: 0;                  /* 清除默认外边距 */
-    line-height: 1.4;           /* 行高（增强可读性） */
-    caret-color: transparent; /* 使光标透明 */
+    font-size: 0.875rem;
+    /* 字体大小 */
+    color: var(--user-bio, #666);
+    /* 中灰色文字 */
+    margin: 0;
+    /* 清除默认外边距 */
+    line-height: 1.4;
+    /* 行高 */
+    caret-color: transparent;
+    /* 使光标透明 */
 }
 
 /* ========== 中层布局 ========== */
 .profileCard__middle {
-    padding: 0.5rem 0;            /* 上下内边距 */
-    margin: 0.5rem 0;             /* 上下外边距 */
+    padding: 0.5rem 0;
+    /* 上下内边距 */
+    margin: 0.5rem 0;
+    /* 上下外边距 */
 }
 
 /* 中层段落样式 */
 .profileCard__middle p {
     font-family: ZiHun, sans-serif;
-    font-size: 1rem;         /* 字体大小 */
+    font-size: 1rem;
+    /* 字体大小 */
     font-weight: bold;
-    color: var(--text);                /* 文字颜色 */
-    margin: 0.5rem 0;           /* 上下外边距 */
-    caret-color: transparent; /* 使光标透明 */
+    color: var(--text);
+    /* 文字颜色 */
+    margin: 0.5rem 0;
+    /* 上下外边距 */
+    caret-color: transparent;
+    /* 使光标透明 */
 }
 
 /* ========== 下层按钮 ========== */
 .profileCard__lower {
-    display: flex;              /* 启用Flex布局 */
-    gap: 1rem;                 /* 按钮间距 */
-    justify-content: flex-start;  /* 右对齐 */
+    display: flex;
+    /* 启用Flex布局 */
+    gap: 1rem;
+    /* 按钮间距 */
+    justify-content: flex-start;
+    /* 左对齐 */
+    flex-wrap: wrap;
+    /* 允许按钮换行 */
 }
 
 /* 链接按钮基础样式 */
 .profileLink {
-    display: flex;              /* 启用Flex布局（用于图标对齐） */
-    align-items: center;        /* 垂直居中 */
-    padding: 0.6rem 1rem;      /* 内边距 */
-    border-radius: 6px;         /* 圆角 */
-    color: var(--text);                /* 文字颜色 */
-    text-decoration: none;      /* 去除下划线 */
-    transition: all 0.2s ease;  /* 过渡动画效果 */
+    display: flex;
+    /* 启用Flex布局 */
+    align-items: center;
+    /* 垂直居中 */
+    padding: 0.6rem 1rem;
+    /* 内边距 */
+    border-radius: 0.375rem;
+    /* 圆角 */
+    color: var(--text);
+    /* 文字颜色 */
+    text-decoration: none;
+    /* 去除下划线 */
+    transition: all 0.2s ease;
+    /* 过渡动画效果 */
+    font-size: 0.875rem;
+    /* 字体大小 */
 }
+
 /* 链接按钮悬停状态 */
 .profileLink:hover {
     font-weight: bold;
-    transform: translateY(-1px); /* 轻微上浮效果 */
+    transform: translateY(-0.0625rem);
+    /* 轻微上浮效果 */
 }
-.gitHubImg{
-    width: 16px;
-    height: 16px;
+
+.gitHubImg {
+    width: 1rem;
+    /* 图标大小 */
+    height: 1rem;
 }
 
 /* 链接图标样式 */
 .linkIcon {
-    margin-left: 0.5rem;        /* 左侧外边距（与文字间距） */
-    font-size: 0.9rem;          /* 图标大小 */
+    margin-left: 0.5rem;
+    /* 左侧外边距 */
+    font-size: 0.875rem;
+    /* 图标大小 */
+}
+
+/* 响应式布局调整 */
+@media (max-width: 48rem) {
+
+    /* 768px */
+    .profileCard {
+        width: 95%;
+        padding: 0.75rem;
+        margin: 1rem auto;
+    }
+
+    .avatar {
+        width: 2.5rem;
+        height: 2.5rem;
+        margin-right: 0.75rem;
+    }
+
+    .userName {
+        font-size: 1rem;
+    }
+
+    .userBio {
+        font-size: 0.75rem;
+    }
+
+    .profileCard__middle p {
+        font-size: 0.875rem;
+    }
+
+    .profileLink {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 30rem) {
+
+    /* 480px */
+    .profileCard {
+        width: 90%;
+        padding: 0.625rem;
+        margin: 0.75rem auto;
+    }
+
+    .avatar {
+        width: 2rem;
+        height: 2rem;
+        margin-right: 0.5rem;
+    }
+
+    .userName {
+        font-size: 0.875rem;
+    }
+
+    .userBio {
+        font-size: 0.6875rem;
+    }
+
+    .profileCard__middle p {
+        font-size: 0.75rem;
+        margin: 0.375rem 0;
+    }
+
+    .profileCard__lower {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .profileLink {
+        width: 100%;
+        justify-content: center;
+        padding: 0.375rem 0.5rem;
+        font-size: 0.6875rem;
+    }
+
+    .gitHubImg {
+        width: 0.875rem;
+        height: 0.875rem;
+    }
+
+    .linkIcon {
+        font-size: 0.75rem;
+    }
 }

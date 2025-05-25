@@ -1,23 +1,29 @@
 .container {
     align-content: center;
     display: flex;
-    width: 1050px;
+    width: 100%;
+    max-width: 70rem;
     flex-direction: column;
     overflow-x: auto;
-    gap: 10px;
+    gap: 0.625rem;
     scrollbar-width: thin;
-    margin: 0 auto;     /* 上下边距为0，左右自动 */
+    margin: 0 auto;
+    /* 上下边距为0，左右自动 */
 }
-.container::-webkit-scrollbar{
-    display: none; /* Chrome/Safari */
+
+.container::-webkit-scrollbar {
+    display: none;
+    /* Chrome/Safari */
 }
-.title{
+
+.title {
     color: var(--text);
     padding: 0;
     border: 0;
     margin: 20px 0 0;
 }
-.articleList{
+
+.articleList {
     display: flex;
     gap: 20px;
     overflow-x: auto;
@@ -37,8 +43,10 @@
 .boxGrip {
     width: 350px;
     height: 280px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 阴影效果 */
-    background: rgba(255, 255, 255, 0.2); /* 半透明背景 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* 阴影效果 */
+    background: rgba(255, 255, 255, 0.2);
+    /* 半透明背景 */
     border-radius: 8px;
     display: flex;
     flex-direction: column;
@@ -53,8 +61,10 @@
 .imageBox {
     width: 350px;
     height: 180px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 阴影效果 */
-    background: rgba(255, 255, 255, 0.2); /* 半透明背景 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* 阴影效果 */
+    background: rgba(255, 255, 255, 0.2);
+    /* 半透明背景 */
     border-radius: 8px 8px 0 0;
     overflow: hidden;
     position: relative;
@@ -103,4 +113,38 @@
 .tagBox:first-child {
     font-weight: 600;
     font-size: 16px;
+}
+
+/* 1500px左右屏幕适配 */
+@media screen and (min-width: 1367px) and (max-width: 1775px) {
+    .container {
+        max-width: 56.25rem;
+    }
+
+    .boxGrip {
+        width: 18.75rem;
+        height: 15rem;
+    }
+
+    .imageBox {
+        width: 18.75rem;
+        height: 9.375rem;
+    }
+}
+
+/* 笔记本屏幕适配 */
+@media screen and (max-width: 1366px) {
+    .container {
+        max-width: 45rem;
+    }
+
+    .boxGrip {
+        width: 15.625rem;
+        height: 12.5rem;
+    }
+
+    .imageBox {
+        width: 15.625rem;
+        height: 7.8125rem;
+    }
 }

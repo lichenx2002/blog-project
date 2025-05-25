@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  font-family: 'ZiHun', 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'ZiHun',sans-serif;
 }
 
 .flipCard {
@@ -19,7 +19,7 @@
   color: var(--text);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   text-align: center;
-  font-family: 'ZiHun', 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'ZiHun', sans-serif;
 }
 
 .flipCard .digital:before,
@@ -28,7 +28,7 @@
   position: absolute;
   left: 0;
   right: 0;
-  background:var(--background-color);
+  background: var(--background-color);
   overflow: hidden;
   box-sizing: border-box;
 }
@@ -190,4 +190,23 @@
 .flipCard .number9:before,
 .flipCard .number9:after {
   content: '9';
+}
+
+/* 手机屏幕适配 */
+@media screen and (max-width: 767px) {
+  .flipCard {
+    width: 40px;
+    height: 60px;
+    line-height: 60px;
+    font-size: 40px;
+    border-radius: 8px;
+  }
+
+  .flipCard .digital:before {
+    border-radius: 8px 8px 0 0;
+  }
+
+  .flipCard .digital:after {
+    border-radius: 0 0 8px 8px;
+  }
 }

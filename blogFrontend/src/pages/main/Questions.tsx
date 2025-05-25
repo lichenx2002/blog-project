@@ -9,6 +9,7 @@ import { useDebounce } from '@/hooks/useDebounce';
 import { QuestionsAPI } from '@/api/QuestionsAPI';
 import { Question, QuestionListResponse } from '@/types/Question';
 import QuestionModal from '@/components/QuestionModal/QuestionModal';
+import PageHeader from '../../components/PageHeader/PageHeader';
 
 // 更新难度等级为英文
 const DIFFICULTY_LEVELS = [
@@ -182,10 +183,11 @@ const Questions: React.FC = () => {
       </Head>
 
       <div className={styles.headerWrapper}>
-        <h1 className={styles.header}>面试集</h1>
-        <div className={styles.introText}>
-          每一场面试，都是一次与自己对话的旅程。问题如雨滴落下，有的湿润了思路，有的击穿了信心。而这里，是我收集的露珠——折射过晨光的算法，凝结过深夜的思考。愿它们成为你的路标，而非枷锁。
-        </div>
+        <PageHeader
+          headerText="面试集"
+          introText="每一场面试，都是一次与自己对话的旅程。问题如雨滴落下，有的湿润了思路，有的击穿了信心。而这里，是我收集的露珠——折射过晨光的算法，凝结过深夜的思考。愿它们成为你的路标，而非枷锁。"
+          englishTitle="Questions"
+        />
       </div>
 
       <div className={styles.searchSortContainer}>

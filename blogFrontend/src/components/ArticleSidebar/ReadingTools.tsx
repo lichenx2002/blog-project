@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
-import styles from './ReadingTools.module.css';
-import { motion } from 'framer-motion';
-import { FaSun, FaMoon, FaFont, FaCheck, FaShareAlt } from 'react-icons/fa';
+import React, { useState } from 'react';
+import { FaFont, FaMoon, FaSun, FaFileExport, FaShareAlt, FaChevronUp } from 'react-icons/fa';
 import { useTheme } from '@/hooks/useTheme';
 import { useAppDispatch } from '@/redux/store';
 import { toggleTheme } from '@/redux/theme/actions';
+import styles from './ReadingTools.module.css';
 
 interface ReadingToolsProps {
   onFontSizeChange: (size: number) => void;
@@ -19,25 +18,11 @@ const ReadingTools: React.FC<ReadingToolsProps> = ({
   const [isCopied, setIsCopied] = React.useState(false);
   const { isDarkMode } = useTheme();
   const dispatch = useAppDispatch();
-
-  // 组件卸载时重置字体大小
-  useEffect(() => {
-    return () => {
-      const articleElements = document.querySelectorAll('.article-content-text-size');
-      articleElements.forEach(element => {
-        (element as HTMLElement).style.fontSize = '16px';
-      });
-    };
-  }, []);
+  const [isCollapsed, setIsCollapsed] = useState(true);
 
   const handleFontSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newSize = parseInt(e.target.value);
+    const newSize = Number(e.target.value);
     setFontSize(newSize);
-    // 只修改文章内容的字体大小
-    const articleElements = document.querySelectorAll('.article-content-text-size');
-    articleElements.forEach(element => {
-      (element as HTMLElement).style.fontSize = `${newSize}px`;
-    });
     onFontSizeChange(newSize);
   };
 
@@ -46,90 +31,76 @@ const ReadingTools: React.FC<ReadingToolsProps> = ({
   };
 
   const handleShareClick = () => {
-    navigator.clipboard.writeText(window.location.href)
-      .then(() => {
-        setIsCopied(true);
-        setTimeout(() => setIsCopied(false), 2000);
-      })
-      .catch(err => {
-        console.error('Failed to copy URL: ', err);
-      });
+    navigator.clipboard.writeText(window.location.href);
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2000);
   };
 
   return (
-    <motion.div
-      className={styles.tools}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      <h3 className={styles.title}>阅读工具</h3>
-
-      {/* 字体大小调节 */}
-      <div className={styles.toolItem}>
-        <div className={styles.toolHeader}>
-          <FaFont className={styles.toolIcon} />
-          <span>字号</span>
-        </div>
-        <input
-          type="range"
-          min="12"
-          max="24"
-          value={fontSize}
-          onChange={handleFontSizeChange}
-          className={styles.slider}
-        />
-        <span className={styles.fontSizeValue}>{fontSize}px</span>
-      </div>
-
-      {/* 主题切换 */}
-      <div className={styles.toolItem}>
-        <div className={styles.toolHeader}>
-          {isDarkMode ? (
-            <FaMoon className={styles.toolIcon} />
-          ) : (
-            <FaSun className={styles.toolIcon} />
-          )}
-          <span>主题</span>
-        </div>
+    <div className={`${styles.tools} ${isCollapsed ? styles.collapsed : ''}`}>
+      <div className={styles.toolHeader}>
+        <span className={styles.toolTitle}>阅读工具</span>
         <button
-          onClick={handleThemeToggle}
-          className={styles.themeButton}
+          className={`${styles.collapseButton} ${isCollapsed ? styles.collapsed : ''}`}
+          onClick={() => setIsCollapsed(!isCollapsed)}
         >
-          {isDarkMode ? <FaMoon /> : <FaSun />}
-          {isDarkMode ? '深色' : '浅色'}
+          <FaChevronUp />
         </button>
       </div>
-
-      {/* 阅读时间 */}
-      <div className={styles.toolItem}>
-        <div className={styles.toolHeader}>
-          <span>阅读时间</span>
+      <div className={styles.toolContent}>
+        <div className={styles.toolItem}>
+          <div className={styles.toolHeader}>
+            <span className={styles.toolTitle}>字体大小</span>
+            <FaFont className={styles.toolIcon} />
+          </div>
+          <input
+            type="range"
+            min="12"
+            max="24"
+            value={fontSize}
+            onChange={handleFontSizeChange}
+            className={styles.slider}
+          />
+          <span className={styles.fontSizeValue}>{fontSize}px</span>
         </div>
-        <div className={styles.readingTime}>
-          {readingTime} 分钟
+
+        <div className={styles.toolItem}>
+          <div className={styles.toolHeader}>
+            <span className={styles.toolTitle}>主题切换</span>
+            {isDarkMode ? (
+              <FaMoon className={styles.toolIcon} />
+            ) : (
+              <FaSun className={styles.toolIcon} />
+            )}
+          </div>
+          <button
+            className={styles.themeButton}
+            onClick={handleThemeToggle}
+          >
+            {isDarkMode ? '切换到浅色主题' : '切换到深色主题'}
+          </button>
+        </div>
+
+        <div className={styles.toolItem}>
+          <div className={styles.toolHeader}>
+            <span className={styles.toolTitle}>阅读时间</span>
+          </div>
+          <div className={styles.readingTime}>
+            {readingTime} 分钟
+          </div>
+        </div>
+
+        <div className={styles.toolItem}>
+          <button
+            className={`${styles.exportButton} ${styles.shareButton}`}
+            onClick={handleShareClick}
+          >
+            <FaShareAlt className={styles.toolIcon} />
+            {isCopied ? '已复制' : '分享文章'}
+          </button>
         </div>
       </div>
-
-      {/* 分享链接 */}
-      <div className={styles.toolItem}>
-
-        <button
-          onClick={handleShareClick}
-          className={styles.shareButton}
-        >
-          {isCopied ? (
-            <span style={{ color: 'var(--text)' }}>
-              <FaCheck className={styles.toolIcon} /> 已复制
-            </span>
-          ) : (
-            <span style={{ color: 'var(--text)' }}>
-              <FaShareAlt className={styles.toolIcon} /> 点我分享
-            </span>
-          )}
-        </button>
-      </div>
-    </motion.div>
+    </div>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styles from './Tags/Tags.module.css';
 import Head from "next/head";
@@ -6,46 +6,21 @@ import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner";
 import { useLoading } from '@/hooks/useLoading';
 import { TagsAPI } from '@/api/TagsAPI';
 import { Tag } from "@/types/Tags";
+import PageHeader from '../../components/PageHeader/PageHeader';
+import TagCloudBackground from "@/components/TagCloudBackground/TagCloudBackground";
+import { motion } from 'framer-motion';
 
 const Tags: React.FC = () => {
     const router = useRouter();
     const [tags, setTags] = useState<Tag[]>([]);
     const [error, setError] = useState<string | null>(null);
     const { isLoading, withLoading } = useLoading();
-
-    // 生成随机动画参数
-    const generateAnimationParams = useCallback(() => {
-        const windowWidth = window.innerWidth;
-        const windowHeight = window.innerHeight;
-
-        // 随机决定标签从左边还是右边进入
-        const isLeft = Math.random() > 0.5;
-
-        // 设置起始位置（屏幕外）
-        const startX = isLeft ? -200 : windowWidth + 200;
-
-        const startY = windowHeight * 0.1 + Math.random() * windowHeight * 0.8;
-
-        // 设置终点X坐标（在屏幕宽度的30%-70%范围内）
-        const endX = windowWidth * 0.1 + Math.random() * windowWidth * 0.8;
-
-        // 添加一些随机的浮动效果
-        const floatOffset = 20 + Math.random() * 30; // 20-50px的浮动范围
-
-        return {
-            startX,
-            endX,
-            startY,
-            floatOffset,
-            duration: `${12000 + Math.random() * 8000}ms`, // 12-20秒
-            delay: `${Math.random() * 30}ms` // 0-3秒的随机延迟
-        };
-    }, []);
+    const getStaggerDelay = (index: number) => index * 0.1;
 
     // 处理标签点击
-    const handleTagClick = useCallback((tag: Tag) => {
+    const handleTagClick = (tag: Tag) => {
         router.push(`/main/Articles/tag/${tag.id}`);
-    }, [router]);
+    };
 
     useEffect(() => {
         const fetchTags = async () => {
@@ -59,19 +34,12 @@ const Tags: React.FC = () => {
         };
 
         fetchTags();
-
-        // 添加窗口大小变化监听
-        const handleResize = () => {
-            setTags(prev => [...prev]);
-        };
-
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
     }, []);
 
     if (error) {
         return <div className={styles.error}>{error}</div>;
     }
+
 
     return (
         <div className={styles.container}>
@@ -79,37 +47,61 @@ const Tags: React.FC = () => {
                 <title>标签云 | 探索知识的无限可能</title>
                 <meta name="description" content="通过标签探索文章，发现更多精彩内容，让知识触手可及" />
             </Head>
+            <PageHeader
+                headerText="标签云"
+                introText="知识如繁星点点，标签似云卷云舒。在这里，每一个标签都是一扇门，打开它，就能遇见一片新的天地。让我们在标签的海洋中遨游，探索知识的无限可能。"
+                englishTitle="Tags"
+            />
             {isLoading && <LoadingSpinner />}
-            {tags.map((tag) => {
-                const { startX, endX, startY, floatOffset, duration, delay } = generateAnimationParams();
-                const currentX = `calc(${endX}px + var(--floatX, 0px))`;
-                const currentY = `calc(${startY}px + var(--floatY, 0px))`;
 
-                return (
-                    <div
+            <div className={styles.tagsGrid}>
+                {tags.map((tag, index) => (
+                    <motion.div
                         key={tag.id}
-                        className={styles.tag}
-                        onClick={() => handleTagClick(tag)}
-                        style={{
-                            backgroundColor: `${tag.color}80`,
-                            '--startX': `${startX}px`,
-                            '--startY': `${startY}px`,
-                            '--endX': `${endX}px`,
-                            '--currentX': currentX,
-                            '--currentY': currentY,
-                            '--floatOffset': `${floatOffset}px`,
-                            '--duration': duration,
-                            '--delay': delay,
-                        } as React.CSSProperties}
-                        title={tag.name}
+                        initial={{
+                            opacity: 0,
+                            y: 20,
+                            scale: 0.8,
+                            rotate: -5
+                        }}
+                        animate={{
+                            opacity: 1,
+                            y: 0,
+                            scale: 1,
+                            rotate: 0
+                        }}
+                        whileHover={{
+                            scale: 1.05,
+                            rotate: 2,
+                            transition: { duration: 0.2 }
+                        }}
+                        transition={{
+                            delay: index * 0.1,
+                            duration: 0.5,
+                            ease: [0.34, 1.56, 0.64, 1]
+                        }}
                     >
-                        {tag.name}
-                        {tag.count !== undefined && tag.count > 0 && (
-                            <span className={styles.tagCount}>{tag.count}</span>
-                        )}
-                    </div>
-                );
-            })}
+                        <div
+                            className={styles.tag}
+                            onClick={() => handleTagClick(tag)}
+                            style={{
+                                borderColor: tag.color,
+                                color: tag.color,
+                                backgroundColor: `color-mix(in srgb, var(--tag-background) 90%, ${tag.color})`
+                            }}
+                            title={tag.name}
+                        >
+                            {tag.name}
+                            {tag.count !== undefined && tag.count > 0 && (
+                                <span className={styles.tagCount} style={{ color: tag.color }}>
+                                    {tag.count}
+                                </span>
+                            )}
+                        </div>
+                    </motion.div>
+                ))}
+            </div>
+            <TagCloudBackground tags={tags.map(({ name, color }) => ({ name, color }))} />
         </div>
     );
 };
