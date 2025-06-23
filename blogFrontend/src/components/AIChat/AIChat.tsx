@@ -5,7 +5,7 @@ import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import styles from './AIChat.module.css';
 import { motion } from 'framer-motion';
-import { aiAssistantConfig, generateSystemPrompt } from '@/config/aiAssistant';
+import { generateSystemPrompt } from '@/config/aiAssistant';
 
 /**
  * 消息接口定义
@@ -14,6 +14,7 @@ import { aiAssistantConfig, generateSystemPrompt } from '@/config/aiAssistant';
  * @property type - 消息类型：用户消息或AI回复
  * @property timestamp - 消息时间戳
  */
+
 interface Message {
   id: string;
   content: string;
@@ -92,120 +93,161 @@ const AIChat: React.FC = () => {
    * 发送用户消息并获取AI回复
    */
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim() || isLoading) return;
+      // 阻止表单默认提交行为
+      e.preventDefault();
 
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      content: input.trim(),
-      type: 'user',
-      timestamp: new Date(),
-    };
+      // 检查输入是否为空或正在加载中，如果是则直接返回
+      if (!input.trim() || isLoading) return;
 
-    setMessages(prev => [...prev, userMessage]);
-    setInput('');
-    setIsLoading(true);
-    setError(null);
-    setStreamingMessage('');
-
-    try {
-      const response = await fetch(apiEndpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`
-        },
-        body: JSON.stringify({
-          model: "deepseek-chat",
-          messages: [
-            {
-              role: "system",
-              content: generateSystemPrompt()
-            },
-            ...messages.map(msg => ({
-              role: msg.type === 'user' ? 'user' : 'assistant',
-              content: msg.content
-            })),
-            { role: 'user', content: userMessage.content }
-          ],
-          temperature: 0.7,
-          max_tokens: 2000,
-          stream: true
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const reader = response.body?.getReader();
-      const decoder = new TextDecoder();
-      let buffer = '';
-      let finalContent = '';
-
-      if (!reader) {
-        throw new Error('No reader available');
-      }
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split('\n');
-        buffer = lines.pop() || '';
-
-        for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            const data = line.slice(6);
-            if (data === '[DONE]') {
-              const finalMessage: Message = {
-                id: (Date.now() + 1).toString(),
-                content: finalContent
-                  .replace(/\r\n/g, '\n')
-                  .split('\n')
-                  .map(line => line.trim())
-                  .filter(line => line.length > 0)
-                  .join('\n'),
-                type: 'ai',
-                timestamp: new Date(),
-              };
-              setMessages(prev => [...prev, finalMessage]);
-              setStreamingMessage('');
-              break;
-            }
-
-            try {
-              const parsed = JSON.parse(data);
-              const content = parsed.choices[0]?.delta?.content || '';
-              if (content) {
-                finalContent += content;
-                setStreamingMessage(finalContent
-                  .replace(/\r\n/g, '\n')
-                  .split('\n')
-                  .map(line => line.trim())
-                  .filter(line => line.length > 0)
-                  .join('\n'));
-              }
-            } catch (e) {
-              console.error('Error parsing stream data:', e);
-            }
-          }
-        }
-      }
-    } catch (error) {
-      console.error('AI response error:', error);
-      setError('发生错误，请稍后再试');
-      const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        content: '抱歉，发生了一些错误。请稍后再试。',
-        type: 'ai',
-        timestamp: new Date(),
+      // 创建用户消息对象
+      const userMessage: Message = {
+          id: Date.now().toString(),       // 使用当前时间戳作为唯一ID
+          content: input.trim(),           // 存储去除首尾空格的用户输入
+          type: 'user',                    // 标记消息类型为用户消息
+          timestamp: new Date(),           // 记录当前时间
       };
-      setMessages(prev => [...prev, errorMessage]);
-    } finally {
-      setIsLoading(false);
-    }
+
+      // 将用户消息添加到消息列表
+      setMessages(prev => [...prev, userMessage]);
+      // 清空输入框
+      setInput('');
+      // 设置加载状态为true
+      setIsLoading(true);
+      // 清除之前的错误信息
+      setError(null);
+      // 初始化流式消息为空字符串
+      setStreamingMessage('');
+
+      try {
+          // 向API发送POST请求
+          const response = await fetch(apiEndpoint, {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',      // 设置内容类型为JSON
+                  'Authorization': `Bearer ${apiKey}`     // 添加授权令牌
+              },
+              body: JSON.stringify({                    // 将请求体转为JSON字符串
+                  model: "deepseek-chat",                 // 指定使用的AI模型
+                  messages: [                             // 构建消息历史
+                      {
+                          role: "system",                     // 系统角色消息
+                          content: generateSystemPrompt()     // 生成系统提示
+                      },
+                      ...messages.map(msg => ({             // 映射历史消息
+                          role: msg.type === 'user' ? 'user' : 'assistant', // 确定角色类型
+                          content: msg.content               // 消息内容
+                      })),
+                      { role: 'user', content: userMessage.content } // 当前用户消息
+                  ],
+                  temperature: 0.7,                       // 控制生成随机性的参数
+                  max_tokens: 2000,                       // 限制生成的最大token数
+                  stream: true                            // 启用流式传输
+              })
+          });
+
+          // 检查响应是否成功
+          if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          // 获取可读流的读取器
+          const reader = response.body?.getReader();
+          // 创建文本解码器
+          const decoder = new TextDecoder();
+          // 初始化缓冲区
+          let buffer = '';
+          // 初始化最终内容
+          let finalContent = '';
+
+          // 检查reader是否存在
+          if (!reader) {
+              throw new Error('No reader available');
+          }
+
+          // 无限循环读取流数据
+          while (true) {
+              // 读取数据块
+              const { done, value } = await reader.read();
+              // 如果流结束则退出循环
+              if (done) break;
+
+              // 解码数据并添加到缓冲区
+              buffer += decoder.decode(value, { stream: true });
+              // 按换行符分割缓冲区
+              const lines = buffer.split('\n');
+              // 保留最后不完整的行（如果有）到缓冲区
+              buffer = lines.pop() || '';
+
+              // 处理每一行数据
+              for (const line of lines) {
+                  // 检查是否是数据行
+                  if (line.startsWith('data: ')) {
+                      // 提取实际数据部分
+                      const data = line.slice(6);
+                      // 检查是否是流结束标记
+                      if (data === '[DONE]') {
+                          // 创建最终消息对象
+                          const finalMessage: Message = {
+                              id: (Date.now() + 1).toString(),  // 生成新ID
+                              content: finalContent             // 最终内容
+                                  .replace(/\r\n/g, '\n')         // 统一换行符
+                                  .split('\n')                    // 分割为行数组
+                                  .map(line => line.trim())       // 去除每行首尾空格
+                                  .filter(line => line.length > 0) // 过滤空行
+                                  .join('\n'),                   // 重新组合为字符串
+                              type: 'ai',                       // 标记为AI消息
+                              timestamp: new Date(),            // 记录时间戳
+                          };
+                          // 将最终消息添加到消息列表
+                          setMessages(prev => [...prev, finalMessage]);
+                          // 清空流式消息
+                          setStreamingMessage('');
+                          // 退出循环
+                          break;
+                      }
+
+                      try {
+                          // 解析JSON数据
+                          const parsed = JSON.parse(data);
+                          // 提取增量内容
+                          const content = parsed.choices[0]?.delta?.content || '';
+                          // 如果有内容则处理
+                          if (content) {
+                              // 累积内容
+                              finalContent += content;
+                              // 更新流式消息状态（带格式化）
+                              setStreamingMessage(finalContent
+                                  .replace(/\r\n/g, '\n')         // 统一换行符
+                                  .split('\n')                    // 分割为行
+                                  .map(line => line.trim())        // 去除每行首尾空格
+                                  .filter(line => line.length > 0) // 过滤空行
+                                  .join('\n'));                   // 重新组合
+                          }
+                      } catch (e) {
+                          // 捕获并记录JSON解析错误
+                          console.error('Error parsing stream data:', e);
+                      }
+                  }
+              }
+          }
+      } catch (error) {
+          // 捕获并记录主错误
+          console.error('AI response error:', error);
+          // 设置错误状态
+          setError('发生错误，请稍后再试');
+          // 创建错误消息对象
+          const errorMessage: Message = {
+              id: (Date.now() + 1).toString(),  // 生成新ID
+              content: '抱歉，发生了一些错误。请稍后再试。', // 友好错误信息
+              type: 'ai',                       // 标记为AI消息
+              timestamp: new Date(),            // 记录时间戳
+          };
+          // 将错误消息添加到消息列表
+          setMessages(prev => [...prev, errorMessage]);
+      } finally {
+          // 无论成功失败，最后都取消加载状态
+          setIsLoading(false);
+      }
   };
 
   /**

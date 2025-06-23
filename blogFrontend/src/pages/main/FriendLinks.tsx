@@ -6,16 +6,8 @@ import { useLoading } from "@/hooks/useLoading";
 import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner";
 import Head from "next/head";
 import PageHeader from '../../components/PageHeader/PageHeader';
+import {FriendLinks} from "@/types/FriendLinks";
 
-interface FriendLink {
-    id: number;
-    name: string;
-    url: string;
-    description: string;
-    avatarUrl: string;
-    createdAt?: string;
-    updatedAt?: string;
-}
 
 const SITE_INFO = {
     name: "孤芳不自赏的Blog",
@@ -34,7 +26,7 @@ const REQUIREMENTS = [
 const FriendLinks: React.FC = () => {
     const { isDarkMode } = useTheme();
     const { isLoading } = useLoading();
-    const [friendLinks, setFriendLinks] = useState<FriendLink[]>([]);
+    const [friendLinks, setFriendLinks] = useState<FriendLinks[]>([]);
     const [formData, setFormData] = useState({
         name: '',
         url: '',
@@ -48,7 +40,7 @@ const FriendLinks: React.FC = () => {
         try {
             const response = await FriendLinksAPI.getAllFriendLinks();
             if (Array.isArray(response)) {
-                setFriendLinks(response as FriendLink[]);
+                setFriendLinks(response as FriendLinks[]);
             } else {
                 setFriendLinks([]);
             }
@@ -115,7 +107,9 @@ const FriendLinks: React.FC = () => {
             <div className={styles.friendLinksSection}>
                 {Array.isArray(friendLinks) && friendLinks.length > 0 ? (
                     <div className={styles.friendLinksGrid}>
-                        {friendLinks.map((link) => (
+                        {friendLinks
+                            .filter((link) => link.status === 'approved')
+                            .map((link) => (
                             <a
                                 key={link.id}
                                 href={link.url}

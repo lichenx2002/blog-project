@@ -15,18 +15,17 @@ import com.example.blogbackend.entity.Questions;
  */
 public interface IQuestionsService extends IService<Questions> {
   /**
-   * 获取问题列表（带标签）
+   * 获取问题列表
    *
    * @param page       分页参数
    * @param search     搜索关键词
    * @param difficulty 难度级别
-   * @param tagId      标签ID
    * @return 分页的问题列表
    */
-  Page<QuestionDTO> getQuestionsWithTags(Page<QuestionDTO> page, String search, String difficulty, Integer tagId);
+  Page<QuestionDTO> getQuestionsWithTags(Page<QuestionDTO> page, String search, String difficulty);
 
   /**
-   * 获取问题详情（带标签）
+   * 获取问题详情
    *
    * @param id 问题ID
    * @return 问题详情
@@ -34,11 +33,19 @@ public interface IQuestionsService extends IService<Questions> {
   QuestionDTO getQuestionWithTagsById(Integer id);
 
   /**
-   * 按标签获取问题列表
+   * 点赞问题
    *
-   * @param tagId 标签ID
-   * @param page  分页参数
-   * @return 分页的问题列表
+   * @param id 问题ID
+   * @return 更新后的问题详情
    */
-  Page<QuestionDTO> getQuestionsByTagId(Integer tagId, Page<QuestionDTO> page);
+  QuestionDTO likeQuestion(Integer id);
+
+  /**
+   * 更新问题
+   *
+   * @param id          问题ID
+   * @param questionDTO 问题DTO
+   * @return 更新后的问题详情
+   */
+  QuestionDTO updateQuestion(Integer id, QuestionDTO questionDTO);
 }

@@ -37,7 +37,7 @@ const BulletinBoardManagement: React.FC = () => {
             if (response && response.records) {
                 setMessages(response.records);
                 setFilteredMessages(response.records);
-                setTotal(response.total || 0);
+                setTotal(response.total);
             } else {
                 console.error('Invalid response format:', response);
                 setMessages([]);
@@ -217,8 +217,8 @@ const BulletinBoardManagement: React.FC = () => {
                         姓名
                         {sortField === 'name' && (
                             <span className={styles.sortIcon}>
-                {sortOrder === 'asc' ? '↑' : '↓'}
-              </span>
+                                {sortOrder === 'asc' ? '↑' : '↓'}
+                            </span>
                         )}
                     </div>
                     <div
@@ -228,8 +228,8 @@ const BulletinBoardManagement: React.FC = () => {
                         邮箱
                         {sortField === 'email' && (
                             <span className={styles.sortIcon}>
-                {sortOrder === 'asc' ? '↑' : '↓'}
-              </span>
+                                {sortOrder === 'asc' ? '↑' : '↓'}
+                            </span>
                         )}
                     </div>
                     <div
@@ -239,8 +239,8 @@ const BulletinBoardManagement: React.FC = () => {
                         性别
                         {sortField === 'gender' && (
                             <span className={styles.sortIcon}>
-                {sortOrder === 'asc' ? '↑' : '↓'}
-              </span>
+                                {sortOrder === 'asc' ? '↑' : '↓'}
+                            </span>
                         )}
                     </div>
                     <div
@@ -250,8 +250,8 @@ const BulletinBoardManagement: React.FC = () => {
                         状态
                         {sortField === 'status' && (
                             <span className={styles.sortIcon}>
-                {sortOrder === 'asc' ? '↑' : '↓'}
-              </span>
+                                {sortOrder === 'asc' ? '↑' : '↓'}
+                            </span>
                         )}
                     </div>
                     <div className={styles.tableHeaderCell}>内容</div>
@@ -265,11 +265,11 @@ const BulletinBoardManagement: React.FC = () => {
                             <div className={styles.tableCell}>{message.email}</div>
                             <div className={styles.tableCell}>{message.gender}</div>
                             <div className={styles.tableCell}>
-                <span
-                    className={`${styles.statusTag} ${styles[message.status || 'pending']}`}
-                >
-                  {statusMap[message.status || 'pending'].label}
-                </span>
+                                <span
+                                    className={`${styles.statusTag} ${styles[message.status || 'pending']}`}
+                                >
+                                    {statusMap[message.status || 'pending'].label}
+                                </span>
                             </div>
                             <div className={styles.tableCell}>{message.content}</div>
                             <div className={styles.tableCell}>
@@ -309,6 +309,7 @@ const BulletinBoardManagement: React.FC = () => {
                 pageSize={pageSize}
                 total={total}
                 onPageChange={setCurrentPage}
+                onPageSizeChange={setPageSize}
             />
 
             {modalVisible && (

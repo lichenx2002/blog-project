@@ -20,7 +20,7 @@ const More: React.FC = () => {
             title: '友链',
             description: '交换友情链接，互相支持',
             icon: <FaLink />,
-            path: '/main/FriendshipLink',
+            path: '/main/FriendLinks',
             color: '#4ECDC4'
         },
         {

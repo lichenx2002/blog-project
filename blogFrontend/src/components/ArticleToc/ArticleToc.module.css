@@ -265,6 +265,7 @@
 @media (min-width: 768px) and (max-width: 1180px) {
   .tocContainer {
     left: 1rem;
+    top: 50%;
   }
 }
 

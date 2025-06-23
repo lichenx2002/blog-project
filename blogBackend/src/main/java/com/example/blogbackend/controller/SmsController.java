@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/sms")
-@CrossOrigin
+@CrossOrigin(origins = "*", allowedHeaders = "*", allowCredentials = "false")
 public class SmsController {
 
   @Autowired

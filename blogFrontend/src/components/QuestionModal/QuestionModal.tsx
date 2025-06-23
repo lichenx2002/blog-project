@@ -1,8 +1,7 @@
 import React from 'react';
 import { Question } from '@/types/Question';
-import { Tag } from '@/types/Tags';
 import styles from './QuestionModal.module.css';
-import { FaTimes, FaEye, FaHeart, FaTag } from 'react-icons/fa';
+import { FaTimes, FaEye, FaHeart } from 'react-icons/fa';
 
 interface QuestionModalProps {
   question: Question | null;
@@ -52,17 +51,6 @@ const QuestionModal: React.FC<QuestionModalProps> = ({ question, onClose }) => {
             {question.content}
           </div>
         </div>
-
-        {question.tags && question.tags.length > 0 && (
-          <div className={styles.tags}>
-            <FaTag className={styles.tagIcon} />
-            {question.tags.map((tag: Tag) => (
-              <span key={tag.id} className={styles.tag} style={{ backgroundColor: `${tag.color}40` }}>
-                {tag.name}
-              </span>
-            ))}
-          </div>
-        )}
       </div>
     </div>
   );

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Slf4j
 @RestController
-@RequestMapping("/questions")
+@RequestMapping("/api/questions")
 public class QuestionsController {
 
   @Autowired
@@ -27,37 +27,34 @@ public class QuestionsController {
   /**
    * 获取面试题列表
    *
+   * @param current    当前页码
    * @param size       每页大小
    * @param search     搜索关键词
-   * @param difficulty 难度等级
-   * @param tagId      标签ID
-   * @return 面试题列表
+   * @param difficulty 难度级别
+   * @return 分页的面试题列表
    */
   @GetMapping
   public Result<Page<QuestionDTO>> getQuestions(
       @RequestParam(defaultValue = "1") Integer current,
       @RequestParam(defaultValue = "10") Integer size,
       @RequestParam(required = false) String search,
-      @RequestParam(required = false) String difficulty,
-      @RequestParam(required = false) Integer tagId) {
+      @RequestParam(required = false) String difficulty) {
     try {
-      log.info("获取问题列表，页码：{}，每页大小：{}，搜索词：{}，难度：{}，标签ID：{}",
-          current, size, search, difficulty, tagId);
+      log.info("获取问题列表，页码：{}，每页大小：{}，搜索词：{}，难度：{}",
+          current, size, search, difficulty);
 
       Page<QuestionDTO> page = new Page<>(current, size);
-      Page<QuestionDTO> result = questionsService.getQuestionsWithTags(page, search, difficulty, tagId);
-
-      log.info("查询成功，总记录数：{}", result.getTotal());
+      Page<QuestionDTO> result = questionsService.getQuestionsWithTags(page, search, difficulty);
       return Result.success(result);
     } catch (Exception e) {
-      log.error("获取问题列表失败：{}", e.getMessage(), e);
+      log.error("获取问题列表失败，错误：{}", e.getMessage(), e);
       return Result.error("获取问题列表失败：" + e.getMessage());
     }
   }
 
   /**
    * 获取面试题详情
-   * 
+   *
    * @param id 面试题ID
    * @return 面试题详情
    */
@@ -77,26 +74,77 @@ public class QuestionsController {
   }
 
   /**
-   * 获取面试题列表
-   * 
-   * @param tagId   标签ID
-   * @param current 页码
-   * @param size    每页大小
-   * @return 面试题列表
+   * 点赞面试题
+   *
+   * @param id 面试题ID
+   * @return 更新后的面试题
    */
-  @GetMapping("/tag/{tagId}")
-  public Result<Page<QuestionDTO>> getQuestionsByTagId(
-      @PathVariable Integer tagId,
-      @RequestParam(defaultValue = "1") Integer current,
-      @RequestParam(defaultValue = "10") Integer size) {
+  @PostMapping("/{id}/like")
+  public Result<QuestionDTO> likeQuestion(@PathVariable Integer id) {
     try {
-      log.info("按标签获取问题列表，标签ID：{}，页码：{}，每页大小：{}", tagId, current, size);
-      Page<QuestionDTO> page = new Page<>(current, size);
-      Page<QuestionDTO> result = questionsService.getQuestionsByTagId(tagId, page);
-      return Result.success(result);
+      log.info("点赞问题，ID：{}", id);
+      QuestionDTO question = questionsService.likeQuestion(id);
+      return Result.success(question);
     } catch (Exception e) {
-      log.error("按标签获取问题列表失败，标签ID：{}，错误：{}", tagId, e.getMessage(), e);
-      return Result.error("按标签获取问题列表失败：" + e.getMessage());
+      log.error("点赞问题失败，ID：{}，错误：{}", id, e.getMessage(), e);
+      return Result.error("点赞问题失败：" + e.getMessage());
+    }
+  }
+
+  /**
+   * 更新面试题
+   *
+   * @param id          面试题ID
+   * @param questionDTO 面试题数据
+   * @return 更新后的面试题
+   */
+  @PutMapping("/{id}")
+  public Result<QuestionDTO> updateQuestion(@PathVariable Integer id, @RequestBody QuestionDTO questionDTO) {
+    try {
+      log.info("收到更新问题请求，ID：{}，请求体：{}", id, questionDTO);
+
+      if (questionDTO == null) {
+        log.error("请求体为空");
+        return Result.error("请求体不能为空");
+      }
+
+      if (id == null) {
+        log.error("问题ID为空");
+        return Result.error("问题ID不能为空");
+      }
+
+      QuestionDTO updatedQuestion = questionsService.updateQuestion(id, questionDTO);
+      if (updatedQuestion == null) {
+        log.error("问题不存在，ID：{}", id);
+        return Result.error("问题不存在");
+      }
+
+      log.info("问题更新成功，ID：{}，更新后的数据：{}", id, updatedQuestion);
+      return Result.success(updatedQuestion);
+    } catch (Exception e) {
+      log.error("更新问题失败，ID：{}，错误：{}", id, e.getMessage(), e);
+      return Result.error("更新问题失败：" + e.getMessage());
+    }
+  }
+
+  /**
+   * 删除面试题
+   *
+   * @param id 面试题ID
+   * @return 操作结果
+   */
+  @DeleteMapping("/{id}")
+  public Result<?> deleteQuestion(@PathVariable Integer id) {
+    try {
+      log.info("删除问题，ID：{}", id);
+      boolean removed = questionsService.removeById(id);
+      if (!removed) {
+        return Result.error("问题不存在");
+      }
+      return Result.success(null);
+    } catch (Exception e) {
+      log.error("删除问题失败，ID：{}，错误：{}", id, e.getMessage(), e);
+      return Result.error("删除问题失败：" + e.getMessage());
     }
   }
 }

@@ -12,8 +12,10 @@
 }
 
 .modalContent {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 阴影效果 */
-  background: rgba(255, 255, 255, 0.2); /* 半透明背景 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* 阴影效果 */
+  background: var(--background);
+  /* 半透明背景 */
   border-radius: 12px;
   padding: 2rem;
   width: 90%;
@@ -104,36 +106,6 @@
 .questionContent {
   white-space: pre-wrap;
   word-break: break-word;
-}
-
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  align-items: center;
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--border-color);
-}
-
-.tagIcon {
-  color: var(--text);
-  font-size: 1rem;
-}
-
-.tag {
-  padding: 0.3rem 0.8rem;
-  border-radius: 12px;
-  font-size: 0.8rem;
-  color: white;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  transition: transform 0.2s ease;
-}
-
-.tag:hover {
-  transform: scale(1.05);
 }
 
 /* 滚动条样式 */

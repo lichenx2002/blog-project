@@ -46,7 +46,6 @@ const Archive: React.FC = () => {
             try {
                 setError(null);
                 const response = await withLoading(ArticlesAPI.getArticles()) as ApiResponse;
-                console.log('API Response:', response);
 
                 if (!response) {
                     throw new Error('Empty response from server');

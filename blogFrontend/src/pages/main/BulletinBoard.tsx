@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { BulletinBoardAPI } from '@/api/BulletinBoardAPI';
 import type { BulletinBoardProps } from '@/types/BulletinBoard';
 import styles from './BulletinBoard/BulletinBoard.module.css';
@@ -8,12 +8,17 @@ import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner";
 import Head from "next/head";
 import PageHeader from '../../components/PageHeader/PageHeader';
 import registerStyles from '@/components/Register/Register.module.css';
+import { http } from '@/utils/request';
+import { ApiResponse } from '@/types/common';
 
 const BulletinBoard: React.FC = () => {
     const { isDarkMode } = useTheme();
     const { isLoading, withLoading } = useLoading();
     const [messages, setMessages] = useState<BulletinBoardProps[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [avatarFile, setAvatarFile] = useState<File | null>(null);
+    const [avatarPreview, setAvatarPreview] = useState<string>('');
+    const fileInputRef = useRef<HTMLInputElement>(null);
     const [formData, setFormData] = useState<BulletinBoardProps>({
         id: 0,
         name: '',
@@ -27,26 +32,21 @@ const BulletinBoard: React.FC = () => {
     // 获取留言列表
     const fetchMessages = async () => {
         try {
-            console.log('开始获取留言列表...');
             const response = await withLoading(BulletinBoardAPI.getMessages(1));
-            console.log('获取留言列表响应:', response);
 
             if (response && response.records) {
-                console.log('获取到的留言数据:', response.records);
                 setMessages(response.records);
             } else {
-                console.log('没有获取到留言数据，完整响应:', response);
                 setMessages([]);
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error('获取留言失败:', error);
-            alert('获取留言失败');
+            alert(error.message || '获取留言失败');
         }
     };
 
     // 初始加载留言
     useEffect(() => {
-        console.log('组件加载，开始获取初始留言...');
         fetchMessages();
     }, []);
 
@@ -67,6 +67,19 @@ const BulletinBoard: React.FC = () => {
         }));
     };
 
+    // 处理头像上传
+    const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setAvatarFile(file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setAvatarPreview(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     // 处理表单提交
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -84,20 +97,27 @@ const BulletinBoard: React.FC = () => {
         }
 
         try {
-            console.log('开始提交留言，数据:', formData);
+            let avatarUrl = '';
+            if (avatarFile) {
+                const formData = new FormData();
+                formData.append('file', avatarFile);
+                const response = await http.post<{ url: string }>('/bulletinboard/upload-avatar', formData);
+                if (response && response.url) {
+                    avatarUrl = response.url;
+                } else {
+                    throw new Error('头像上传失败');
+                }
+            }
 
-            const response = await BulletinBoardAPI.createMessage(formData);
-            console.log('提交留言响应:', response);
+            const messageData = {
+                ...formData,
+                avatar: avatarUrl
+            };
+            const response = await BulletinBoardAPI.createMessage(messageData);
 
-            // 修改判断条件，只要请求成功（状态码200）就认为是成功的
             if (response) {
-                // 先显示成功消息
                 alert('留言成功！');
-
-                // 然后关闭模态框
                 setIsModalOpen(false);
-
-                // 清空表单
                 setFormData({
                     id: 0,
                     name: '',
@@ -107,22 +127,54 @@ const BulletinBoard: React.FC = () => {
                     createdAt: new Date().toISOString(),
                     updatedAt: new Date().toISOString()
                 });
-
-                // 最后获取最新留言列表
-                console.log('开始获取最新留言列表...');
+                setAvatarFile(null);
+                setAvatarPreview('');
                 await fetchMessages();
+            } else {
+                throw new Error('留言失败');
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error('提交留言失败:', error);
-            alert('留言失败，请稍后重试');
+            alert(error.message || '留言失败，请稍后重试');
         }
+    };
+
+    // 渲染头像
+    const renderAvatar = (item: BulletinBoardProps) => {
+        if (item.avatar) {
+            return <img src={item.avatar} alt={item.name} className={styles.avatarImage} />;
+        }
+        return (
+            <div className={`${styles.avatarText} ${item.gender === '小姐姐' ? styles.female : styles.male}`}>
+                {item.name.charAt(0)}
+            </div>
+        );
+    };
+
+    // 渲染回复部分
+    const renderReply = (item: BulletinBoardProps) => {
+        if (!item.reply) return null;
+        return (
+            <div className={styles.replySection}>
+                <div className={styles.replyHeader}>
+                    <span className={styles.replyIcon}>💌</span>
+                    <span>孤芳不自赏的回复</span>
+                </div>
+                <div className={styles.replyContent}>{item.reply}</div>
+                {item.replyTime && (
+                    <div className={styles.replyTime}>
+                        {new Date(item.replyTime).toLocaleString()}
+                    </div>
+                )}
+            </div>
+        );
     };
 
     return (
         <div className={styles.container}>
             <Head>
                 <title>浮世三千，难得一见 | 在此镌刻你的心语</title>
-                <meta name="description" />
+                <meta name="description" content="在这里，每一句留言都是一次心灵的对话，每一次交流都是一次情感的共鸣。让我们以文字为媒，以真诚为笔，共同书写属于我们的故事。" />
             </Head>
             {isLoading && <LoadingSpinner />}
             <PageHeader
@@ -136,24 +188,41 @@ const BulletinBoard: React.FC = () => {
                     <p className={styles.emptyMessage}>暂无留言</p>
                 ) : (
                     <div className={styles.messagesGrid}>
-                        {messages.map((item, index) => (
-                            <div
-                                key={index}
-                                className={`${styles.messageItem} ${item.gender === '小姐姐' ? styles.female : styles.male}`}
-                            >
-                                <div className={styles.messageHeader}>
-                                    <span className={styles.messageName}>{item.name}</span>
-                                    <span
-                                        className={`${styles.messageGender} ${item.gender === '小姐姐' ? styles.female : styles.male}`}>
-                                        {item.gender}
-                                    </span>
-                                    <span className={styles.messageTime}>
-                                        {new Date(item.createdAt!).toLocaleString()}
-                                    </span>
+                        {messages
+                            .filter(item => item.status === 'approved')
+                            .sort((a, b) => {
+                                // 首先按置顶状态排序
+                                if (a.isPinned && !b.isPinned) return -1;
+                                if (!a.isPinned && b.isPinned) return 1;
+                                // 然后按创建时间排序
+                                return new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime();
+                            })
+                            .map((item, index) => (
+                                <div
+                                    key={index}
+                                    className={`${styles.messageItem} ${item.gender === '小姐姐' ? styles.female : styles.male} ${item.isPinned ? (item.gender === '小姐姐' ? styles.pinned : styles.pinnedBlue) : ''}`}
+                                >
+                                    <div className={styles.messageHeader}>
+                                        <div className={`${styles.avatar} ${item.gender === '小姐姐' ? styles.female : styles.male}`}>
+                                            {renderAvatar(item)}
+                                        </div>
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+                                            <span className={styles.messageName}>
+                                                {item.name}
+                                                {item.isPinned && <span className={styles.pinIcon}>📌</span>}
+                                            </span>
+                                            <span className={`${styles.messageGender} ${item.gender === '小姐姐' ? styles.female : styles.male}`}>
+                                                {item.gender}
+                                            </span>
+                                        </div>
+                                        <span className={styles.messageTime}>
+                                            🗓️{new Date(item.createdAt!).toLocaleString()}
+                                        </span>
+                                    </div>
+                                    <p className={styles.messageContent}>{item.content}</p>
+                                    {renderReply(item)}
                                 </div>
-                                <p className={styles.messageContent}>{item.content}</p>
-                            </div>
-                        ))}
+                            ))}
                     </div>
                 )}
             </div>
@@ -180,6 +249,28 @@ const BulletinBoard: React.FC = () => {
                         ×
                     </button>
                     <form onSubmit={handleSubmit} className={registerStyles.form}>
+                        <div className={registerStyles.inputGroup}>
+                            <label className={registerStyles.label}>头像</label>
+                            <div className={styles.avatarUpload}>
+                                <div
+                                    className={`${styles.avatarPreview} ${formData.gender === '小姐姐' ? styles.female : styles.male}`}
+                                    onClick={() => fileInputRef.current?.click()}
+                                >
+                                    {avatarPreview ? (
+                                        <img src={avatarPreview} alt="预览" />
+                                    ) : (
+                                        <span>点击上传</span>
+                                    )}
+                                </div>
+                                <input
+                                    type="file"
+                                    ref={fileInputRef}
+                                    onChange={handleAvatarChange}
+                                    accept="image/*"
+                                    style={{ display: 'none' }}
+                                />
+                            </div>
+                        </div>
                         <div className={registerStyles.inputGroup}>
                             <label className={registerStyles.label}>你的名字</label>
                             <input

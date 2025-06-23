@@ -4,9 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.blogbackend.entity.Bulletinboard;
 import com.example.blogbackend.service.IBulletinboardService;
+import com.example.blogbackend.utils.CosUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -27,6 +29,9 @@ public class BulletinboardController {
   @Autowired
   private IBulletinboardService bulletinboardService;
 
+  @Autowired
+  private CosUtil cosUtil;
+
   /**
    * 创建留言
    */
@@ -35,6 +40,7 @@ public class BulletinboardController {
     message.setCreatedAt(LocalDateTime.now());
     message.setUpdatedAt(LocalDateTime.now());
     message.setStatus("approved"); // 默认待审核状态
+    message.setIsPinned(false); // 默认不置顶
     bulletinboardService.save(message);
     return ResponseEntity.ok(message);
   }
@@ -55,7 +61,8 @@ public class BulletinboardController {
       queryWrapper.eq("status", status);
     }
 
-    queryWrapper.orderByDesc("created_at");
+    // 先按置顶排序，再按创建时间排序
+    queryWrapper.orderByDesc("is_pinned").orderByDesc("created_at");
     Page<Bulletinboard> result = bulletinboardService.page(page, queryWrapper);
 
     Map<String, Object> response = new HashMap<>();
@@ -83,16 +90,28 @@ public class BulletinboardController {
    * 更新留言
    */
   @PutMapping("/{id}")
-  public ResponseEntity<?> updateMessage(@PathVariable Integer id, @RequestBody Bulletinboard message) {
+  public ResponseEntity<?> updateMessage(
+      @PathVariable Integer id,
+      @RequestBody Bulletinboard message) {
+
     Bulletinboard existingMessage = bulletinboardService.getById(id);
     if (existingMessage == null) {
       return ResponseEntity.notFound().build();
     }
 
-    message.setId(id);
-    message.setUpdatedAt(LocalDateTime.now());
-    bulletinboardService.updateById(message);
-    return ResponseEntity.ok(message);
+    // 更新消息内容
+    existingMessage.setName(message.getName());
+    existingMessage.setEmail(message.getEmail());
+    existingMessage.setGender(message.getGender());
+    existingMessage.setContent(message.getContent());
+    existingMessage.setStatus(message.getStatus());
+    existingMessage.setIsPinned(message.getIsPinned());
+    existingMessage.setReply(message.getReply());
+    existingMessage.setAvatar(message.getAvatar());
+    existingMessage.setUpdatedAt(LocalDateTime.now());
+
+    bulletinboardService.updateById(existingMessage);
+    return ResponseEntity.ok(existingMessage);
   }
 
   /**
@@ -143,5 +162,20 @@ public class BulletinboardController {
 
     bulletinboardService.updateById(message);
     return ResponseEntity.ok(message);
+  }
+
+  /**
+   * 上传头像
+   */
+  @PostMapping("/upload-avatar")
+  public ResponseEntity<?> uploadAvatar(@RequestParam("file") MultipartFile file) {
+    try {
+      String avatarUrl = cosUtil.uploadFile(file);
+      Map<String, String> response = new HashMap<>();
+      response.put("url", avatarUrl);
+      return ResponseEntity.ok(response);
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body("头像上传失败：" + e.getMessage());
+    }
   }
 }

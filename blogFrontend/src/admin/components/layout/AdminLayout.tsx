@@ -6,11 +6,25 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { adminRoutes } from '@/admin/routes/admin-routes';
 import { motion, AnimatePresence } from 'framer-motion';
+import Watermark from '@/components/Watermark/Watermark';
 
 const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(() => {
+    // 从 localStorage 中获取保存的状态，如果没有则默认为 false
+    if (typeof window !== 'undefined') {
+      const savedState = localStorage.getItem('sidebarCollapsed');
+      return savedState ? JSON.parse(savedState) : false;
+    }
+    return false;
+  });
   const router = useRouter();
   const pathname = router.pathname;
+
+  // 更新 collapsed 状态时同时保存到 localStorage
+  const handleCollapse = (newState: boolean) => {
+    setCollapsed(newState);
+    localStorage.setItem('sidebarCollapsed', JSON.stringify(newState));
+  };
 
   const getIcon = (path: string) => {
     switch (path) {
@@ -73,24 +87,24 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <path d="M22 12c0 2-1 4-2 5" />
           </svg>
         );
-        case '/admin/questions':
-            return (
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="12" cy="12" r="10" />
-                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-                    <line x1="12" y1="17" x2="12.01" y2="17" />
-                </svg>
-            );
-        case '/admin/bulletinboard':
-            return (
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                    <line x1="3" y1="9" x2="21" y2="9" />
-                    <line x1="9" y1="21" x2="9" y2="9" />
-                    <path d="M12 12h4" />
-                    <path d="M12 16h4" />
-                </svg>
-            );
+      case '/admin/questions':
+        return (
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+            <line x1="12" y1="17" x2="12.01" y2="17" />
+          </svg>
+        );
+      case '/admin/bulletinboard':
+        return (
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+            <line x1="3" y1="9" x2="21" y2="9" />
+            <line x1="9" y1="21" x2="9" y2="9" />
+            <path d="M12 12h4" />
+            <path d="M12 16h4" />
+          </svg>
+        );
       case '/admin/settings':
         return (
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -142,7 +156,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <div className={styles.headerLeft}>
             <button
               className={styles.collapseBtn}
-              onClick={() => setCollapsed(!collapsed)}
+              onClick={() => handleCollapse(!collapsed)}
               title={collapsed ? "展开菜单" : "收起菜单"}
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -173,21 +187,27 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             </button>
           </div>
         </header>
-
-        {/* 内容区 */}
-        <main className={styles.content}>
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={pathname}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.2 }}
-            >
-              {children}
-            </motion.div>
-          </AnimatePresence>
-        </main>
+          {/* 内容区 */}
+        <Watermark
+          content="孤芳不自赏"
+          opacity={0.2} // 设置水印透明度
+          gap={[150, 150]} // 设置水印间隔
+          debug={true}
+        >
+          <main className={styles.content}>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={pathname}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.2 }}
+              >
+                {children}
+              </motion.div>
+            </AnimatePresence>
+          </main>
+        </Watermark>
 
         {/* 底部 */}
         <footer className={styles.footer}>

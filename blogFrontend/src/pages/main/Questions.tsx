@@ -31,7 +31,6 @@ const Questions: React.FC = () => {
   const [filteredQuestions, setFilteredQuestions] = useState<Question[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('');
-  const [selectedTag, setSelectedTag] = useState<number | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState<Question | null>(null);
   const { isLoading, withLoading } = useLoading();
@@ -47,11 +46,8 @@ const Questions: React.FC = () => {
           page: 1,
           size: 50, // 可以根据需要调整
           search: debouncedSearchQuery,
-          difficulty: selectedDifficulty as 'easy' | 'medium' | 'hard' | undefined,
-          tagId: selectedTag || undefined
+          difficulty: selectedDifficulty as 'easy' | 'medium' | 'hard' | undefined
         }));
-
-        console.log('API Response:', response); // 添加日志以查看响应结构
 
         if (response && response.data) {
           const { records } = response.data as unknown as QuestionListResponse;
@@ -59,23 +55,20 @@ const Questions: React.FC = () => {
             setQuestions(records);
             setFilteredQuestions(records);
           } else {
-            console.error('Invalid records format:', records);
             setQuestions([]);
             setFilteredQuestions([]);
           }
         } else {
-          console.error('Invalid response format:', response);
           setQuestions([]);
           setFilteredQuestions([]);
         }
       } catch (error) {
-        console.error('Error fetching questions:', error);
         setQuestions([]);
         setFilteredQuestions([]);
       }
     };
     fetchQuestions();
-  }, [debouncedSearchQuery, selectedDifficulty, selectedTag]);
+  }, [debouncedSearchQuery, selectedDifficulty]);
 
   // 使用 useMemo 优化过滤和排序逻辑
   const filteredAndSortedQuestions = useMemo(() => {
@@ -97,13 +90,6 @@ const Questions: React.FC = () => {
       );
     }
 
-    // 标签过滤
-    if (selectedTag) {
-      result = result.filter(question =>
-        question.tags.some(tag => tag.id === selectedTag)
-      );
-    }
-
     // 排序
     switch (sortBy) {
       case 'newest':
@@ -121,7 +107,7 @@ const Questions: React.FC = () => {
     }
 
     return result;
-  }, [questions, localSearchQuery, selectedDifficulty, selectedTag, sortBy]);
+  }, [questions, localSearchQuery, selectedDifficulty, sortBy]);
 
   // 修改搜索处理函数
   const handleSearch = (value: string) => {
@@ -134,7 +120,6 @@ const Questions: React.FC = () => {
     setSearchQuery('');
     setLocalSearchQuery('');
     setSelectedDifficulty('');
-    setSelectedTag(null);
     setSortBy('newest');
   };
 
@@ -206,7 +191,6 @@ const Questions: React.FC = () => {
             aria-label="筛选"
           >
             <FiFilter />
-            筛选
           </button>
         </div>
         <div className={styles.sortOptions}>
@@ -245,7 +229,7 @@ const Questions: React.FC = () => {
               </div>
             </div>
 
-            {(selectedDifficulty || selectedTag || searchQuery) && (
+            {(selectedDifficulty || searchQuery) && (
               <button
                 className={styles.clearFilters}
                 onClick={handleClearFilters}
@@ -281,24 +265,9 @@ const Questions: React.FC = () => {
                   onClick={() => handleQuestionClick(question)}
                 >
                   <div className={styles.questionHeader}>
-                    <span className={styles.difficulty}>
+                    <span className={styles.difficulty} data-difficulty={question.difficulty}>
                       {getDifficultyLabel(question.difficulty)}
                     </span>
-                    <div className={styles.tags}>
-                      {question.tags.map(tag => (
-                        <span
-                          key={tag.id}
-                          className={styles.tag}
-                          style={{ backgroundColor: `${tag.color}40` }}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setSelectedTag(tag.id);
-                          }}
-                        >
-                          {tag.name}
-                        </span>
-                      ))}
-                    </div>
                   </div>
                   <h3 className={styles.questionTitle}>{question.title}</h3>
                   <p className={styles.questionContent}>

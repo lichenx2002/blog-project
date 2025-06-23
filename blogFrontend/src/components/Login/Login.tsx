@@ -112,11 +112,9 @@ const Login: React.FC = () => {
         break;
       case 'github':
         // 处理 GitHub 登录
-        console.log('GitHub login');
         break;
       case 'google':
         // 处理 Google 登录
-        console.log('Google login');
         break;
     }
   };
@@ -136,7 +134,6 @@ const Login: React.FC = () => {
           phone: formData.phone.trim(),
           code: formData.code.trim()
         };
-        console.log('Sending SMS login request with data:', loginData);
         await dispatch(login(loginData));
       } catch (error) {
         console.error('SMS login failed:', error);
@@ -153,7 +150,6 @@ const Login: React.FC = () => {
           username: formData.username.trim(),
           password: formData.password.trim()
         };
-        console.log('Sending login request with data:', loginData);
         await dispatch(login(loginData));
       } catch (error) {
         console.error('Login failed:', error);

@@ -340,9 +340,7 @@ const Comments: React.FC<CommentsProps> = ({ articleId }) => {
     try {
       setLoading(true);
       setError(null);
-      console.log('Fetching comments for article:', articleId);
       const response = await CommentsAPI.getCommentsByArticleId(articleId);
-      console.log('Received comments:', response);
       setComments(response);
     } catch (err) {
       console.error('Error fetching comments:', err);

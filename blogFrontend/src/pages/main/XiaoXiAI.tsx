@@ -5,7 +5,6 @@ import Head from "next/head";
 import { useAuth } from '@/hooks/useAuth';
 import { useContext } from 'react';
 import { LoginModalContext } from '@/context/LoginModalContext';
-import { motion } from "framer-motion";
 import PageHeader from '../../components/PageHeader/PageHeader';
 
 const XiaoXiAI: React.FC = () => {

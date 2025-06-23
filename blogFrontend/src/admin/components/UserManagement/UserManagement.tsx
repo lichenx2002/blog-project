@@ -17,9 +17,7 @@ const UserManagement: React.FC = () => {
     const fetchUsers = async () => {
         try {
             setError(null);
-            console.log('开始获取用户列表...');
             const response = await AuthAPI.getUserList();
-            console.log('获取用户列表响应:', response);
             if (response.code === 200) {
                 setUsers(response.data);
             } else {

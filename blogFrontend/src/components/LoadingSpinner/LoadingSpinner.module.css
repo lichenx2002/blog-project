@@ -62,16 +62,3 @@
     font-weight: 500;
     text-shadow: 0 2px 8px rgba(255, 204, 51, 0.12);
 }
-
-[data-theme="dark"] .dot {
-    background: linear-gradient(135deg, #3a8dde 0%, #6dd5ed 100%);
-    box-shadow: 0 2px 12px 0 rgba(61, 141, 222, 0.18);
-}
-[data-theme="dark"] .dot:nth-child(2) {
-    background: linear-gradient(135deg, #ffb347 0%, #ffcc33 100%);
-    box-shadow: 0 2px 12px 0 rgba(255, 204, 51, 0.18);
-}
-[data-theme="dark"] .dot:nth-child(3) {
-    background: linear-gradient(135deg, #ff6a88 0%, #ffccf1 100%);
-    box-shadow: 0 2px 12px 0 rgba(255, 106, 136, 0.18);
-}

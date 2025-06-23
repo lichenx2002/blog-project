@@ -97,7 +97,7 @@ const NavbarCenter: React.FC = () => {
                 >
                     <Link
                         href={item.path}
-                        className={`${styles.navLink} ${pathname === item.path ? styles.activeLink : ''}`}
+                        prefetch={true}
                     >
                         {item.name}
                     </Link>

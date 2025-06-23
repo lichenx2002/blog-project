@@ -42,7 +42,6 @@ const Articles: React.FC = () => {
             .replace(/\*.*?\*/g, '') // 移除斜体
             .replace(/\n/g, ' ') // 将换行替换为空格
             .trim();
-
         return plainText.slice(0, 200) + (plainText.length > 200 ? '...' : '');
     };
 
@@ -52,16 +51,12 @@ const Articles: React.FC = () => {
             try {
                 setError(null);
                 const response = await withLoading(ArticlesAPI.getArticles());
-                console.log('API Response:', response);
-
                 if (!response) {
                     throw new Error('Empty response from server');
                 }
-
                 if (!Array.isArray(response.data)) {
                     throw new Error(`Invalid data format: ${JSON.stringify(response)}`);
                 }
-
                 // 处理文章数据
                 const processedData = response.data
                     .filter((item: any) => item.status === 'published')
@@ -97,14 +92,12 @@ const Articles: React.FC = () => {
                 });
             }
         };
-
         fetchArticles();
     }, []);
 
     // 处理搜索和排序
     useEffect(() => {
         let result = [...articles];
-
         // 搜索过滤
         if (searchQuery) {
             const query = searchQuery.toLowerCase();
@@ -112,14 +105,12 @@ const Articles: React.FC = () => {
                 article.title.toLowerCase().includes(query)
             );
         }
-
         // 排序
         result.sort((a, b) => {
             const dateA = new Date(a.createdAt).getTime();
             const dateB = new Date(b.createdAt).getTime();
             return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
         });
-
         setFilteredArticles(result);
         // 重置可见文章
         setVisibleArticles(result.slice(0, ITEMS_PER_PAGE));
@@ -129,7 +120,6 @@ const Articles: React.FC = () => {
     // 加载更多文章
     const loadMore = useCallback(() => {
         if (!hasMore) return;
-
         const currentLength = visibleArticles.length;
         const nextArticles = filteredArticles.slice(currentLength, currentLength + ITEMS_PER_PAGE);
         setVisibleArticles(prev => [...prev, ...nextArticles]);
@@ -141,17 +131,14 @@ const Articles: React.FC = () => {
         if (observer.current) {
             observer.current.disconnect();
         }
-
         observer.current = new IntersectionObserver(entries => {
             if (entries[0].isIntersecting && hasMore) {
                 loadMore();
             }
         });
-
         if (loadingRef.current) {
             observer.current.observe(loadingRef.current);
         }
-
         return () => {
             if (observer.current) {
                 observer.current.disconnect();
@@ -187,9 +174,7 @@ const Articles: React.FC = () => {
         e.stopPropagation(); // 阻止事件冒泡
 
         try {
-            console.log('Sending like request for article:', articleId); // 添加日志
             const response = await ArticlesAPI.likeArticle(Number(articleId));
-            console.log('Like response:', response); // 添加日志
 
             if (!response) {
                 throw new Error('点赞失败');

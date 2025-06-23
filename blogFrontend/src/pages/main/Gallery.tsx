@@ -35,7 +35,7 @@ const Gallery: React.FC = () => {
     // 添加空状态显示
     const renderEmptyState = () => (
         <div className={styles.emptyState}>
-            <LoadingSpinner/>
+            <LoadingSpinner />
         </div>
     );
 
@@ -131,12 +131,12 @@ const Gallery: React.FC = () => {
                 const data = await GalleryAPI.getGalleries();
                 const galleryData = Array.isArray(data) ? data : [];
                 const transformedData = galleryData
-                    .filter((item :any) => item.category !== '证书')
+                    .filter((item: any) => item.category !== '证书')
                     .map((item: any) => ({
-                    ...item,
-                    date: item.date,
-                    coverImage: item.coverImage ? item.coverImage.replace(/\/uploads\/\/uploads\//g, '/uploads/') : '/default-image.jpg'
-                }));
+                        ...item,
+                        date: item.date,
+                        coverImage: item.coverImage ? item.coverImage.replace(/\/uploads\/\/uploads\//g, '/uploads/') : '/default-image.jpg'
+                    }));
                 setGalleries(transformedData);
             } catch (err) {
                 setError(err instanceof Error ? err.message : 'An error occurred');
@@ -154,6 +154,9 @@ const Gallery: React.FC = () => {
                 <title>时光印记 | 记录生活的美好瞬间</title>
                 <meta name="description" content="用照片记录生活，用影像珍藏回忆，这里是属于我们的时光印记" />
             </Head>
+
+            {/* 添加照片瀑布流背景 */}
+
             <PageHeader
                 headerText="记录时光"
                 introText="每一张照片，都是时光的碎片。在这里，我们用镜头捕捉生活的瞬间，用影像定格记忆的温度。愿这些画面能唤起你心底的共鸣，让美好的回忆永远鲜活。"

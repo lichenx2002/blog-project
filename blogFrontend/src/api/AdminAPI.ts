@@ -10,12 +10,6 @@ export interface AdminLoginResponse {
 
 export const AdminAPI = {
     login: async (credentials: { username: string; password: string }) => {
-        console.log('Attempting admin login with credentials:', {
-            username: credentials.username,
-            // 出于安全考虑，不打印密码
-            hasPassword: !!credentials.password
-        });
-
         try {
             const response = await http.post<AdminLoginResponse>('/admin/login', credentials);
             if ('error' in response) {

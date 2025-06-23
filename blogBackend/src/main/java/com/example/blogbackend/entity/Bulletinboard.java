@@ -73,5 +73,14 @@ public class Bulletinboard implements Serializable {
      */
     private LocalDateTime replyTime;
 
+    /**
+     * 是否置顶
+     */
+    private Boolean isPinned;
+
+    /**
+     * 头像URL
+     */
+    private String avatar;
 
 }

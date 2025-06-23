@@ -336,7 +336,7 @@
 /* 笔记本屏幕 (1440px以下) */
 @media (max-width: 90rem) {
     .container {
-        margin-top: 10rem;
+        margin-top: 5rem;
     }
 
     .typewriter1 {
@@ -356,7 +356,7 @@
 /* 平板设备 (768px-1024px) */
 @media (min-width: 48rem) and (max-width: 64rem) {
     .container {
-        margin-top: 8rem;
+        margin-top: 2rem;
     }
 
     .showTop {

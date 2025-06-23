@@ -20,7 +20,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/tags")
-@CrossOrigin
+@CrossOrigin(origins = "*", allowedHeaders = "*", allowCredentials = "false")
 public class TagsController {
 
     private final ITagsService tagsService;

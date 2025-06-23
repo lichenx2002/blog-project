@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { QuestionsAPI } from '@/api/QuestionsAPI';
 import type { Question } from '@/types/Question';
+import type { QuestionsFormData } from './QuestionsForm';
 import styles from './QuestionsManagement.module.css';
 import Pagination from "@/admin/components/ui/Pagination/Pagination";
 import QuestionsForm from './QuestionsForm';
@@ -37,8 +38,7 @@ const QuestionsManagement: React.FC = () => {
                 page: currentPage,
                 size: pageSize,
                 search: searchText,
-                difficulty: undefined,
-                tagId: undefined
+                difficulty: undefined
             });
 
             if (response && response.data) {
@@ -48,20 +48,16 @@ const QuestionsManagement: React.FC = () => {
                     setFilteredQuestions(records);
                     setTotal(response.data.total || 0);
                 } else {
-                    console.error('Invalid records format:', records);
                     setQuestions([]);
                     setFilteredQuestions([]);
                     setTotal(0);
                 }
             } else {
-                console.error('Invalid response format:', response);
                 setQuestions([]);
                 setFilteredQuestions([]);
                 setTotal(0);
             }
         } catch (error: any) {
-            console.error('Failed to fetch questions:', error);
-            alert(error.message || '获取面试题列表失败');
             setQuestions([]);
             setFilteredQuestions([]);
             setTotal(0);
@@ -75,20 +71,42 @@ const QuestionsManagement: React.FC = () => {
         setModalVisible(true);
     };
 
-    const handleSubmit = async (values: Question) => {
+    const handleSubmit = async (values: QuestionsFormData) => {
         try {
+            setLoading(true);
             if (editingQuestion) {
-                await QuestionsAPI.updateQuestion(editingQuestion.id, values);
-                alert('更新成功');
+                const updateData = {
+                    ...values,
+                    views: editingQuestion.views || 0,
+                    likes: editingQuestion.likes || 0
+                };
+                const response = await QuestionsAPI.updateQuestion(editingQuestion.id, updateData);
+                if (response.data) {
+                    alert('更新成功');
+                    setModalVisible(false);
+                    fetchQuestions();
+                } else {
+                    throw new Error('更新失败');
+                }
             } else {
-                await QuestionsAPI.createQuestion(values);
-                alert('创建成功');
+                const createData = {
+                    ...values,
+                    views: 0,
+                    likes: 0
+                };
+                const response = await QuestionsAPI.createQuestion(createData);
+                if (response.data) {
+                    alert('创建成功');
+                    setModalVisible(false);
+                    fetchQuestions();
+                } else {
+                    throw new Error('创建失败');
+                }
             }
-            setModalVisible(false);
-            fetchQuestions();
         } catch (e: any) {
-            console.error('操作失败:', e);
             alert(e.message || '操作失败');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -146,6 +164,11 @@ const QuestionsManagement: React.FC = () => {
         hardQuestions: questions?.filter(q => q.difficulty === 'hard').length || 0,
     };
 
+    const handleEdit = (question: Question) => {
+        setEditingQuestion(question);
+        setModalVisible(true);
+    };
+
     return (
         <div className={styles.container}>
             <div className={styles.header}>
@@ -182,7 +205,7 @@ const QuestionsManagement: React.FC = () => {
                 <input
                     type="text"
                     className={styles.searchInput}
-                    placeholder="搜索标题、内容或分类..."
+                    placeholder="搜索标题或内容..."
                     value={searchText}
                     onChange={(e) => setSearchText(e.target.value)}
                     onKeyDown={(e) => {
@@ -229,17 +252,6 @@ const QuestionsManagement: React.FC = () => {
                     </div>
                     <div
                         className={`${styles.tableHeaderCell} ${styles.sortable}`}
-                        onClick={() => handleSort('category')}
-                    >
-                        分类
-                        {sortField === 'category' && (
-                            <span className={styles.sortIcon}>
-                                {sortOrder === 'asc' ? '↑' : '↓'}
-                            </span>
-                        )}
-                    </div>
-                    <div
-                        className={`${styles.tableHeaderCell} ${styles.sortable}`}
                         onClick={() => handleSort('views')}
                     >
                         浏览量
@@ -275,14 +287,13 @@ const QuestionsManagement: React.FC = () => {
                                     {difficultyMap[question.difficulty].label}
                                 </span>
                             </div>
-                            <div className={styles.tableCell}>{question.category}</div>
                             <div className={styles.tableCell}>{question.views}</div>
                             <div className={styles.tableCell}>{question.likes}</div>
                             <div className={styles.tableCell}>
                                 <div className={styles.actionButtons}>
                                     <button
                                         className={styles.primaryButton}
-                                        onClick={() => openModal(question)}
+                                        onClick={() => handleEdit(question)}
                                         style={{ padding: '4px 8px' }}
                                     >
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -317,6 +328,7 @@ const QuestionsManagement: React.FC = () => {
                 pageSize={pageSize}
                 total={total}
                 onPageChange={setCurrentPage}
+                onPageSizeChange={setPageSize}
             />
 
             {modalVisible && (
@@ -334,7 +346,12 @@ const QuestionsManagement: React.FC = () => {
                             </button>
                         </div>
                         <QuestionsForm
-                            initialValues={editingQuestion || undefined}
+                            initialValues={editingQuestion ? {
+                                title: editingQuestion.title,
+                                content: editingQuestion.content,
+                                difficulty: editingQuestion.difficulty as 'easy' | 'medium' | 'hard',
+                                status: editingQuestion.status as 'draft' | 'published'
+                            } : undefined}
                             onSubmit={handleSubmit}
                         />
                     </div>

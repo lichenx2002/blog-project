@@ -51,7 +51,7 @@
     padding: 1.125rem 1.125rem 0.75rem 1.125rem;
     border-bottom-left-radius: 1.125rem;
     border-bottom-right-radius: 1.125rem;
-    font-family: "ComicSansMS",sans-serif;
+    font-family: "ComicSansMS", sans-serif;
     /* 横线效果 */
     background-image: repeating-linear-gradient(to bottom,
             #fffbe6 0px,

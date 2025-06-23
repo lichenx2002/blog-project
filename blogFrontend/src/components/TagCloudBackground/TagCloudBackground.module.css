@@ -8,6 +8,13 @@
     pointer-events: none;
     z-index: -1;
     background: transparent;
+    perspective: 1000px;
+}
+
+.tagItem {
+    pointer-events: auto;
+    cursor: pointer;
+    transform-style: preserve-3d;
 }
 
 .badge {
@@ -36,19 +43,63 @@
     box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     /* shadow-sm */
     transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    transform-origin: center center;
 }
 
+.badgeHovered {
+    background-color: var(--tag-background-color-hover, rgba(255, 255, 255, 0.2));
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px) rotateX(15deg) rotateY(15deg);
+}
 
-.badge:hover {
-    transform: scale(1.05);
-    box-shadow: 0 2px 4px 0 rgb(0 0 0 / 0.1);
+.badge::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+    transform: translateZ(10px);
+    pointer-events: none;
+}
+
+.sparkle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) translateZ(20px);
+    color: #ffd700;
+    animation: sparkle 1s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes sparkle {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) translateZ(20px) scale(0.5);
+    }
+
+    50% {
+        opacity: 1;
+        transform: translate(-50%, -50%) translateZ(20px) scale(1.2);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) translateZ(20px) scale(0.5);
+    }
 }
 
 .row {
     display: flex;
     margin: 2rem 0;
     width: 100%;
-
+    opacity: 0;
+    transform: translateY(20px);
 }
 
 .rowLeft {
@@ -73,7 +124,7 @@
         margin: 1.5rem 0;
     }
 
-    .rowLeft, {
+    .rowLeft {
         gap: 2rem;
     }
 }
@@ -90,7 +141,7 @@
         margin: 1rem 0;
     }
 
-    .rowLeft, {
+    .rowLeft {
         gap: 1.5rem;
     }
 }

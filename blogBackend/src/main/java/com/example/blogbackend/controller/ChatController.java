@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/chat")
-@CrossOrigin
+@CrossOrigin(origins = "*", allowedHeaders = "*", allowCredentials = "false")
 public class ChatController {
     @Autowired
     private IChatSessionService chatSessionService;

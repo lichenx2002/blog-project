@@ -5,6 +5,7 @@ export interface FriendLinks {
     name: string;
     url: string;
     avatarUrl: string;
+    status: 'approved' | 'pending' ;
     description: string;
     createdAt: string;
     updatedAt: string;

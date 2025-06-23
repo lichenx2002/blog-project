@@ -3,6 +3,7 @@
   padding: 0.5rem 0;
   margin-top: 0.75rem;
   border-top: 1px solid var(--border-color);
+  z-index: 2;
 }
 
 .footer.light {
@@ -175,6 +176,35 @@
   opacity: 0.7;
   border-top: 1px solid var(--border-color);
 }
+
+.serviceProviders {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.3rem;
+  margin: 0.5rem 0;
+  line-height: 1.5;
+}
+
+.serviceProviders a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  color: #999;
+  text-decoration: none;
+  transition: opacity 0.3s;
+}
+
+.serviceProviders a:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+.mainBrand img {
+  margin-right: 0.3rem;
+}
+
 
 .beian {
   margin-top: 0.15rem;
@@ -381,4 +411,28 @@
   .beian {
     font-size: 0.8rem;
   }
+}
+
+.performanceMonitor {
+  position: absolute;
+  left: 1rem;
+  bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.performanceMonitor:hover {
+  opacity: 1;
+}
+
+.performanceIcon {
+  font-size: 0.9rem;
 }

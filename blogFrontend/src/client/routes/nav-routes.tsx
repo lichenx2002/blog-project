@@ -2,6 +2,7 @@
 import dynamic from 'next/dynamic';
 import Home from '@/pages/main/Home';
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner';
+import React from "react";
 
 const Gallery = dynamic(() => import('@/pages/main/Gallery'), {
     loading: () => <LoadingSpinner />
@@ -39,7 +40,6 @@ const FriendLinks = dynamic(() => import('@/pages/main/FriendLinks'), {
 const Questions = dynamic(() => import('@/pages/main/Questions'), {
     loading: () => <LoadingSpinner />
 })
-
 
 interface Route {
     id: number;
@@ -148,6 +148,7 @@ export const navRoutesItem: Route[] = [
                 ssr: true,
                 showInNav: false
             }
+
         ]
     }
 ];

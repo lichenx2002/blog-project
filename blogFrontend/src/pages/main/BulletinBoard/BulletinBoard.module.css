@@ -1,184 +1,157 @@
 /* blogFrontend/src/pages/main/BulletinBoard/BulletinBoard.module.css */
 
 .container {
-  max-width: 75rem;
-  padding: 2rem;
-  margin: 4.375rem auto 0;
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
-  animation: fadeIn 0.8s ease-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(1.25rem);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* 留言列表容器 */
-.messageList {
-  width: 100%;
-  max-width: 75rem;
+  max-width: 1200px;
   margin: 0 auto;
-}
-
-.messageList h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 2rem;
-  text-align: center;
-  width: 100%;
-  display: block;
+  padding: 1.5rem;
+  min-height: 100vh;
   position: relative;
 }
 
-.messageList h2 {
-  color: var(--text);
-  text-align: center;
-  width: 100%;
-  font-family: 'ZiHun', serif;
+.messageList {
+  margin-top: 1.5rem;
 }
 
-.messageList h1::after {
-  content: '';
-  position: absolute;
-  bottom: -0.5rem;
-  left: 0;
-  width: 100%;
-  height: 0.125rem;
-  background: var(--text);
-  opacity: 0.2;
-}
-
-/* 留言网格容器 */
 .messagesGrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  row-gap: 3rem;
-  column-gap: 1rem;
-  margin-bottom: 4rem;
-  position: relative;
-  padding: 1rem 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
 }
 
-/* 留言卡片样式 */
 .messageItem {
-  background: var(--bg-secondary);
-  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
   padding: 1.2rem;
-  transition: all 0.3s ease;
-  border: 0.0625rem solid var(--border-color);
+  box-shadow: 0 4px 20px rgba(31, 38, 135, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
+  height: 270px;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  min-height: 10rem;
-}
-
-.messageItem:hover {
-  transform: translateY(-0.25rem);
-  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
 }
 
 .messageItem.male {
-  background: rgba(24, 144, 255, 0.05);
-  border-left: 0.1875rem solid #1890ff;
+  border: 2px solid #4facfe;
+  background: linear-gradient(135deg, rgba(79, 172, 254, 0.05), rgba(167, 233, 255, 0.05));
 }
 
 .messageItem.female {
-  background: rgba(235, 47, 150, 0.05);
-  border-left: 0.1875rem solid #eb2f96;
+  border: 2px solid #ff8e8e;
+  background: linear-gradient(135deg, rgba(255, 142, 142, 0.05), rgba(255, 182, 185, 0.05));
 }
 
-/* 留言头部样式 */
+.messageItem:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(31, 38, 135, 0.15);
+}
+
 .messageHeader {
   display: flex;
   align-items: center;
   gap: 0.8rem;
-  position: relative;
-  flex-wrap: wrap;
+  margin-bottom: 0.8rem;
+}
+
+.avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: white;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.avatar.male {
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+  border: 2px solid rgba(79, 172, 254, 0.3);
+}
+
+.avatar.female {
+  background: linear-gradient(135deg, #ff8e8e, #ffb6b9);
+  border: 2px solid rgba(255, 142, 142, 0.3);
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.avatarText {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .messageName {
+  font-size: 0.85rem;
   font-weight: 600;
   color: var(--text);
-  font-size: 0.95rem;
-  position: relative;
-  padding-left: 1.2rem;
-}
-
-.messageName::before {
-  content: '👤';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 0.9rem;
-}
-
-.messageGender {
-  padding: 0.2rem 0.6rem;
-  border-radius: 0.25rem;
-  font-size: 0.8rem;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.messageGender.male {
-  background: rgba(24, 144, 255, 0.1);
-  color: #1890ff;
-}
-
-.messageGender.female {
-  background: rgba(235, 47, 150, 0.1);
-  color: #eb2f96;
-}
-
-.messageTime {
-  color: var(--text);
-  font-size: 0.8rem;
   display: flex;
   align-items: center;
   gap: 0.4rem;
+}
+
+.messageGender {
+  font-size: 0.75rem;
+  width: 2.5rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.messageGender.male {
+  background: linear-gradient(135deg, rgba(79, 172, 254, 0.15), rgba(0, 242, 254, 0.15));
+  color: #4facfe;
+  border: 1px solid rgba(79, 172, 254, 0.2);
+}
+
+.messageGender.female {
+  background: linear-gradient(135deg, rgba(255, 142, 142, 0.15), rgba(255, 182, 185, 0.15));
+  color: #ff8e8e;
+  border: 1px solid rgba(255, 142, 142, 0.2);
+}
+
+.messageTime {
+  font-size: 0.7rem;
+  color: #666;
   margin-left: auto;
+  background: rgba(0, 0, 0, 0.03);
+  padding: 0.2rem 0.6rem;
+  border-radius: 10px;
 }
 
-.messageTime::before {
-  content: '🕒';
-  font-size: 0.8rem;
-}
-
-/* 留言内容样式 */
 .messageContent {
+  font-size: 0.85rem;
+  line-height: 1.4;
   color: var(--text);
-  line-height: 1.6;
-  font-size: 0.95rem;
+  margin: 0.8rem 0;
   white-space: pre-wrap;
-  word-break: break-word;
-  position: relative;
-  padding: 1rem;
-  background: var(--bg-tertiary);
-  border-radius: 0.375rem;
-  transition: all 0.3s ease;
-  margin-top: 0.5rem;
+  padding: 0.4rem;
+  border-radius: 8px;
   flex: 1;
-  max-height: 12.5rem;
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: var(--border-color) transparent;
+  scrollbar-color: rgba(162, 89, 255, 0.3) transparent;
 }
 
 .messageContent::-webkit-scrollbar {
-  width: 0.375rem;
+  width: 4px;
 }
 
 .messageContent::-webkit-scrollbar-track {
@@ -186,266 +159,253 @@
 }
 
 .messageContent::-webkit-scrollbar-thumb {
-  background-color: var(--border-color);
-  border-radius: 0.1875rem;
+  background-color: rgba(162, 89, 255, 0.3);
+  border-radius: 4px;
 }
 
-.messageItem.male .messageContent {
-  background: rgba(24, 144, 255, 0.05);
+.replySection {
+  margin-top: 0.8rem;
+  padding-top: 0.8rem;
+  border-top: 1px dashed rgba(0, 0, 0, 0.08);
 }
 
-.messageItem.female .messageContent {
-  background: rgba(235, 47, 150, 0.05);
+.replyHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+  font-weight: 500;
+  font-size: 0.8rem;
 }
 
-.messageContent:hover {
-  background: var(--bg-hover);
+.replyIcon {
+  color: #a259ff;
+  font-size: 1.2rem;
+  animation: float 3s ease-in-out infinite;
 }
 
-/* 添加留言按钮 */
+.replyContent {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--text);
+  background: linear-gradient(135deg, rgba(162, 89, 255, 0.05), rgba(251, 234, 255, 0.05));
+  padding: 0.8rem;
+  border-radius: 8px;
+  margin-top: 0.5rem;
+  border: 1px solid rgba(162, 89, 255, 0.1);
+}
+
+.replyTime {
+  font-size: 0.7rem;
+  color: #888;
+  margin-top: 0.5rem;
+  text-align: right;
+  font-style: italic;
+}
+
+.pinIcon {
+  color: #a259ff;
+  margin-left: 0.4rem;
+  animation: pinPulse 2s infinite;
+}
+
+.pinned {
+  border: 2px solid #ff8e8e;
+  background: linear-gradient(135deg, rgba(255, 142, 142, 0.03), rgba(255, 182, 185, 0.05));
+  transform: scale(1.01);
+  animation: borderGlowPink 2s ease-in-out infinite;
+}
+
+.pinnedBlue {
+  border: 2px solid #8e8eff;
+  background: linear-gradient(135deg, rgba(142, 142, 255, 0.03), rgba(185, 182, 255, 0.05));
+  transform: scale(1.01);
+  animation: borderGlowBlue 2s ease-in-out infinite;
+}
+
+@keyframes borderGlowPink {
+  0% {
+    border-color: #ff8e8e;
+    box-shadow: 0 0 5px rgba(255, 142, 142, 0.5);
+  }
+
+  50% {
+    border-color: #ffb6b9;
+    box-shadow: 0 0 15px rgba(255, 182, 185, 0.8);
+  }
+
+  100% {
+    border-color: #ff8e8e;
+    box-shadow: 0 0 5px rgba(255, 142, 142, 0.5);
+  }
+}
+
+@keyframes borderGlowBlue {
+  0% {
+    border-color: #8e8eff;
+    box-shadow: 0 0 5px rgba(142, 142, 255, 0.5);
+  }
+
+  50% {
+    border-color: #b6b9ff;
+    box-shadow: 0 0 15px rgba(182, 185, 255, 0.8);
+  }
+
+  100% {
+    border-color: #8e8eff;
+    box-shadow: 0 0 5px rgba(142, 142, 255, 0.5);
+  }
+}
+
 .addMessageButton {
   position: fixed;
-  bottom: 30rem;
-  right: 2rem;
-  width: 3.125rem;
-  height: 3.125rem;
-  border-radius: 1.5625rem;
-  background: var(--primary-color);
-  border: none;
-  color: white;
-  font-size: 1.5rem;
-  cursor: pointer;
-  box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.15);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-/* 替换留言表单弹窗样式 */
-.modalOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: transparent;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  animation: fadeIn 0.2s ease;
-}
-
-.modalContent {
-  position: relative;
-  width: 20rem;
-  padding: 1.5rem;
-  border-radius: 0.75rem;
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(1.25rem);
-  box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.08);
-  z-index: 10000;
-  animation: slideUp 0.3s ease;
-}
-
-.closeButton {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  background: none;
-  border: none;
-  font-size: 1.25rem;
-  color: var(--text);
-  cursor: pointer;
-  padding: 0.25rem;
-  line-height: 1;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  transition: all 0.1s ease;
-  caret-color: transparent;
-}
-
-.closeButton:hover {
-  transform: rotate(90deg);
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 0 1rem;
-}
-
-.formGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.formLabel {
-  font-size: 0.875rem;
-  color: var(--text);
-  font-weight: 500;
-}
-
-.formInput,
-.formTextarea {
-  padding: 0.625rem 0.75rem;
-  border: 0.0625rem solid var(--border-color);
-  border-radius: 0.375rem;
-  background: rgba(255, 255, 255, 0.15);
-  color: var(--text);
-  font-size: 0.875rem;
-  width: 100%;
-  transition: all 0.2s ease;
-  caret-color: var(--text);
-}
-
-.formTextarea {
-  min-height: 7.5rem;
-  resize: vertical;
-}
-
-.formInput:focus,
-.formTextarea:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  background: rgba(255, 255, 255, 0.15);
-}
-
-.submitButton {
-  width: 100%;
-  padding: 0.625rem;
+  background: linear-gradient(135deg, #4facfe, #a259ff);
   border: none;
-  border-radius: 0.375rem;
-  background: var(--primary-color);
-  color: var(--text);
-  font-size: 0.875rem;
-  font-weight: 500;
+  box-shadow: 0 4px 20px rgba(31, 38, 135, 0.2);
   cursor: pointer;
-  transition: all 0.2s ease;
-  margin: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 100;
 }
 
-.submitButton:hover {
-  background: rgba(255, 255, 255, 0.1);
-  transform: translateY(-1px);
+.addMessageButton:hover {
+  transform: translateY(-5px) rotate(180deg);
+  box-shadow: 0 6px 25px rgba(31, 38, 135, 0.25);
 }
 
-.submitButton:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-  transform: none;
+.emptyMessage {
+  text-align: center;
+  color: #666;
+  font-size: 1.1rem;
+  margin: 2rem 0;
+  font-style: italic;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
+.avatarUpload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.avatarPreview {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(31, 38, 135, 0.1);
+}
+
+.avatarPreview.male {
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+  border: 2px solid rgba(79, 172, 254, 0.3);
+}
+
+.avatarPreview.female {
+  background: linear-gradient(135deg, #ff8e8e, #ffb6b9);
+  border: 2px solid rgba(255, 142, 142, 0.3);
+}
+
+.avatarPreview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.avatarPreview span {
+  color: white;
+  font-size: 0.9rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
   }
 
-  to {
-    opacity: 1;
+  50% {
+    transform: translateY(-3px);
+  }
+
+  100% {
+    transform: translateY(0px);
   }
 }
 
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(0.625rem);
+@keyframes pinPulse {
+  0% {
+    transform: scale(1) rotate(0deg);
   }
 
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* 响应式调整 */
-@media (max-width: 48rem) {
-  .container {
-    padding: 1rem;
-    gap: 2rem;
+  50% {
+    transform: scale(1.1) rotate(5deg);
   }
 
-  .messagesGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .messageItem {
-    padding: 1rem;
-  }
-
-  .messageContent {
-    padding: 0.8rem;
-    font-size: 0.9rem;
-  }
-
-  .modalContent {
-    padding: 1rem;
-    max-width: 25rem;
-  }
-
-  .formInput,
-  .formTextarea {
-    padding: 0.4375rem 0.625rem;
-  }
-}
-
-/* 响应式布局 */
-@media (max-width: 75rem) {
-  .messagesGrid {
-    grid-template-columns: repeat(2, 1fr);
+  100% {
+    transform: scale(1) rotate(0deg);
   }
 }
 
 @media (max-width: 768px) {
   .container {
     padding: 1rem;
-    gap: 2rem;
   }
 
   .messagesGrid {
     grid-template-columns: 1fr;
-  }
-
-  .messageList h2 {
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
+    gap: 1rem;
   }
 
   .messageItem {
     padding: 1rem;
   }
 
-  .form {
-    padding: 1.5rem;
+  .addMessageButton {
+    bottom: 1rem;
+    right: 1rem;
+    width: 45px;
+    height: 45px;
   }
+}
 
-  .formRow {
-    grid-template-columns: 1fr;
-    gap: 0.8rem;
-  }
-
-  .radioGroup {
-    gap: 1rem;
-  }
-
-  .radioLabel {
-    padding: 0.4rem 0.8rem;
+@media (max-width: 75rem) {
+  .messagesGrid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 /* 暗色模式适配 */
 .dark .messageItem {
   background: rgba(33, 33, 33, 0.8);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
-.dark .form {
-  background: rgba(33, 33, 33, 0.8);
-}
-
-.dark .formInput,
-.dark .formTextarea {
+.dark .messageContent {
   background: rgba(255, 255, 255, 0.05);
-  color: var(--text);
+  color: #e0e0e0;
+}
+
+.dark .messageTime {
+  background: rgba(255, 255, 255, 0.1);
+  color: #aaa;
+}
+
+.dark .replyContent {
+  background: linear-gradient(135deg, rgba(162, 89, 255, 0.1), rgba(251, 234, 255, 0.05));
+  border-color: rgba(162, 89, 255, 0.2);
+  color: #e0e0e0;
 }

@@ -151,7 +151,6 @@ const ArticleDetail: React.FC = () => {
 
     const handleExportOutline = (format: 'markdown' | 'pdf') => {
         // 实现导出大纲逻辑
-        console.log(`Exporting outline in ${format} format`);
     };
 
     const handleResultClick = (index: number) => {
@@ -180,7 +179,7 @@ const ArticleDetail: React.FC = () => {
             </Link>
         </motion.div>
     );
-
+    
     // 文章不存在状态UI
     if (!article) return (
         <motion.div
@@ -188,7 +187,7 @@ const ArticleDetail: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
         >
-            <p>文章不存在</p>
+            <p>正在加载中...</p>
             <Link href="/main/Articles" className={styles.backLink}>
                 返回文章列表
             </Link>
@@ -311,7 +310,7 @@ const ArticleDetail: React.FC = () => {
                                 <h1
                                     id={props.children?.toString().toLowerCase().replace(/\s+/g, '-')}
                                     className={styles.heading}
-                                    style={{ fontFamily: "'ZiHun', sans-serif" }}
+                                    style={{ fontFamily: "'Noto Sans SC', 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', sans-serif" }}
                                     {...props}
                                 />
                             ),
@@ -319,7 +318,7 @@ const ArticleDetail: React.FC = () => {
                                 <h2
                                     id={props.children?.toString().toLowerCase().replace(/\s+/g, '-')}
                                     className={styles.heading}
-                                    style={{ fontFamily: "'ZiHun', sans-serif" }}
+                                    style={{ fontFamily: "'Noto Sans SC', 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', sans-serif" }}
                                     {...props}
                                 />
                             ),
@@ -327,7 +326,7 @@ const ArticleDetail: React.FC = () => {
                                 <h3
                                     id={props.children?.toString().toLowerCase().replace(/\s+/g, '-')}
                                     className={styles.heading}
-                                    style={{ fontFamily: "'ZiHun', sans-serif" }}
+                                    style={{ fontFamily: "'Noto Sans SC', 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', sans-serif" }}
                                     {...props}
                                 />
                             ),
@@ -335,7 +334,7 @@ const ArticleDetail: React.FC = () => {
                                 <h4
                                     id={props.children?.toString().toLowerCase().replace(/\s+/g, '-')}
                                     className={styles.heading}
-                                    style={{ fontFamily: "'ZiHun', sans-serif" }}
+                                    style={{ fontFamily: "'Noto Sans SC', 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', sans-serif" }}
                                     {...props}
                                 />
                             ),
@@ -343,7 +342,7 @@ const ArticleDetail: React.FC = () => {
                                 <h5
                                     id={props.children?.toString().toLowerCase().replace(/\s+/g, '-')}
                                     className={styles.heading}
-                                    style={{ fontFamily: "'ZiHun', sans-serif" }}
+                                    style={{ fontFamily: "'Noto Sans SC', 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', sans-serif" }}
                                     {...props}
                                 />
                             ),
@@ -351,20 +350,50 @@ const ArticleDetail: React.FC = () => {
                                 <h6
                                     id={props.children?.toString().toLowerCase().replace(/\s+/g, '-')}
                                     className={styles.heading}
-                                    style={{ fontFamily: "'ZiHun', sans-serif" }}
+                                    style={{ fontFamily: "'Noto Sans SC', 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', sans-serif" }}
                                     {...props}
                                 />
                             ),
                             // 段落样式
-                            p: ({ node, ...props }) => <p className="article-content-text-size" {...props} />,
+                            p: ({ node, ...props }) => (
+                                <p
+                                    className="article-content-text-size"
+                                    style={{ fontFamily: "'Noto Serif SC', 'SimSun', 'STSong', serif" }}
+                                    {...props}
+                                />
+                            ),
 
                             //列表样式
-                            ul: ({ node, ...props }) => <ul className={styles.list} style={{ fontFamily: "'ZiHun', sans-serif" }} {...props} />,
-                            ol: ({ node, ...props }) => <ol className={styles.list} style={{ fontFamily: "'ZiHun', sans-serif" }} {...props} />,
-                            li: ({ node, ...props }) => <li className="article-content-text-size" {...props} />,
+                            ul: ({ node, ...props }) => (
+                                <ul
+                                    className={styles.list}
+                                    style={{ fontFamily: "'Noto Serif SC', 'SimSun', 'STSong', serif" }}
+                                    {...props}
+                                />
+                            ),
+                            ol: ({ node, ...props }) => (
+                                <ol
+                                    className={styles.list}
+                                    style={{ fontFamily: "'Noto Serif SC', 'SimSun', 'STSong', serif" }}
+                                    {...props}
+                                />
+                            ),
+                            li: ({ node, ...props }) => (
+                                <li
+                                    className="article-content-text-size"
+                                    style={{ fontFamily: "'Noto Serif SC', 'SimSun', 'STSong', serif" }}
+                                    {...props}
+                                />
+                            ),
 
                             // 引用样式
-                            blockquote: ({ node, ...props }) => <blockquote className="article-content-text-size" {...props} />,
+                            blockquote: ({ node, ...props }) => (
+                                <blockquote
+                                    className="article-content-text-size"
+                                    style={{ fontFamily: "'Noto Serif SC', 'SimSun', 'STSong', serif" }}
+                                    {...props}
+                                />
+                            ),
 
                             // 代码块处理
                             code: ({ node, className, children, ...props }) => {

@@ -36,6 +36,8 @@ public class Friendlinks implements Serializable {
 
     private String description;
 
+    private String status;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;

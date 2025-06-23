@@ -8,31 +8,65 @@ const difficultyMap: Record<string, { label: string; color: string }> = {
     hard: { label: '困难', color: '#F44336' },
 };
 
-interface QuestionsFormProps {
-    initialValues?: Partial<Question>;
-    onSubmit?: (values: Question) => void;
+export interface QuestionsFormData {
+    title: string;
+    content: string;
+    difficulty: 'easy' | 'medium' | 'hard';
+    status: 'draft' | 'published';
 }
 
-const QuestionsForm: React.FC<QuestionsFormProps> = ({ initialValues, onSubmit }) => {
-    const [formData, setFormData] = useState<Partial<Question>>({
+interface QuestionsFormProps {
+    initialValues?: {
+        title?: string;
+        content?: string;
+        difficulty?: 'easy' | 'medium' | 'hard';
+        status?: 'draft' | 'published';
+    };
+    onSubmit?: (values: QuestionsFormData) => void;
+}
+
+const QuestionsForm: React.FC<QuestionsFormProps> = ({
+    initialValues,
+    onSubmit
+}) => {
+    const [formData, setFormData] = useState<QuestionsFormData>({
         title: '',
         content: '',
         difficulty: 'medium',
-        category: '',
         status: 'draft',
         ...initialValues
     });
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const [isDifficultyOpen, setIsDifficultyOpen] = useState(false);
+    const [isStatusOpen, setIsStatusOpen] = useState(false);
+
+    useEffect(() => {
+        if (initialValues) {
+            setFormData(prev => ({
+                ...prev,
+                ...initialValues
+            }));
+        }
+    }, [initialValues]);
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
+    const handleSelectChange = (name: string, value: string) => {
+        setFormData(prev => ({ ...prev, [name]: value }));
+        if (name === 'difficulty') setIsDifficultyOpen(false);
+        if (name === 'status') setIsStatusOpen(false);
+    };
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (onSubmit) {
-            onSubmit(formData as Question);
+        if (!formData.title || !formData.content || !formData.difficulty || !formData.status) {
+            alert('请填写所有必填字段');
+            return;
         }
+        onSubmit?.(formData);
     };
 
     return (
@@ -65,47 +99,58 @@ const QuestionsForm: React.FC<QuestionsFormProps> = ({ initialValues, onSubmit }
             <div className={styles.formItemRow}>
                 <div className={styles.formItem}>
                     <label className={styles.formLabel}>难度</label>
-                    <select
-                        name="difficulty"
-                        value={formData.difficulty}
-                        onChange={handleInputChange}
-                        className={styles.select}
-                        required
-                    >
-                        {Object.entries(difficultyMap).map(([key, { label }]) => (
-                            <option key={key} value={key}>
-                                {label}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-
-                <div className={styles.formItem}>
-                    <label className={styles.formLabel}>分类</label>
-                    <input
-                        type="text"
-                        name="category"
-                        value={formData.category}
-                        onChange={handleInputChange}
-                        className={styles.input}
-                        placeholder="输入分类..."
-                        required
-                    />
+                    <div className={styles.select}>
+                        <div
+                            className={styles.selectSelector}
+                            onClick={() => setIsDifficultyOpen(!isDifficultyOpen)}
+                            style={{ color: difficultyMap[formData.difficulty].color }}
+                        >
+                            {difficultyMap[formData.difficulty].label}
+                        </div>
+                        {isDifficultyOpen && (
+                            <div className={styles.selectDropdown}>
+                                {Object.entries(difficultyMap).map(([key, { label, color }]) => (
+                                    <div
+                                        key={key}
+                                        className={`${styles.selectOption} ${formData.difficulty === key ? styles.selected : ''}`}
+                                        onClick={() => handleSelectChange('difficulty', key)}
+                                        style={{ color }}
+                                    >
+                                        {label}
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
 
             <div className={styles.formItem}>
                 <label className={styles.formLabel}>状态</label>
-                <select
-                    name="status"
-                    value={formData.status}
-                    onChange={handleInputChange}
-                    className={styles.select}
-                    required
-                >
-                    <option value="draft">草稿</option>
-                    <option value="published">已发布</option>
-                </select>
+                <div className={styles.select}>
+                    <div
+                        className={styles.selectSelector}
+                        onClick={() => setIsStatusOpen(!isStatusOpen)}
+                    >
+                        {formData.status === 'draft' ? '草稿' : '已发布'}
+                    </div>
+                    {isStatusOpen && (
+                        <div className={styles.selectDropdown}>
+                            <div
+                                className={`${styles.selectOption} ${formData.status === 'draft' ? styles.selected : ''}`}
+                                onClick={() => handleSelectChange('status', 'draft')}
+                            >
+                                草稿
+                            </div>
+                            <div
+                                className={`${styles.selectOption} ${formData.status === 'published' ? styles.selected : ''}`}
+                                onClick={() => handleSelectChange('status', 'published')}
+                            >
+                                已发布
+                            </div>
+                        </div>
+                    )}
+                </div>
             </div>
 
             <div className={styles.formFooter}>

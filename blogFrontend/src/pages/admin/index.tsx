@@ -95,10 +95,6 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    console.log('Current stats:', stats);
-  }, [stats]);
-
   return (
     <AdminRouteGuard>
       <AdminLayout>

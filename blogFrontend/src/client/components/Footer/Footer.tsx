@@ -4,10 +4,58 @@ import { useTheme } from '@/hooks/useTheme';
 import { ArticlesAPI } from '@/api/ArticlesAPI';
 import { GalleryAPI } from '@/api/GalleryAPI';
 import { Article } from '@/types/Article';
-import { FaGithub, FaWeixin, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaGithub, FaWeixin, FaEnvelope, FaMapMarkerAlt, FaCloud, FaTachometerAlt } from 'react-icons/fa';
 import { SiBilibili, SiTiktok } from 'react-icons/si';
 import Link from "next/link";
 import { navRoutesItem } from "@/client/routes/nav-routes";
+
+// 扩展 Performance 接口以包含 memory 属性
+declare global {
+  interface Performance {
+    memory?: {
+      usedJSHeapSize: number;
+      totalJSHeapSize: number;
+      jsHeapSizeLimit: number;
+    };
+  }
+}
+
+const PerformanceMonitor: React.FC = () => {
+  const [metrics, setMetrics] = useState({
+    loadTime: 0,
+    memory: 0
+  });
+
+  useEffect(() => {
+    // 计算页面加载时间
+    const loadTime = performance.now();
+    setMetrics(prev => ({ ...prev, loadTime }));
+
+    // 获取内存使用情况（如果浏览器支持）
+    if (performance.memory) {
+      const memory = Math.round(performance.memory.usedJSHeapSize / (1024 * 1024));
+      setMetrics(prev => ({ ...prev, memory }));
+    }
+
+    // 定期更新内存使用情况
+    const interval = setInterval(() => {
+      if (performance.memory) {
+        const memory = Math.round(performance.memory.usedJSHeapSize / (1024 * 1024));
+        setMetrics(prev => ({ ...prev, memory }));
+      }
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className={styles.performanceMonitor}>
+      <FaTachometerAlt className={styles.performanceIcon} />
+      <span>加载: {metrics.loadTime.toFixed(0)}ms</span>
+      {metrics.memory > 0 && <span>内存: {metrics.memory}MB</span>}
+    </div>
+  );
+};
 
 const Footer: React.FC = () => {
   const { isDarkMode } = useTheme();
@@ -42,7 +90,7 @@ const Footer: React.FC = () => {
     <footer className={`${styles.footer} ${isDarkMode ? styles.dark : styles.light}`}>
       <div className={styles.footerContent}>
         <div className={styles.footerSection}>
-          <h3>关于博客</h3>
+          <h3>关于我のBlog</h3>
           <p>用文字定格时光，以技术点亮灵感，在笔尖与代码间探索无限可能</p>
           <div className={styles.stats}>
             <div className={styles.stat}>
@@ -103,12 +151,60 @@ const Footer: React.FC = () => {
         </div>
       </div>
       <div className={styles.footerBottom}>
-        <p>© {currentYear} 孤芳不自赏的博客 | Powered by Next.js + Spring Boot</p>
-        <a href="https://beian.miit.gov.cn"
-          className={styles.beian}
-          target="_blank"
-          rel="noopener noreferrer"
-        >京ICP备XXXXXXXX号-1</a>
+        <PerformanceMonitor />
+        <p>© {currentYear} 孤芳不自赏的博客已持续运行 {Math.floor((Date.now() - new Date('2025-05-26')) / 86400000)} 天 | 所有内容均为原创，保留所有权利 | Powered by Next.js + Spring Boot</p>
+
+        <div className={styles.serviceProviders}>
+          {/* 添加腾讯云主品牌图标 */}
+          <a
+            href="https://cloud.tencent.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.mainBrand}
+          >
+            <img
+              src="/images/TencentCloud.svg"  // 建议使用官方SVG
+              alt="腾讯云"
+              style={{ height: '1rem', verticalAlign: 'middle' }}
+            />
+          </a>
+          <span>由</span>
+
+          {/* 子服务列表 */}
+          <a href="https://cloud.tencent.com/product/cdn" target="_blank" rel="noopener noreferrer">
+            <img
+              src="/images/ContentDeliveryNetWork.svg"
+              alt="CDN"
+              style={{ width: '0.75rem', verticalAlign: 'middle' }}
+            />
+            腾讯云CDN
+          </a>
+          <span>、</span>
+
+          <a href="https://cloud.tencent.com/product/lighthouse" target="_blank" rel="noopener noreferrer">
+            <img
+              src="/images/TencentCloudLighthouse.svg"  // 轻量服务器图标
+              alt="轻量应用服务器"
+              style={{ width: '0.75rem', verticalAlign: 'middle' }}
+            />
+            腾讯云轻量服务器
+          </a>
+          <span>和</span>
+
+          <a href="https://cloud.tencent.com/product/cos" target="_blank" rel="noopener noreferrer">
+            <img
+              src="/images/CloudObjectStorage.svg"
+              alt="COS"
+              style={{ width: '0.75rem', verticalAlign: 'middle' }}
+            />
+            腾讯云COS
+          </a>
+          <span>提供技术支持</span>
+        </div>
+
+        <a href="https://beian.miit.gov.cn" className={styles.beian} target="_blank" rel="noopener noreferrer">
+          晋ICP备2025060785号
+        </a>
       </div>
     </footer>
   );

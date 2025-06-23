@@ -8,6 +8,8 @@ export interface BulletinBoardProps extends Identifiable, Timestamped {
   status?: 'pending' | 'approved' | 'rejected';
   reply?: string;
   replyTime?: string;
+  isPinned?: boolean;
+  avatar?: string;
 }
 
 export interface BulletinBoardResponse extends PaginatedResponse<BulletinBoardProps> { }

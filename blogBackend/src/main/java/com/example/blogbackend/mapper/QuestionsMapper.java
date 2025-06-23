@@ -21,37 +21,29 @@ import java.util.List;
 @Mapper
 public interface QuestionsMapper extends BaseMapper<Questions> {
 
-  @Select({
-      "<script>",
-      "SELECT DISTINCT q.*, t.id as tag_id, t.name as tag_name, t.slug as tag_slug, t.color as tag_color",
-      "FROM questions q",
-      "LEFT JOIN question_tags qt ON q.id = qt.question_id",
-      "LEFT JOIN tags t ON qt.tag_id = t.id",
-      "WHERE q.status = 'published'",
-      "<if test='search != null and search != \"\"'>",
-      "  AND (q.title LIKE CONCAT('%', #{search}, '%') OR q.content LIKE CONCAT('%', #{search}, '%'))",
-      "</if>",
-      "<if test='difficulty != null and difficulty != \"\"'>",
-      "  AND q.difficulty = #{difficulty}",
-      "</if>",
-      "<if test='tagId != null'>",
-      "  AND EXISTS (SELECT 1 FROM question_tags qt2 WHERE qt2.question_id = q.id AND qt2.tag_id = #{tagId})",
-      "</if>",
-      "ORDER BY q.updated_at DESC",
-      "</script>"
-  })
-  List<QuestionDTO> selectQuestionsWithTags(
-      Page<QuestionDTO> page,
-      @Param("search") String search,
-      @Param("difficulty") String difficulty,
-      @Param("tagId") Integer tagId);
+    @Select({
+            "<script>",
+            "SELECT q.*",
+            "FROM questions q",
+            "WHERE q.status = 'published'",
+            "<if test='search != null and search != \"\"'>",
+            "  AND (q.title LIKE CONCAT('%', #{search}, '%') OR q.content LIKE CONCAT('%', #{search}, '%'))",
+            "</if>",
+            "<if test='difficulty != null and difficulty != \"\"'>",
+            "  AND q.difficulty = #{difficulty}",
+            "</if>",
+            "ORDER BY q.updated_at DESC",
+            "</script>"
+    })
+    List<QuestionDTO> selectQuestionsWithTags(
+            Page<QuestionDTO> page,
+            @Param("search") String search,
+            @Param("difficulty") String difficulty);
 
-  @Select({
-      "SELECT DISTINCT q.*, t.id as tag_id, t.name as tag_name, t.slug as tag_slug, t.color as tag_color",
-      "FROM questions q",
-      "LEFT JOIN question_tags qt ON q.id = qt.question_id",
-      "LEFT JOIN tags t ON qt.tag_id = t.id",
-      "WHERE q.id = #{id}"
-  })
-  QuestionDTO selectQuestionWithTagsById(@Param("id") Integer id);
+    @Select({
+            "SELECT q.*",
+            "FROM questions q",
+            "WHERE q.id = #{id}"
+    })
+    QuestionDTO selectQuestionWithTagsById(@Param("id") Integer id);
 }
