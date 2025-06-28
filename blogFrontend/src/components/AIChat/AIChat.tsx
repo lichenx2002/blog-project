@@ -6,28 +6,11 @@ import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import styles from './AIChat.module.css';
 import { motion } from 'framer-motion';
 import { generateSystemPrompt } from '@/config/aiAssistant';
+import { useAIChat } from '@/hooks/useAIChat';
+import { useAuth } from '@/hooks/useAuth';
+import { Message } from '@/types/AIChat';
 
-/**
- * 消息接口定义
- * @property id - 消息唯一标识
- * @property content - 消息内容
- * @property type - 消息类型：用户消息或AI回复
- * @property timestamp - 消息时间戳
- */
-
-interface Message {
-  id: string;
-  content: string;
-  type: 'user' | 'ai';
-  timestamp: Date;
-}
-
-/**
- * 代码块组件属性接口
- * @property className - 代码块类名
- * @property children - 代码内容
- * @property inline - 是否为行内代码
- */
+// 代码块渲染属性定义
 interface CodeBlockProps {
   className?: string;
   children?: React.ReactNode;
@@ -35,32 +18,58 @@ interface CodeBlockProps {
   [key: string]: any;
 }
 
-/**
- * AI聊天组件
- * 提供与AI助手的交互界面，支持Markdown渲染和代码高亮
- */
 const AIChat: React.FC = () => {
-  // 状态管理
-  const [messages, setMessages] = useState<Message[]>([]); // 消息列表状态
-  const [input, setInput] = useState(''); // 输入框内容状态
-  const [isLoading, setIsLoading] = useState(false); // 加载状态
-  const [error, setError] = useState<string | null>(null); // 错误信息状态
+  const { user } = useAuth();
+  const userId = user?.id || 1; // 默认用户ID，实际应该从登录状态获取
+
+  // 使用AI聊天Hook
+  const {
+    sessions,
+    currentSession,
+    messages: hookMessages,
+    isLoading: isApiLoading,
+    error: apiError,
+    createNewSession,
+    selectSession,
+    saveMessage,
+    saveMessagesBatch
+  } = useAIChat({ userId });
+
+  // 本地状态
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [streamingMessage, setStreamingMessage] = useState<string>('');
+  const [showSessionList, setShowSessionList] = useState(false);
 
-  // DOM引用
-  const messagesEndRef = useRef<HTMLDivElement>(null); // 消息容器底部引用，用于滚动
-  const inputRef = useRef<HTMLTextAreaElement>(null); // 输入框引用，用于高度自适应
-  const messagesContainerRef = useRef<HTMLDivElement>(null); // 消息容器引用，用于滚动控制
-  const isInitialMount = useRef(true); // 初始加载标志，防止首次加载时滚动
+  // 各种 ref 用于滚动、输入框自适应等
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
+  const isInitialMount = useRef(true);
 
-  // API配置
+  // deepseek API 配置
   const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT || 'https://api.deepseek.com/v1/chat/completions';
   const apiKey = process.env.NEXT_PUBLIC_API_KEY || '';
 
-  /**
-   * 滚动到底部函数
-   * 将消息容器滚动到最新消息位置
-   */
+  // 同步Hook中的消息到本地状态
+  useEffect(() => {
+    if (hookMessages.length > 0) {
+      setMessages(hookMessages);
+    } else {
+      setMessages([]);
+    }
+  }, [hookMessages]);
+
+  // 处理API错误
+  useEffect(() => {
+    if (apiError) {
+      setError(apiError);
+    }
+  }, [apiError]);
+
+  // 滚动到底部，保证用户看到最新消息
   const scrollToBottom = () => {
     if (messagesContainerRef.current && !isInitialMount.current) {
       const container = messagesContainerRef.current;
@@ -68,14 +77,14 @@ const AIChat: React.FC = () => {
     }
   };
 
-  // 监听消息变化，自动滚动到底部
+  // 每次消息变化自动滚动到底部
   useEffect(() => {
     if (messages.length > 0) {
       scrollToBottom();
     }
   }, [messages]);
 
-  // 组件挂载后设置初始加载标志
+  // 标记初次挂载
   useEffect(() => {
     isInitialMount.current = false;
   }, []);
@@ -88,172 +97,190 @@ const AIChat: React.FC = () => {
     }
   }, [input]);
 
-  /**
-   * 处理表单提交
-   * 发送用户消息并获取AI回复
-   */
-  const handleSubmit = async (e: React.FormEvent) => {
-      // 阻止表单默认提交行为
-      e.preventDefault();
-
-      // 检查输入是否为空或正在加载中，如果是则直接返回
-      if (!input.trim() || isLoading) return;
-
-      // 创建用户消息对象
-      const userMessage: Message = {
-          id: Date.now().toString(),       // 使用当前时间戳作为唯一ID
-          content: input.trim(),           // 存储去除首尾空格的用户输入
-          type: 'user',                    // 标记消息类型为用户消息
-          timestamp: new Date(),           // 记录当前时间
-      };
-
-      // 将用户消息添加到消息列表
-      setMessages(prev => [...prev, userMessage]);
-      // 清空输入框
-      setInput('');
-      // 设置加载状态为true
-      setIsLoading(true);
-      // 清除之前的错误信息
-      setError(null);
-      // 初始化流式消息为空字符串
-      setStreamingMessage('');
-
-      try {
-          // 向API发送POST请求
-          const response = await fetch(apiEndpoint, {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',      // 设置内容类型为JSON
-                  'Authorization': `Bearer ${apiKey}`     // 添加授权令牌
-              },
-              body: JSON.stringify({                    // 将请求体转为JSON字符串
-                  model: "deepseek-chat",                 // 指定使用的AI模型
-                  messages: [                             // 构建消息历史
-                      {
-                          role: "system",                     // 系统角色消息
-                          content: generateSystemPrompt()     // 生成系统提示
-                      },
-                      ...messages.map(msg => ({             // 映射历史消息
-                          role: msg.type === 'user' ? 'user' : 'assistant', // 确定角色类型
-                          content: msg.content               // 消息内容
-                      })),
-                      { role: 'user', content: userMessage.content } // 当前用户消息
-                  ],
-                  temperature: 0.7,                       // 控制生成随机性的参数
-                  max_tokens: 2000,                       // 限制生成的最大token数
-                  stream: true                            // 启用流式传输
-              })
-          });
-
-          // 检查响应是否成功
-          if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`);
-          }
-
-          // 获取可读流的读取器
-          const reader = response.body?.getReader();
-          // 创建文本解码器
-          const decoder = new TextDecoder();
-          // 初始化缓冲区
-          let buffer = '';
-          // 初始化最终内容
-          let finalContent = '';
-
-          // 检查reader是否存在
-          if (!reader) {
-              throw new Error('No reader available');
-          }
-
-          // 无限循环读取流数据
-          while (true) {
-              // 读取数据块
-              const { done, value } = await reader.read();
-              // 如果流结束则退出循环
-              if (done) break;
-
-              // 解码数据并添加到缓冲区
-              buffer += decoder.decode(value, { stream: true });
-              // 按换行符分割缓冲区
-              const lines = buffer.split('\n');
-              // 保留最后不完整的行（如果有）到缓冲区
-              buffer = lines.pop() || '';
-
-              // 处理每一行数据
-              for (const line of lines) {
-                  // 检查是否是数据行
-                  if (line.startsWith('data: ')) {
-                      // 提取实际数据部分
-                      const data = line.slice(6);
-                      // 检查是否是流结束标记
-                      if (data === '[DONE]') {
-                          // 创建最终消息对象
-                          const finalMessage: Message = {
-                              id: (Date.now() + 1).toString(),  // 生成新ID
-                              content: finalContent             // 最终内容
-                                  .replace(/\r\n/g, '\n')         // 统一换行符
-                                  .split('\n')                    // 分割为行数组
-                                  .map(line => line.trim())       // 去除每行首尾空格
-                                  .filter(line => line.length > 0) // 过滤空行
-                                  .join('\n'),                   // 重新组合为字符串
-                              type: 'ai',                       // 标记为AI消息
-                              timestamp: new Date(),            // 记录时间戳
-                          };
-                          // 将最终消息添加到消息列表
-                          setMessages(prev => [...prev, finalMessage]);
-                          // 清空流式消息
-                          setStreamingMessage('');
-                          // 退出循环
-                          break;
-                      }
-
-                      try {
-                          // 解析JSON数据
-                          const parsed = JSON.parse(data);
-                          // 提取增量内容
-                          const content = parsed.choices[0]?.delta?.content || '';
-                          // 如果有内容则处理
-                          if (content) {
-                              // 累积内容
-                              finalContent += content;
-                              // 更新流式消息状态（带格式化）
-                              setStreamingMessage(finalContent
-                                  .replace(/\r\n/g, '\n')         // 统一换行符
-                                  .split('\n')                    // 分割为行
-                                  .map(line => line.trim())        // 去除每行首尾空格
-                                  .filter(line => line.length > 0) // 过滤空行
-                                  .join('\n'));                   // 重新组合
-                          }
-                      } catch (e) {
-                          // 捕获并记录JSON解析错误
-                          console.error('Error parsing stream data:', e);
-                      }
-                  }
-              }
-          }
-      } catch (error) {
-          // 捕获并记录主错误
-          console.error('AI response error:', error);
-          // 设置错误状态
-          setError('发生错误，请稍后再试');
-          // 创建错误消息对象
-          const errorMessage: Message = {
-              id: (Date.now() + 1).toString(),  // 生成新ID
-              content: '抱歉，发生了一些错误。请稍后再试。', // 友好错误信息
-              type: 'ai',                       // 标记为AI消息
-              timestamp: new Date(),            // 记录时间戳
-          };
-          // 将错误消息添加到消息列表
-          setMessages(prev => [...prev, errorMessage]);
-      } finally {
-          // 无论成功失败，最后都取消加载状态
-          setIsLoading(false);
+  // 创建新会话
+  const handleNewChat = async () => {
+    try {
+      const newSession = await createNewSession();
+      if (newSession) {
+        setShowSessionList(false);
+        setError(null);
+        setMessages([]); // 清空本地消息
       }
+    } catch (err) {
+      setError('创建新会话失败');
+    }
   };
 
-  /**
-   * 处理键盘事件
-   * 支持Enter发送消息，Shift+Enter换行
-   */
+  // 选择历史会话
+  const handleSelectSession = async (sessionId: number) => {
+    try {
+      await selectSession(sessionId);
+      setShowSessionList(false);
+      setError(null);
+    } catch (err) {
+      setError('选择会话失败');
+    }
+  };
+
+  // 处理消息发送和流式响应
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!input.trim() || isLoading) return;
+
+    // 如果没有当前会话，先创建一个
+    if (!currentSession) {
+      const newSession = await createNewSession();
+      if (!newSession) {
+        setError('创建会话失败');
+        return;
+      }
+    }
+
+    // 构造用户消息
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      content: input.trim(),
+      type: 'user',
+      timestamp: new Date(),
+    };
+
+    // 先保存用户消息到后端
+    try {
+      await saveMessage(userMessage);
+    } catch (err) {
+      console.error('保存用户消息失败:', err);
+      // 继续执行，不阻塞对话流程
+    }
+
+    setMessages(prev => [...prev, userMessage]);
+    setInput('');
+    setIsLoading(true);
+    setError(null);
+    setStreamingMessage('');
+
+    try {
+      // 请求 deepseek 的流式接口
+      const response = await fetch(apiEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+          model: "deepseek-chat",
+          messages: [
+            {
+              role: "system",
+              content: generateSystemPrompt()
+            },
+            ...messages.map(msg => ({
+              role: msg.type === 'user' ? 'user' : 'assistant',
+              content: msg.content
+            })),
+            { role: 'user', content: userMessage.content }
+          ],
+          temperature: 0.7,
+          max_tokens: 2000,
+          stream: true
+        })
+      });
+
+      if (!response || !response.ok) {
+        const status = response?.status || 'unknown';
+        const errorText = await response?.text().catch(() => '无法读取错误详情');
+        console.error('API请求失败:', {
+          status,
+          errorText,
+          endpoint: apiEndpoint,
+          hasApiKey: !!apiKey
+        });
+        throw new Error(`API请求失败 (${status}): ${errorText}`);
+      }
+
+      // 读取流式响应
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+      let finalContent = '';
+
+      if (!reader) {
+        throw new Error('No reader available');
+      }
+
+      // 循环读取流数据
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const data = line.slice(6);
+            if (data === '[DONE]') {
+              // 流结束，归档为正式 AI 消息
+              const finalMessage: Message = {
+                id: (Date.now() + 1).toString(),
+                content: finalContent
+                  .replace(/\r\n/g, '\n')
+                  .split('\n')
+                  .map(line => line.trim())
+                  .filter(line => line.length > 0)
+                  .join('\n'),
+                type: 'ai',
+                timestamp: new Date(),
+              };
+
+              // 保存AI回复到后端
+              try {
+                await saveMessage(finalMessage);
+              } catch (err) {
+                console.error('保存AI消息失败:', err);
+              }
+
+              setMessages(prev => [...prev, finalMessage]);
+              setStreamingMessage('');
+              break;
+            }
+
+            try {
+              const parsed = JSON.parse(data);
+              const content = parsed.choices[0]?.delta?.content || '';
+
+              if (content) {
+                finalContent += content;
+                setStreamingMessage(finalContent
+                  .replace(/\r\n/g, '\n')
+                  .split('\n')
+                  .map(line => line.trim())
+                  .filter(line => line.length > 0)
+                  .join('\n'));
+              }
+            } catch (e) {
+              console.error('Error parsing stream data:', e);
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.error('AI response error:', error);
+      setError('发生错误，请稍后再试');
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        content: '抱歉，发生了一些错误。请稍后再试。',
+        type: 'ai',
+        timestamp: new Date(),
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // 处理回车发送、Shift+Enter 换行
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -261,6 +288,7 @@ const AIChat: React.FC = () => {
     }
   };
 
+  // 渲染 markdown 内容，支持代码高亮
   const renderMarkdown = (content: string) => {
     return (
       <ReactMarkdown
@@ -358,8 +386,85 @@ const AIChat: React.FC = () => {
     );
   };
 
+  // @ts-ignore
   return (
     <div className={styles.chatContainer}>
+      {/* 会话管理头部 */}
+      <div className={styles.chatHeader}>
+        <div className={styles.sessionInfo}>
+          <span className={styles.currentSessionTitle}>
+            {currentSession?.title || '新对话'}
+          </span>
+          {currentSession && (
+            <span className={styles.sessionTime}>
+              {new Date(currentSession.updatedAt).toLocaleDateString()}
+            </span>
+          )}
+        </div>
+        <div className={styles.sessionActions}>
+          <button
+            className={styles.sessionButton}
+            onClick={() => setShowSessionList(!showSessionList)}
+            title="历史会话"
+          >
+            📚
+          </button>
+          {/*<button*/}
+          {/*    className={styles.sessionButton}*/}
+          {/*    onClick={() => {*/}
+          {/*      console.log('点击历史会话按钮');*/}
+          {/*      console.log('当前showSessionList:', showSessionList);*/}
+          {/*      console.log('当前sessions:', sessions);*/}
+          {/*      setShowSessionList(!showSessionList);*/}
+          {/*    }}*/}
+          {/*    title="历史会话"*/}
+          {/*>*/}
+          {/*  �📚*/}
+          {/*</button>*/}
+          <button
+            className={styles.sessionButton}
+            onClick={handleNewChat}
+            title="新对话"
+          >
+            ➕
+          </button>
+        </div>
+      </div>
+
+      {/* 会话列表 */}
+      {showSessionList && (
+        <div className={styles.sessionList}>
+          <div className={styles.sessionListHeader}>
+            <h3>历史会话 ({sessions.length})</h3>
+            <button
+              className={styles.closeButton}
+              onClick={() => setShowSessionList(false)}
+            >
+              ✕
+            </button>
+          </div>
+          <div className={styles.sessionItems}>
+            {sessions.map(session => (
+              <div
+                key={session.id}
+                className={`${styles.sessionItem} ${currentSession?.id === session.id ? styles.activeSession : ''
+                  }`}
+                onClick={() => handleSelectSession(session.id)}
+              >
+                <div className={styles.sessionTitle}>{session.title}</div>
+                <div className={styles.sessionTime}>
+                  {new Date(session.updatedAt).toLocaleDateString()}
+                </div>
+              </div>
+            ))}
+            {sessions.length === 0 && (
+              <div className={styles.emptySessions}>
+                暂无历史会话
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* 错误提示 */}
       {error && (
@@ -368,7 +473,7 @@ const AIChat: React.FC = () => {
         </div>
       )}
 
-      {/* 消息容器 */}
+      {/* 消息列表区域，支持动画 */}
       <motion.div
         className={styles.messagesContainer}
         ref={messagesContainerRef}
@@ -383,7 +488,7 @@ const AIChat: React.FC = () => {
           }
         }}
       >
-        {/* 欢迎消息 */}
+        {/* 欢迎语 */}
         {messages.length === 0 && (
           <motion.div
             className={styles.welcomeMessage}
@@ -396,7 +501,7 @@ const AIChat: React.FC = () => {
           </motion.div>
         )}
 
-        {/* 消息列表 */}
+        {/* 渲染历史消息 */}
         {messages.map((message, index) => (
           <motion.div
             key={message.id}
@@ -409,14 +514,12 @@ const AIChat: React.FC = () => {
             whileHover={{ y: -2, transition: { duration: 0.2 } }}
             className={message.type === 'user' ? styles.userMessageContainer : styles.aiMessageContainer}
           >
-            {/* 消息气泡 */}
             <motion.div
               className={`${styles.message} ${message.type === 'user' ? styles.userMessage : styles.aiMessage}`}
               whileHover={{ scale: 1.01 }}
               transition={{ duration: 0.2 }}
             >
               <div className={styles.messageContent}>
-                {/* AI消息使用Markdown渲染 */}
                 {message.type === 'ai' ? (
                   renderMarkdown(message.content)
                 ) : (
@@ -424,7 +527,6 @@ const AIChat: React.FC = () => {
                 )}
               </div>
             </motion.div>
-            {/* 消息时间戳 */}
             <motion.div
               className={styles.messageTime}
               initial={{ opacity: 0 }}
@@ -436,6 +538,7 @@ const AIChat: React.FC = () => {
           </motion.div>
         ))}
 
+        {/* 流式输出中的消息实时渲染 */}
         {isLoading && streamingMessage && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -456,6 +559,7 @@ const AIChat: React.FC = () => {
           </motion.div>
         )}
 
+        {/* AI 正在思考时的 loading 动画 */}
         {isLoading && !streamingMessage && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -482,7 +586,7 @@ const AIChat: React.FC = () => {
         <div ref={messagesEndRef} />
       </motion.div>
 
-      {/* 输入表单 */}
+      {/* 输入区域 */}
       <form onSubmit={handleSubmit} className={styles.inputForm}>
         <textarea
           ref={inputRef}
@@ -491,10 +595,10 @@ const AIChat: React.FC = () => {
           onKeyPress={handleKeyPress}
           placeholder="快告诉我你的疑惑吧~😁 (按 Enter 发送，Shift + Enter 换行)"
           className={styles.input}
-          disabled={isLoading}
+          disabled={isLoading || isApiLoading}
           rows={1}
         />
-        <button type="submit" className={styles.sendButton} disabled={isLoading}>
+        <button type="submit" className={styles.sendButton} disabled={isLoading || isApiLoading}>
           发送
         </button>
       </form>
@@ -502,4 +606,4 @@ const AIChat: React.FC = () => {
   );
 };
 
-export default AIChat; 
+export default AIChat;

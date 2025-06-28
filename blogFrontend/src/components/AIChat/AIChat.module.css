@@ -554,3 +554,263 @@
   font-size: 0.8rem;
   opacity: 0.7;
 }
+
+/* ==================== 会话管理样式 ==================== */
+
+/* 聊天头部样式 */
+.chatHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: var(--background-color);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0.5rem;
+  border-radius: 8px 8px 0 0;
+}
+
+.sessionInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.currentSessionTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.sessionTime {
+  font-size: 0.75rem;
+  color: var(--text-color);
+  opacity: 0.6;
+}
+
+.sessionActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.sessionButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: var(--background-color);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+  color: var(--text-color);
+}
+
+.sessionButton:hover {
+  background: var(--hover-color);
+  border-color: var(--primary-color);
+  transform: translateY(-1px);
+}
+
+/* 会话列表样式 */
+/* 会话列表样式 */
+.sessionList {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  background: var(--background-color);
+  border: 1px solid var(--border);
+  z-index: 1000;
+  min-width: 320px;
+  max-height: 500px;
+  overflow-y: auto;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sessionListHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--background-color);
+}
+
+.sessionListHeader h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: var(--text-color);
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+.closeButton:hover {
+  opacity: 1;
+}
+
+.sessionItems {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 0.5rem;
+}
+
+.sessionItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.75rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.sessionItem:hover {
+  background: var(--hover-color);
+  border-color: var(--border);
+}
+
+.sessionItem.activeSession {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.sessionItem.activeSession .sessionTitle,
+.sessionItem.activeSession .sessionTime {
+  color: white;
+}
+
+.sessionTitle {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-color);
+  line-height: 1.3;
+}
+
+.sessionTime {
+  font-size: 0.75rem;
+  color: var(--text-color);
+  opacity: 0.6;
+}
+
+.emptySessions {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--text-color);
+  opacity: 0.6;
+  font-size: 0.9rem;
+}
+
+/* 响应式设计 - 会话管理 */
+@media (max-width: 768px) {
+  .chatHeader {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .currentSessionTitle {
+    font-size: 0.9rem;
+  }
+
+  .sessionTime {
+    font-size: 0.7rem;
+  }
+
+  .sessionButton {
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+  }
+
+  .sessionList {
+    width: 280px;
+    max-height: 350px;
+  }
+
+  .sessionListHeader {
+    padding: 0.75rem;
+  }
+
+  .sessionListHeader h3 {
+    font-size: 0.9rem;
+  }
+
+  .sessionItems {
+    max-height: 250px;
+  }
+
+  .sessionItem {
+    padding: 0.6rem;
+  }
+
+  .sessionTitle {
+    font-size: 0.85rem;
+  }
+
+  .sessionTime {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .chatHeader {
+    padding: 0.4rem 0.5rem;
+  }
+
+  .currentSessionTitle {
+    font-size: 0.85rem;
+  }
+
+  .sessionTime {
+    font-size: 0.65rem;
+  }
+
+  .sessionButton {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+  }
+
+  .sessionList {
+    width: 260px;
+    max-height: 300px;
+    right: -10px;
+  }
+
+  .sessionListHeader {
+    padding: 0.6rem;
+  }
+
+  .sessionListHeader h3 {
+    font-size: 0.85rem;
+  }
+
+  .sessionItems {
+    max-height: 200px;
+  }
+
+  .sessionItem {
+    padding: 0.5rem;
+  }
+
+  .sessionTitle {
+    font-size: 0.8rem;
+  }
+
+  .sessionTime {
+    font-size: 0.65rem;
+  }
+}

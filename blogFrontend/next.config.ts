@@ -16,9 +16,9 @@ const nextConfig: NextConfig = {
         }
         return config;
     },
-    experimental: {
-        esmExternals: 'loose'
-    },
+    // experimental: {
+    //     esmExternals: 'loose'
+    // },
     typescript: {
         // !! 警告 !!
         // 危险，仅在生产环境使用
